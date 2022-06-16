@@ -8,6 +8,7 @@ export default defineConfig({
   },
   favicon: '/assets/favicon.ico',
   routes,
+  hash: true,
   locale: {
     default: 'en-US',
     useLocalStorage: true,
