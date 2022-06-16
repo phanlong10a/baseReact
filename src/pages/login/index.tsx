@@ -1,14 +1,25 @@
 import { Button, Checkbox, Form, Input, Col, Row } from 'antd';
+import { useRequest } from 'ahooks';
+import { login } from './service';
 import React from 'react';
 
 const index: React.FC = () => {
+  const loginRequest = useRequest(login, {
+    manual: true,
+  });
+
   const onFinish = (values: any) => {
-    console.log('Success:', values);
+    console.log(values);
+    // loginRequest.runAsync({
+    //   fcmToken: "",
+    //   phone: "84357917750",
+    //   password: "123456"
+    // }).then((res : any) => {
+    //   console.log(res)
+    // })
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
+  console.log(process.env.APP__END_POINT);
 
   return (
     <>
@@ -25,17 +36,16 @@ const index: React.FC = () => {
             wrapperCol={{ span: 20 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <Form.Item
-              label="Tài khoản"
-              name="username"
+              label="Số điện thoại"
+              name="phone"
               rules={[
                 { required: true, message: 'Tài khoản không được để trống' },
               ]}
             >
-              <Input />
+              <Input type="text" />
             </Form.Item>
             <Form.Item
               label="Mật khẩu"
