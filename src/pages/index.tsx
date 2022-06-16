@@ -7,16 +7,5 @@ export default function IndexPage() {
     process.env.APP__END_POINT,
     process.env.APP__LOGIN_REDIRECT_ENDPOINT,
   );
-  return (
-    <div>
-      <h1
-        className={styles.title}
-        onClick={() => {
-          setLocale(intl.locale === 'en-US' ? 'zh-CN' : 'en-US');
-        }}
-      >
-        {intl.formatMessage({ id: 'index.hello' }, { name: 'abcd' })}
-      </h1>
-    </div>
-  );
+  return <div>aaaaaaaaaaa</div>;
 }
