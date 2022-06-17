@@ -6,6 +6,12 @@ export const authRoutes = [
     title: 'Quản lý trạm xe',
     exact: true,
   },
+  {
+    path: '/user',
+    component: '@/pages/user/index',
+    title: 'Quản lý người dùng',
+    exact: true,
+  },
 ];
 
 export default [

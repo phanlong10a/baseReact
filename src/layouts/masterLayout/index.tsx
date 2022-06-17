@@ -8,7 +8,7 @@ import {
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
-import { useLocation } from 'umi';
+import { useLocation, Link } from 'umi';
 import { authRoutes } from '../../../config/routes/index';
 import { useHistory } from 'umi';
 
@@ -31,12 +31,15 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
+  getItem(<Link to="/">Trang chủ</Link>, '1', <PieChartOutlined />),
+  getItem(
+    <Link to="/bike-station">Quản lý trạm xe</Link>,
+    '2',
+    <DesktopOutlined />,
+  ),
+  getItem('Người dùng', 'sub1', <UserOutlined />, [
+    getItem(<Link to="/user">Quản lý người dùng</Link>, '3'),
+    getItem('Xác thực người dùng', '4'),
   ]),
   getItem('Team', 'sub2', <TeamOutlined />, [
     getItem('Team 1', '6'),
@@ -70,29 +73,19 @@ const App: React.FC = ({ children, ...rest }) => {
         <div className="logo" />
         <Menu
           theme="dark"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['2']}
+          activeKey="4"
           mode="inline"
           items={items}
         />
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={{ padding: 0 }} />
-        <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
-          >
-            {children}
-          </div>
-        </Content>
+        <Content style={{ margin: '0 16px' }}>{children}</Content>
         {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
       </Layout>
     </Layout>
   );
 };
 
-export default App;
+export default React.memo(App);

@@ -1,22 +1,43 @@
-import { Button, Checkbox, Form, Input, Col, Row } from 'antd';
+import { Button, Checkbox, Form, Input, Col, Row, message } from 'antd';
+import { useIntl, useHistory } from 'umi';
 import { useRequest } from 'ahooks';
 import { login } from './service';
 import React from 'react';
+import { paternPhone } from '@/utils/auth';
+import { appToken } from '@/utils/apis';
 
 const index: React.FC = () => {
   const loginRequest = useRequest(login, {
     manual: true,
   });
 
-  const onFinish = (values: any) => {
-    console.log(values);
-    // loginRequest.runAsync({
-    //   fcmToken: "",
-    //   phone: "84357917750",
-    //   password: "123456"
-    // }).then((res : any) => {
-    //   console.log(res)
-    // })
+  const intl = useIntl();
+  const history = useHistory();
+
+  React.useEffect(() => {
+    if (appToken) {
+      history.push('/');
+    }
+  }, []);
+
+  const onFinish = (values: { phone: string; password: string }) => {
+    loginRequest
+      .runAsync({
+        fcmToken: '',
+        phone: '84' + values.phone,
+        password: values.password,
+      })
+      .then((res: any) => {
+        message.success('Đăng nhập thành công');
+        localStorage.setItem('auth', JSON.stringify(res.data));
+        return true;
+      })
+      .then(() => {
+        history.push('/');
+      })
+      .catch(() => {
+        message.success('Tài khoản hoặc mật khẩu không chính xác');
+      });
   };
 
   console.log(process.env.APP__END_POINT);
@@ -39,16 +60,27 @@ const index: React.FC = () => {
             autoComplete="off"
           >
             <Form.Item
-              label="Số điện thoại"
+              label={intl.formatMessage(
+                {
+                  id: 'auth_phone',
+                },
+                { name: 'auth_phone' },
+              )}
               name="phone"
               rules={[
                 { required: true, message: 'Tài khoản không được để trống' },
+                {
+                  pattern: paternPhone,
+                  message: 'Số điện thoại không đúng định dạng',
+                },
               ]}
             >
-              <Input type="text" />
+              <Input type="text" addonBefore="+84" />
             </Form.Item>
             <Form.Item
-              label="Mật khẩu"
+              label={intl.formatMessage({
+                id: 'auth_password',
+              })}
               name="password"
               rules={[
                 { required: true, message: 'Mật khẩu không được để trống' },
@@ -58,7 +90,11 @@ const index: React.FC = () => {
             </Form.Item>
             <Row justify="center">
               <Col>
-                <Button type="primary" htmlType="submit">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loginRequest.loading}
+                >
                   Submit
                 </Button>
               </Col>
