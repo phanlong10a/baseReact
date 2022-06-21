@@ -8,9 +8,11 @@ import {
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
-import { useLocation, Link } from 'umi';
-import { authRoutes } from '../../../config/routes/index';
-import { useHistory } from 'umi';
+
+import '@/global/styles.less';
+import { RecoilRoot } from 'recoil';
+import MainHeader from '../Header/main.header';
+import { Link } from 'umi';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -48,23 +50,11 @@ const items: MenuItem[] = [
   getItem('Files', '9', <FileOutlined />),
 ];
 
-const App: React.FC = ({ children, ...rest }) => {
+const App = ({ children }: any) => {
   const [collapsed, setCollapsed] = useState(false);
-  const location = useLocation();
-  const history = useHistory();
-  React.useEffect(() => {
-    if (
-      !authRoutes.find((item) => {
-        return item.path === location.pathname;
-      })
-    ) {
-      history.push('/404');
-    }
-  }, [location]);
 
-  console.log('const location = useLocation();', location);
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout>
       <Sider
         collapsible
         collapsed={collapsed}
@@ -80,12 +70,31 @@ const App: React.FC = ({ children, ...rest }) => {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }} />
-        <Content style={{ margin: '0 16px' }}>{children}</Content>
-        {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
+        <MainHeader />
+
+        <Content style={{ margin: '0 16px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>User</Breadcrumb.Item>
+            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+          </Breadcrumb>
+          <div
+            className="site-layout-background"
+            style={{ padding: 24, minHeight: 360 }}
+          >
+            {children}
+          </div>
+        </Content>
       </Layout>
     </Layout>
   );
 };
 
-export default React.memo(App);
+const MainLayout: React.FC = ({ children }) => {
+  return (
+    <RecoilRoot>
+      <App>{children}</App>
+    </RecoilRoot>
+  );
+};
+
+export default MainLayout;

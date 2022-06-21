@@ -21,4 +21,13 @@ export default {
   const_column_date_of_birth: 'Date Of Birth',
   const_column_status: 'Status',
   const_column_action: 'Action',
+
+  // Form
+  password: 'Password',
+  phone_number: 'Phone Number',
+  login: 'Login',
+  register: 'Register',
+
+  // error
+  'error.require': '{field} must be required.',
 };

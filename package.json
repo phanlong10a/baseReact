@@ -27,6 +27,7 @@
     "antd": "^4.21.2",
     "axios": "^0.27.2",
     "dayjs": "^1.10.7",
+    "recoil": "^0.7.3",
     "umi": "^3.4.15"
   },
   "devDependencies": {

@@ -1,20 +1,16 @@
 import { Button, Form, Input } from 'antd';
 import React from 'react';
 import { useIntl } from 'umi';
-import { useLogin } from './service';
 
 import styles from './index.less';
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const intl = useIntl();
-  const { loading, run } = useLogin();
 
-  const onFinish = (values: any) => {
-    run(values);
-  };
+  const onFinish = (values: any) => {};
 
   return (
-    <div className={styles.loginWrap}>
+    <div className={styles.registerWrap}>
       <h1>CMS V-Bike</h1>
       <Form onFinish={onFinish} layout="vertical">
         <Form.Item
@@ -62,14 +58,14 @@ const Login: React.FC = () => {
         <Button
           type="primary"
           htmlType="submit"
-          loading={loading}
+          // loading={loading}
           className={styles.btnSubmit}
         >
-          {intl.formatMessage({ id: 'login' })}
+          {intl.formatMessage({ id: 'register' })}
         </Button>
       </Form>
     </div>
   );
 };
 
-export default Login;
+export default Register;

@@ -1,0 +1,101 @@
+@import './reset.less';
+@import './variables.less';
+
+* {
+  box-sizing: border-box;
+  text-shadow: 0 0 10px rgb(0 0 0 / 7%);
+}
+
+// custom antd
+body,
+.ant-layout {
+  background: @color-primary-light;
+}
+
+.ant-btn.ant-btn {
+  height: initial;
+  padding: 8px 32px;
+}
+
+.ant-input.ant-input,
+.ant-input-affix-wrapper.ant-input-password.ant-input-password {
+  background: @color-white;
+  border: 1px solid @color-gray5;
+  border-radius: 4px;
+  padding: 10px 16px;
+  margin: 0;
+  outline: none;
+  height: initial;
+  font-weight: 400;
+  font-size: @font-size-body-normal;
+  color: @color-secondary;
+  box-shadow: none;
+
+  &:hover,
+  &:focus {
+    border-color: @color-secondary;
+    box-shadow: none;
+  }
+
+  &::-webkit-input-placeholder {
+    /* Edge */
+    color: @color-gray5;
+  }
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: @color-gray5;
+  }
+
+  &::placeholder {
+    color: @color-gray5;
+  }
+}
+
+.ant-input-affix-wrapper.ant-input-password.ant-input-password input {
+  &::-webkit-input-placeholder {
+    /* Edge */
+    color: @color-gray5;
+  }
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: @color-gray5;
+  }
+
+  &::placeholder {
+    color: @color-gray5;
+  }
+}
+
+.ant-form-item.ant-form-item {
+  margin: 0;
+}
+
+.ant-form-item-control-input.ant-form-item-control-input {
+  min-height: initial;
+}
+
+.ant-form-item-label.ant-form-item-label {
+  padding: 0 !important;
+  margin: 0 0 6px;
+  label {
+    font-size: 13px;
+  }
+  label:before {
+    display: none !important;
+  }
+}
+
+// Error form input
+.ant-form-item-explain-error.ant-form-item-explain-error {
+  text-align: left;
+  color: @color-error;
+}
+
+.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover,
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  border-color: @color-error;
+}

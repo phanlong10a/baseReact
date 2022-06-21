@@ -1,12 +1,12 @@
-import axios from 'axios';
+import { useRequest } from 'ahooks';
 
-interface LoginItem {
-  fcmToken?: string;
-  phone: string;
-  password: string;
-}
-export const login: (loginItem: LoginItem) => Promise<any> = (
-  loginItem: LoginItem,
-) => {
-  return axios.post(process.env.APP__END_POINT + '/auth/login', loginItem);
+export const useLogin = () => {
+  return useRequest(
+    async (values) => {
+      return 2;
+    },
+    {
+      manual: true,
+    },
+  );
 };
