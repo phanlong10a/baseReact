@@ -17,6 +17,16 @@ export default {
   //general
   general_add: 'Thêm mới',
 
+  general_status_active: 'Trạng thái hoạt động',
+  general_inactive: 'Hoạt động',
+  general_active: 'Không hoạt động',
+
+  general_status_account: 'Trạng thái tài khoản',
+  general_denied_verify: 'Từ chối xác thực',
+  general_success_verify: 'Xác thực thành công',
+  general_verify: 'Đang xác thực',
+  general_waiting_verify: 'Chờ xác thực',
+
   //form
   form_search_text: 'Nhập từ khoá',
 

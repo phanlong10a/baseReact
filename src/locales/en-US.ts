@@ -3,6 +3,8 @@ export default {
   'index.hello': 'en - {name}',
   'index.title': 'English Title',
   'about.title': 'About-Title',
+  account: 'Account',
+  logout: 'Logout',
   status_active: 'Active',
   status_inactive: 'Inactive',
 
@@ -25,6 +27,15 @@ export default {
 
   //general
   general_add: 'Add',
+  general_status_active: 'Active status',
+  general_inactive: 'Inactive',
+  general_active: 'Active',
+
+  general_status_account: 'Account status ',
+  general_denied_verify: 'Denied',
+  general_success_verify: 'Success',
+  general_verify: 'Verify',
+  general_waiting_verify: 'Waiting',
 
   //form
   form_search_text: 'Keyword',

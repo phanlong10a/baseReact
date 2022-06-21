@@ -10,8 +10,8 @@ export default defineConfig({
   routes,
   hash: true,
   locale: {
-    default: 'en-US',
-    useLocalStorage: true,
+    default: 'vi-VN',
+    // useLocalStorage: true,
     baseNavigator: true,
     title: true,
     baseSeparator: '-',
