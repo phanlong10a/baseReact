@@ -1,24 +1,13 @@
-import './index.less';
+import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useToggle } from 'ahooks';
-import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
-import { useRequest } from 'ahooks';
-import { useIntl } from 'umi';
-import {
-  Breadcrumb,
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  Table,
-  Tag,
-  Tooltip,
-} from 'antd';
-import { STATUS_ACCOUNT, STATUS_ACTIVE } from './constant';
-import { getTableData, getUserData } from './service';
-import Dialog from './Components/dialog';
+import { Breadcrumb, Form, Input, Select, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
+import { useIntl } from 'umi';
+import Dialog from './Components/dialog';
+import { STATUS_ACCOUNT, STATUS_ACTIVE } from './constant';
+import './index.less';
+import { getTableData } from './service';
 
 const { Option } = Select;
 
