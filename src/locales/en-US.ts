@@ -3,10 +3,18 @@ export default {
   'index.hello': 'en - {name}',
   'index.title': 'English Title',
   'about.title': 'About-Title',
+  vietnamese: 'Vietnamese',
+  english: 'English',
   account: 'Account',
   logout: 'Logout',
   status_active: 'Active',
   status_inactive: 'Inactive',
+
+  //navigation
+  navitation_home: 'Home',
+  navigation_bike_station: 'Bike Station Management',
+  navigation_user: 'User Management',
+  navigation_user_kyc: 'Verify User Management',
 
   //breadcrumb
   user_management: 'User management',
@@ -26,6 +34,8 @@ export default {
   auth_password: 'Password',
 
   //general
+  general_preview_image: 'Preview',
+
   general_add: 'Add',
   general_status_active: 'Active status',
   general_inactive: 'Inactive',

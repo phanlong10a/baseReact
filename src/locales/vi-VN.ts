@@ -3,6 +3,8 @@ export default {
   'index.hello': 'ZH - {name}',
   'index.title': 'ZH Title',
   'about.title': 'ZH - About - Title',
+  vietnamese: 'Tiếng Việt',
+  english: 'Tiếng Anh',
   account: 'Tài khoản',
   logout: 'Đăng xuất',
   auth_login: 'CMS V-Bike',
@@ -11,12 +13,21 @@ export default {
   status_active: 'Hoạt động',
   status_inactive: 'Không hoạt động',
 
+  //navigation
+  navitation_home: 'Trang chủ',
+  navigation_bike_station: 'Quản lý trạm xe',
+  navigation_user: 'Quản lý người dùng',
+  navigation_user_kyc: 'Xác thực người dùng',
+
   //breadcrumb
   user_management: 'Quản lý người dùng',
   user_management_list_user: 'Danh sách người dùng',
   user_management_list_kyc: 'Danh sách chờ xác thực',
 
   //general
+
+  general_preview_image: 'Phóng to',
+
   general_add: 'Thêm mới',
 
   general_status_active: 'Trạng thái hoạt động',

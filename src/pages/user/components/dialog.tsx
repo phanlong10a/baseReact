@@ -1,19 +1,17 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { useRequest, useSetState } from 'ahooks';
 import {
-  Button,
   Col,
-  DatePicker,
   Drawer,
   Form,
+  Image,
   Input,
+  message,
   Row,
   Select,
-  Space,
   Skeleton,
-  Image,
 } from 'antd';
 import React, { useState } from 'react';
-import { useRequest, useSetState } from 'ahooks';
+import { useIntl } from 'umi';
 import { getUserData } from '../service';
 const { Option } = Select;
 
@@ -21,6 +19,25 @@ interface Iprops {
   open: boolean;
   setOpen: (b: boolean) => void;
   itemEdit: any;
+}
+
+interface IUser {
+  address?: string;
+  avatar?: any;
+  createdAt?: string;
+  dateOfBirth?: string;
+  email?: string;
+  fullName?: string;
+  gender?: string;
+  id?: string;
+  identificationCode?: string;
+  isActive?: true;
+  phone?: string;
+  points?: number;
+  referralCode?: string;
+  roles?: Array<any>;
+  status?: string;
+  updatedAt?: string;
 }
 
 const Dialog: React.FC<Iprops> = ({
@@ -31,31 +48,16 @@ const Dialog: React.FC<Iprops> = ({
   ...rest
 }) => {
   const [loading, setLoading] = useState(true);
-  const [userInfo, setUserInfo] = useSetState<{
-    address?: string;
-    avatar?: any;
-    createdAt?: string;
-    dateOfBirth?: string;
-    email?: string;
-    fullName?: string;
-    gender?: string;
-    id?: string;
-    identificationCode?: string;
-    isActive?: true;
-    phone?: string;
-    points?: number;
-    referralCode?: string;
-    roles?: Array<any>;
-    status?: string;
-    updatedAt?: string;
-  }>({});
+  const [userInfo, setUserInfo] = useSetState<IUser>({});
+  const { formatMessage } = useIntl();
   const requestUser = useRequest(getUserData, {
     manual: true,
-    onSuccess: (res) => {
+    onSuccess: (res: any) => {
+      console.log(res);
       setUserInfo(res);
     },
     onError: (rej) => {
-      console.error(rej);
+      message.error(rej.message);
     },
     onFinally: () => {
       setLoading(false);
@@ -102,6 +104,7 @@ const Dialog: React.FC<Iprops> = ({
                 <Image
                   src={userInfo.avatar?.url}
                   style={{ borderRadius: '100%' }}
+                  placeholder={formatMessage({ id: 'general_preview_image' })}
                   width={100}
                 />
               </div>
