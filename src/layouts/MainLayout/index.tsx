@@ -13,6 +13,7 @@ import '@/global/styles.less';
 import { RecoilRoot } from 'recoil';
 import MainHeader from '../Header/main.header';
 import { Link } from 'umi';
+import styles from './index.less';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -59,6 +60,7 @@ const App = ({ children }: any) => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
+        className={styles.layoutSlider}
       >
         <div className="logo" />
         <Menu
@@ -71,12 +73,7 @@ const App = ({ children }: any) => {
       </Sider>
       <Layout className="site-layout">
         <MainHeader />
-
         <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
           <div
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}

@@ -27,6 +27,14 @@ export default [
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
       },
+      {
+        exact: true,
+        path: '/user',
+        component: '@/pages/User',
+        title: 'navbar.Profile',
+        routes: [],
+        wrappers: ['@/layouts/Wrapper'],
+      },
     ],
   },
 ];
