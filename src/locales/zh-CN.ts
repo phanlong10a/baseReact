@@ -14,11 +14,6 @@ export default {
   user_management_list_user: 'Danh sách người dùng',
   user_management_list_kyc: 'Danh sách chờ xác thực',
 
-  //breadcrumb
-  user_management: 'Quản lý người dùng',
-  user_management_list_user: 'Danh sách người dùng',
-  user_management_list_kyc: 'Danh sách chờ xác thực',
-
   //general
   general_add: 'Thêm mới',
 
