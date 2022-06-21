@@ -90,11 +90,7 @@ const App = ({ children }: any) => {
 };
 
 const MainLayout: React.FC = ({ children }) => {
-  return (
-    <RecoilRoot>
-      <App>{children}</App>
-    </RecoilRoot>
-  );
+  return <App>{children}</App>;
 };
 
 export default MainLayout;

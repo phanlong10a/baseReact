@@ -1,6 +1,6 @@
 import { Button, Form, Input } from 'antd';
 import React from 'react';
-import { useIntl } from 'umi';
+import { history, useIntl } from 'umi';
 import { useLogin } from './service';
 
 import styles from './index.less';
@@ -64,6 +64,7 @@ const Login: React.FC = () => {
           htmlType="submit"
           loading={loading}
           className={styles.btnSubmit}
+          onClick={() => history.push('login')}
         >
           {intl.formatMessage({ id: 'login' })}
         </Button>
