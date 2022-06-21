@@ -2,8 +2,8 @@
 import { Redirect } from 'umi';
 
 export default (props: any) => {
-  // const { auth } = useAuth();
-  // console.log('auth', auth);
+  const { auth } = useAuth();
+  console.log('auth', props);
 
   const isLogin = true;
   if (isLogin) {
