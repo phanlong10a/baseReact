@@ -4,14 +4,8 @@ export default [
     path: '/login',
     component: '@/layouts/AuthLayout',
     title: 'Login',
+    wrappers: ['@/layouts/Wrapper'],
     routes: [{ exact: true, path: '/login', component: '@/pages/Login' }],
-  },
-  {
-    exact: true,
-    path: '/register',
-    component: '@/layouts/AuthLayout',
-    title: 'Register',
-    routes: [{ exact: true, path: '/register', component: '@/pages/Register' }],
   },
   {
     exact: false,

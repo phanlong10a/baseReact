@@ -9,10 +9,8 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 
-import '@/global/styles.less';
-import { RecoilRoot } from 'recoil';
-import MainHeader from '../Header/main.header';
 import { Link } from 'umi';
+import MainHeader from '../Header/main.header';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -91,9 +89,9 @@ const App = ({ children }: any) => {
 
 const MainLayout: React.FC = ({ children }) => {
   return (
-    <RecoilRoot>
+    <>
       <App>{children}</App>
-    </RecoilRoot>
+    </>
   );
 };
 
