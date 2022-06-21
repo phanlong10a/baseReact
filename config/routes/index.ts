@@ -11,7 +11,6 @@ export default [
     path: '/register',
     component: '@/layouts/AuthLayout',
     title: 'Register',
-    wrappers: ['@/layouts/auth'],
     routes: [{ exact: true, path: '/register', component: '@/pages/Register' }],
   },
   {
