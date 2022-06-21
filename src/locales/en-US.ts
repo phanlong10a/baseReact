@@ -3,6 +3,7 @@ export default {
   'index.hello': 'en - {name}',
   'index.title': 'English Title',
   'about.title': 'About-Title',
+<<<<<<< HEAD
   auth_login: 'CMS V-Bike',
   auth_phone: 'Phone',
   auth_password: 'Password',
@@ -21,6 +22,15 @@ export default {
   const_column_date_of_birth: 'Date Of Birth',
   const_column_status: 'Status',
   const_column_action: 'Action',
+=======
+  status_active: 'Active',
+  status_inactive: 'Inactive',
+
+  //breadcrumb
+  user_management: 'User management',
+  user_management_list_user: 'List user',
+  user_management_list_kyc: 'List KYC',
+>>>>>>> 9696a31 (resolve conflict)
 
   // Form
   password: 'Password',
@@ -35,7 +45,7 @@ export default {
   auth_password: 'Password',
 
   //general
-  general_add: 'Thêm mới',
+  general_add: 'Add',
 
   //form
   form_search_text: 'Keyword',

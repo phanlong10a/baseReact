@@ -16,7 +16,7 @@ import {
 } from 'antd';
 import { STATUS_ACCOUNT, STATUS_ACTIVE } from './constant';
 import { getTableData, getUserData } from './service';
-import Dialog from './components/dialog';
+import Dialog from './Components/dialog';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 
@@ -93,7 +93,9 @@ export default () => {
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.isActive ? 'Hoạt động' : 'Không hoạt động'}
+            {record.isActive
+              ? formatMessage({ id: 'status_active' })
+              : formatMessage({ id: 'status_inactive' })}
           </React.Fragment>
         );
       },

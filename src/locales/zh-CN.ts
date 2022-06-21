@@ -6,6 +6,13 @@ export default {
   auth_login: 'CMS V-Bike',
   auth_phone: 'Số điện thoại',
   auth_password: 'Mật khẩu',
+  status_active: 'Hoạt động',
+  status_inactive: 'Không hoạt động',
+
+  //breadcrumb
+  user_management: 'Quản lý người dùng',
+  user_management_list_user: 'Danh sách người dùng',
+  user_management_list_kyc: 'Danh sách chờ xác thực',
 
   //general
   general_add: 'Thêm mới',
