@@ -2,8 +2,8 @@ import { Redirect } from 'umi';
 import { appToken } from '@/utils/apis/index';
 
 export default (props: any) => {
-  // const { isLogin } = useAuth();
-  const isLogin = true;
+  const isLogin = appToken;
+  debugger;
   if (isLogin) {
     return <>{props.children}</>;
   } else {
