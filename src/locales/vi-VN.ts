@@ -51,4 +51,11 @@ export default {
   const_column_date_of_birth: 'Ngày sinh',
   const_column_status: 'Trạng thái',
   const_column_action: 'Hành động',
+
+  manager_bike_stattion: 'Quản lý trạm xe',
+  manager_bike_stattion_table_name: 'Tên trạm xe',
+  manager_bike_stattion_table_location: 'Vị trí',
+  manager_bike_stattion_table_number: 'Số xe có trong trạm',
+  manager_bike_stattion_table_parking: 'Số lượng chỗ đỗ xe',
+  manager_bike_stattion_table_actionr: 'Thao tác',
 };
