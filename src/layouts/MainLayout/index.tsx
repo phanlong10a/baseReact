@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import '@/global/styles.less';
 import { RecoilRoot } from 'recoil';
 import MainHeader from '../Header/main.header';
+import { Link } from 'umi';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -32,12 +33,15 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
+  getItem(<Link to="/">Trang chủ</Link>, '1', <PieChartOutlined />),
+  getItem(
+    <Link to="/bike-station">Quản lý trạm xe</Link>,
+    '2',
+    <DesktopOutlined />,
+  ),
+  getItem('Người dùng', 'sub1', <UserOutlined />, [
+    getItem(<Link to="/user">Quản lý người dùng</Link>, '3'),
+    getItem(<Link to="/kyc">Xác thực người dùng</Link>, '4'),
   ]),
   getItem('Team', 'sub2', <TeamOutlined />, [
     getItem('Team 1', '6'),
@@ -59,7 +63,8 @@ const App = ({ children }: any) => {
         <div className="logo" />
         <Menu
           theme="dark"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['2']}
+          activeKey="4"
           mode="inline"
           items={items}
         />
