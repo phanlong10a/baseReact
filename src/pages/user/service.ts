@@ -1,5 +1,5 @@
+import { privateRequest, request } from '@/utils/apis';
 import useRequest from '@ahooksjs/use-request';
-import { request } from 'umi';
 
 export const getTableData = (
   { current, pageSize }: { current: number; pageSize: number },
@@ -11,9 +11,13 @@ export const getTableData = (
       query += `&${key}=${value}`;
     }
   });
-  return request(process.env.APP__END_POINT + '/user?' + query, {
-    method: 'GET',
-  }).then((res) => {
+  return privateRequest(
+    request,
+    process.env.APP__END_POINT + '/user?' + query,
+    {
+      method: 'GET',
+    },
+  ).then((res) => {
     return {
       total: res.total,
       list: res.data,
@@ -22,5 +26,5 @@ export const getTableData = (
 };
 
 export const getUserData = (id: any) => {
-  return request(process.env.APP__END_POINT + '/user/' + id);
+  return privateRequest(request, process.env.APP__END_POINT + '/user/' + id);
 };
