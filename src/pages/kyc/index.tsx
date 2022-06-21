@@ -16,7 +16,7 @@ import {
 } from 'antd';
 import { STATUS_ACCOUNT, STATUS_ACTIVE } from './constant';
 import { getTableData, getUserData } from './service';
-import Dialog from './Components/dialog';
+import Dialog from './components/dialog';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 
@@ -93,9 +93,7 @@ export default () => {
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.isActive
-              ? formatMessage({ id: 'status_active' })
-              : formatMessage({ id: 'status_inactive' })}
+            {record.isActive ? 'Hoạt động' : 'Không hoạt động'}
           </React.Fragment>
         );
       },
@@ -123,14 +121,7 @@ export default () => {
 
   const searchForm = (
     <div className="search-container">
-      <Form form={form} className="search-form w-100">
-        <Form.Item name="status" initialValue="" className="search-item">
-          <Select onChange={submit}>
-            {STATUS_ACCOUNT.map((item) => (
-              <Option value={item.value}>{item.name}</Option>
-            ))}
-          </Select>
-        </Form.Item>
+      <Form form={form} className="search-form">
         <Form.Item name="isActive" initialValue="" className="search-item">
           <Select onChange={submit}>
             {STATUS_ACTIVE.map((item) => (
@@ -157,14 +148,14 @@ export default () => {
           {formatMessage({ id: 'user_management' })}
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          {formatMessage({ id: 'user_management_list_user' })}
+          {formatMessage({ id: 'user_management_list_kyc' })}
         </Breadcrumb.Item>
       </Breadcrumb>
       {searchForm}
       <div style={{ padding: 24, minHeight: '240px' }}>
         <Table
           columns={columns}
-          locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
+          locale={{ emptyText: 'Không có dữ liệu' }}
           {...tableProps}
         />
       </div>

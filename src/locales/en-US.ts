@@ -44,6 +44,11 @@ export default {
   auth_phone: 'Phone',
   auth_password: 'Password',
 
+  //breadcrumb
+  user_management: 'User management',
+  user_management_list_user: 'List user',
+  user_management_list_kyc: 'KYC',
+
   //general
   general_add: 'Add',
 

@@ -41,7 +41,7 @@ const items: MenuItem[] = [
   ),
   getItem('Người dùng', 'sub1', <UserOutlined />, [
     getItem(<Link to="/user">Quản lý người dùng</Link>, '3'),
-    getItem('Xác thực người dùng', '4'),
+    getItem(<Link to="/kyc">Xác thực người dùng</Link>, '4'),
   ]),
   getItem('Team', 'sub2', <TeamOutlined />, [
     getItem('Team 1', '6'),
