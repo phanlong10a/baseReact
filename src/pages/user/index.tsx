@@ -161,14 +161,18 @@ export default () => {
   return (
     <>
       <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>Quản lý người dùng</Breadcrumb.Item>
-        <Breadcrumb.Item>Danh sách người dùng</Breadcrumb.Item>
+        <Breadcrumb.Item>
+          {formatMessage({ id: 'user_management' })}
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          {formatMessage({ id: 'user_management_list_user' })}
+        </Breadcrumb.Item>
       </Breadcrumb>
       {searchForm}
       <div style={{ padding: 24, minHeight: '240px' }}>
         <Table
           columns={columns}
-          locale={{ emptyText: 'Không có dữ liệu' }}
+          locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
           {...tableProps}
         />
       </div>
