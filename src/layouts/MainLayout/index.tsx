@@ -47,6 +47,26 @@ const items: MenuItem[] = [
     getItem('Team 2', '8'),
   ]),
   getItem('Files', '9', <FileOutlined />),
+  getItem(
+    <Link to="/bike-station">Quản lý xe</Link>,
+    '10',
+    <DesktopOutlined />,
+  ),
+  getItem(
+    <Link to="/bike-station">Quản lý các chuyến đi</Link>,
+    '11',
+    <DesktopOutlined />,
+  ),
+  getItem(
+    <Link to="/bike-station">Quản lý ví người dùng</Link>,
+    '12',
+    <DesktopOutlined />,
+  ),
+  getItem(
+    <Link to="/bike-station">Quản lý vé thuê xe</Link>,
+    '13',
+    <DesktopOutlined />,
+  ),
 ];
 
 const App = ({ children }: any) => {
