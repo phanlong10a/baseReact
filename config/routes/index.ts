@@ -29,6 +29,14 @@ export default [
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
       },
+      {
+        exact: true,
+        path: '/bike-station',
+        component: '@/pages/bikeStation',
+        title: 'navbar.Profile',
+        routes: [],
+        wrappers: ['@/layouts/Wrapper'],
+      },
     ],
   },
 ];
