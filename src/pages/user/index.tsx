@@ -1,13 +1,14 @@
 import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useToggle } from 'ahooks';
-import { Breadcrumb, Form, Input, Select, Table, Tooltip } from 'antd';
+import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
-import { useIntl } from 'umi';
+import { setLocale, useIntl } from 'umi';
 import Dialog from './Components/dialog';
 import { STATUS_ACCOUNT, STATUS_ACTIVE } from './constant';
 import './index.less';
 import { getTableData } from './service';
+import { getLocale } from 'umi';
 
 const { Option } = Select;
 
@@ -109,21 +110,27 @@ export default () => {
   ].map((item: any) => {
     return { ...item, title: formatMessage({ id: item.title }) };
   });
-
   const searchForm = (
     <div className="search-container">
+      <Button onClick={() => setOpenDialog.set(true)}>
+        {formatMessage({ id: 'general_add' })}
+      </Button>
       <Form form={form} className="search-form w-100">
         <Form.Item name="status" initialValue="" className="search-item">
           <Select onChange={submit}>
             {STATUS_ACCOUNT.map((item) => (
-              <Option value={item.value}>{item.name}</Option>
+              <Option value={item.value}>
+                {formatMessage({ id: item.name })}
+              </Option>
             ))}
           </Select>
         </Form.Item>
         <Form.Item name="isActive" initialValue="" className="search-item">
           <Select onChange={submit}>
             {STATUS_ACTIVE.map((item) => (
-              <Option value={item.value}>{item.name}</Option>
+              <Option value={item.value}>
+                {formatMessage({ id: item.name })}
+              </Option>
             ))}
           </Select>
         </Form.Item>
