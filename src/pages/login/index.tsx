@@ -16,7 +16,14 @@ const Login: React.FC = () => {
   return (
     <div className={styles.loginWrap}>
       <h1>CMS V-Bike</h1>
-      <Form onFinish={onFinish} layout="vertical">
+      <Form
+        onFinish={onFinish}
+        layout="vertical"
+        initialValues={{
+          phone_number: '84947754271',
+          password: '123',
+        }}
+      >
         <Form.Item
           className={styles.formItem}
           label={intl.formatMessage({ id: 'phone_number' })}

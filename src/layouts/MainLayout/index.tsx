@@ -9,11 +9,9 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 
-import '@/global/styles.less';
-import { RecoilRoot } from 'recoil';
-import MainHeader from '../Header/main.header';
 import { Link } from 'umi';
 import styles from './index.less';
+import MainHeader from '../Header/main.header';
 
 const { Header, Content, Footer, Sider } = Layout;
 
