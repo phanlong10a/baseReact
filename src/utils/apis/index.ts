@@ -5,7 +5,7 @@ import TokenManagement from './TokenManagement';
 const request = extend({
   prefix: ENVIRONMENTS.API_URL,
   errorHandler: (error) => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       // clean all token
     }
   },
@@ -99,12 +99,12 @@ const TokenManager = new TokenManagement({
 });
 
 const privateRequest = async (
-  url: string,
+  suffixUrl: string,
   configs?: any,
   baseRequest = request,
 ) => {
   const token: string = (await TokenManager.getToken()) as string;
-  return baseRequest(url, injectBearer(token, configs));
+  return baseRequest(suffixUrl, injectBearer(token, configs));
 };
 
 const API_PATH = {

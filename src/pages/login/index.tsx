@@ -71,7 +71,6 @@ const Login: React.FC = () => {
           htmlType="submit"
           loading={loading}
           className={styles.btnSubmit}
-          onClick={() => history.push('login')}
         >
           {intl.formatMessage({ id: 'login' })}
         </Button>

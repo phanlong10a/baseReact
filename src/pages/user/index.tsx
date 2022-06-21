@@ -4,7 +4,7 @@ import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
-import Dialog from './Components/dialog';
+import Dialog from './Components/Dialog';
 import { STATUS_ACCOUNT, STATUS_ACTIVE } from './constant';
 import './index.less';
 import { getTableData } from './service';
@@ -110,12 +110,17 @@ export default () => {
   ].map((item: any) => {
     return { ...item, title: formatMessage({ id: item.title }) };
   });
+
   const searchForm = (
     <div className="search-container">
-      <Button onClick={() => setOpenDialog.set(true)}>
-        {formatMessage({ id: 'general_add' })}
-      </Button>
-      <Form form={form} className="search-form w-100">
+      <Form form={form} className="search-form">
+        <Form.Item name="fullName" className="search-item">
+          <Input.Search
+            placeholder={formatMessage({ id: 'form_search_text' })}
+            allowClear
+            onSearch={submit}
+          />
+        </Form.Item>
         <Form.Item name="status" initialValue="" className="search-item">
           <Select onChange={submit}>
             {STATUS_ACCOUNT.map((item) => (
@@ -134,15 +139,10 @@ export default () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="fullName">
-          <Input.Search
-            placeholder={formatMessage({ id: 'form_search_text' })}
-            style={{ width: 240 }}
-            allowClear
-            onSearch={submit}
-          />
-        </Form.Item>
       </Form>
+      <Button onClick={() => setOpenDialog.set(true)}>
+        {formatMessage({ id: 'general_add' })}
+      </Button>
     </div>
   );
 
@@ -161,6 +161,7 @@ export default () => {
         <Table
           columns={columns}
           locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
+          scroll={{ x: 1000 }}
           {...tableProps}
         />
       </div>
