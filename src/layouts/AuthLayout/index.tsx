@@ -1,10 +1,5 @@
-import React from 'react';
-
-import '@/global/styles.less';
 import { Layout } from 'antd';
 import AuthHeader from '../Header/auth.header';
-
-import '@/global/styles.less';
 
 import styles from './index.less';
 

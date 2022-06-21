@@ -1,6 +1,6 @@
 import { Button, Form, Input } from 'antd';
 import React from 'react';
-import { useIntl } from 'umi';
+import { history, useIntl } from 'umi';
 import { useLogin } from './service';
 
 import styles from './index.less';
@@ -16,7 +16,14 @@ const Login: React.FC = () => {
   return (
     <div className={styles.loginWrap}>
       <h1>CMS V-Bike</h1>
-      <Form onFinish={onFinish} layout="vertical">
+      <Form
+        onFinish={onFinish}
+        layout="vertical"
+        initialValues={{
+          phone_number: '84947754271',
+          password: '123',
+        }}
+      >
         <Form.Item
           className={styles.formItem}
           label={intl.formatMessage({ id: 'phone_number' })}
@@ -64,6 +71,7 @@ const Login: React.FC = () => {
           htmlType="submit"
           loading={loading}
           className={styles.btnSubmit}
+          onClick={() => history.push('login')}
         >
           {intl.formatMessage({ id: 'login' })}
         </Button>

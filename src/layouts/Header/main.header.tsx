@@ -1,12 +1,14 @@
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Dropdown, Space, Menu } from 'antd';
 import { useIntl, formatMessage } from 'umi';
+import { useAuth } from '@/utils/hooks/useAuth';
 import React from 'react';
 import { Link, setLocale } from 'umi';
 import styles from './index.less';
 
 const MainHeader = () => {
   const { formatMessage } = useIntl();
+  const { onLogout } = useAuth();
   const menu = () => (
     <Menu
       items={[
@@ -15,7 +17,11 @@ const MainHeader = () => {
           key: '0',
         },
         {
-          label: <Link to="/">{formatMessage({ id: 'logout' })}</Link>,
+          label: (
+            <button onClick={onLogout}>
+              {formatMessage({ id: 'logout' })}
+            </button>
+          ),
           key: '1',
         },
       ]}
