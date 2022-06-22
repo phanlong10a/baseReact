@@ -66,6 +66,20 @@ export default {
   general_success_verify: 'Xác thực thành công',
   general_waiting_verify: 'Chờ xác thực',
 
+  general_kyc_not_verified: 'Chưa xác thực',
+  general_pending_kyc: 'Chờ xác thực',
+  general_verified_kyc: 'Đã xác thực',
+  general_cancel_kyc: 'Từ chối xác thực',
+
+  general_kyc_type: 'Loại giấy tờ',
+  general_kyc_type_IDcard: 'CCCD/CMND',
+  general_kyc_type_passport: 'Hộ chiếu',
+  general_kyc_type_driving_license: 'Bằng lái xe',
+
+  general_kyc_photo_type: 'Loại hình ảnh',
+  general_kyc_photo_type_front: 'Mặt trước',
+  general_kyc_photo_type_back: 'Mặt sau',
+
   //form
   form_search_text: 'Nhập từ khoá',
 

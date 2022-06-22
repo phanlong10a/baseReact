@@ -16,7 +16,7 @@ export const getTableData = (
     }
   });
 
-  return privateRequest(API_PATH.USER + '?' + query, {
+  return privateRequest(API_PATH.KYC + '?' + query, {
     method: 'GET',
   }).then((res: any) => {
     return {
@@ -27,5 +27,5 @@ export const getTableData = (
 };
 
 export const getUserData = (id: any) => {
-  return privateRequest(API_PATH.USER + '/' + id);
+  return privateRequest(API_PATH.KYC + '/' + id);
 };

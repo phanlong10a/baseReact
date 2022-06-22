@@ -47,11 +47,25 @@ export default {
   general_gender_male: 'Male',
   general_gender_female: 'Female',
 
-  general_status_account: 'Account status ',
+  general_status_account: 'Account status',
   general_denied_verify: 'Denied',
   general_success_verify: 'Success',
   general_verify: 'Verify',
   general_waiting_verify: 'Waiting',
+
+  general_kyc_not_verified: 'Not verified',
+  general_pending_kyc: 'Pending',
+  general_verified_kyc: 'Verified',
+  general_cancel_kyc: 'Cancelled',
+
+  general_kyc_type: 'Degree type',
+  general_kyc_type_IDcard: 'Identify card',
+  general_kyc_type_passport: 'Passport',
+  general_kyc_type_driving_license: 'Driving license',
+
+  general_kyc_photo_type: 'Photo type',
+  general_kyc_photo_type_front: 'Front photo',
+  general_kyc_photo_type_back: 'Back photo',
 
   //form
   form_search_text: 'Keyword',
