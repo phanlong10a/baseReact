@@ -1,6 +1,7 @@
 import {
   DeleteOutlined,
   EditOutlined,
+  LoadingOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
 import {
@@ -19,7 +20,13 @@ import { useIntl, useRequest } from 'umi';
 import styles from './index.less';
 import { Image, tableData } from './interface';
 import NewMethod from './NewMethod';
-import { createPayment, editPayment, getAllPayment, IMethod } from './services';
+import {
+  createPayment,
+  editPayment,
+  getAllPayment,
+  IMethod,
+  IUpdateMethod,
+} from './services';
 
 const ManagementPaymentMethod: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -44,12 +51,26 @@ const ManagementPaymentMethod: React.FC = () => {
       },
     },
   );
-  const { run: editMethod } = useRequest(editPayment, {
-    manual: true,
-    onSuccess: (res) => {
-      refeshData();
+
+  const [loading, setLoading] = useState(false);
+  const { run: editMethod, loading: Editloading } = useRequest(
+    async (method: IUpdateMethod, id: number) => {
+      setLoading(true);
+      const r = await editPayment(method, id);
     },
-  });
+    {
+      manual: true,
+      onSuccess: (res) => {
+        setTimeout(() => {
+          setLoading(false);
+          refeshData();
+        }, 1000);
+      },
+      onError: () => {
+        setLoading(false);
+      },
+    },
+  );
   type DataIndex = keyof tableData;
   const searchInput = useRef<InputRef>(null);
 
@@ -196,20 +217,29 @@ const ManagementPaymentMethod: React.FC = () => {
   });
 
   return (
-    <section className={styles.Manage_payment_method}>
-      <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
-      <NewMethod
-        handleSubmit={(method) => {
-          newMethod(method);
-        }}
-      />
-      <Table
-        columns={columns}
-        dataSource={tableData}
-        className={styles.table_white}
-        rowKey={(record) => JSON.stringify(record)}
-      />
-    </section>
+    <>
+      {loading && (
+        <div className={styles.loading}>
+          <div>
+            <LoadingOutlined />
+          </div>
+        </div>
+      )}
+      <section className={styles.Manage_payment_method}>
+        <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
+        <NewMethod
+          handleSubmit={(method) => {
+            newMethod(method);
+          }}
+        />
+        <Table
+          columns={columns}
+          dataSource={tableData}
+          className={styles.table_white}
+          rowKey={(record) => JSON.stringify(record)}
+        />
+      </section>
+    </>
   );
 };
 export default ManagementPaymentMethod;
