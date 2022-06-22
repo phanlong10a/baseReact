@@ -4,6 +4,24 @@
     .ant-pagination {
       margin: 16px;
     }
+    .ant-table-cell {
+      vertical-align: bottom;
+    }
+  }
+  .delete {
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .editDeciption {
+    width: 100%;
+    margin: auto;
+    input {
+      width: 400px;
+    }
+  }
+  .image {
+    text-align: center;
   }
 }
 .Manage_payment_method {
@@ -14,11 +32,16 @@
 .edit {
   display: flex;
   flex-direction: column;
-  text-align: end;
+  justify-content: end;
+
+  align-items: end;
   & > * {
     margin-bottom: 15px;
   }
   .switch {
     width: 50px;
   }
+}
+.image {
+  max-width: 100%;
 }

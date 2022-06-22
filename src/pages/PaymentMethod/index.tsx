@@ -1,10 +1,21 @@
-import { SearchOutlined } from '@ant-design/icons';
-import { Input, InputRef, Switch, Table } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import {
+  Button,
+  Form,
+  FormInstance,
+  Input,
+  InputRef,
+  Switch,
+  Table,
+} from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
 import React, { useRef, useState } from 'react';
 import { useIntl, useRequest } from 'umi';
-import EditMethod from './EditMethod';
 import styles from './index.less';
 import { Image, tableData } from './interface';
 import NewMethod from './NewMethod';
@@ -12,7 +23,11 @@ import { createPayment, editPayment, getAllPayment, IMethod } from './services';
 
 const ManagementPaymentMethod: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const { data: tableData, run: requestData } = useRequest(
+  const {
+    data: tableData,
+    run: requestData,
+    refresh: refeshData,
+  } = useRequest(
     async (lastResult: any, params: string) => {
       return getAllPayment({
         page: 1,
@@ -32,7 +47,7 @@ const ManagementPaymentMethod: React.FC = () => {
   const { run: editMethod } = useRequest(editPayment, {
     manual: true,
     onSuccess: (res) => {
-      requestData;
+      refeshData();
     },
   });
   type DataIndex = keyof tableData;
@@ -92,13 +107,39 @@ const ManagementPaymentMethod: React.FC = () => {
       dataIndex: 'method',
       onFilter: (value, record) => record.method.includes(String(value)),
       ...getColumnSearchProps('method'),
-      width: 300,
+      width: 150,
     },
     {
       title: 'Hinh anh',
       dataIndex: 'image',
-      render: (image: Image) => {
-        return <img src={image.url} alt="" />;
+      render: (image: Image, record: tableData) => {
+        return (
+          <div className={styles.image}>
+            <img src={image.url} alt="" className={styles.image} />
+            <Form
+              onFinish={(value) => {
+                editMethod(
+                  {
+                    description: value.description,
+                    isActive: !record.isActive,
+                    display: record.display,
+                  },
+                  record.id,
+                );
+              }}
+            >
+              <Input.Group compact className={styles.editDeciption}>
+                <Form.Item name="description" initialValue={record.description}>
+                  <Input />
+                </Form.Item>
+                <Button type="primary" htmlType="submit">
+                  <EditOutlined />
+                  Save change
+                </Button>
+              </Input.Group>
+            </Form>
+          </div>
+        );
       },
       width: 500,
     },
@@ -110,7 +151,7 @@ const ManagementPaymentMethod: React.FC = () => {
           <Switch
             checkedChildren="active"
             unCheckedChildren="active"
-            defaultChecked
+            checked={record.isActive}
             className={styles.switch}
             onChange={() => {
               editMethod(
@@ -128,6 +169,7 @@ const ManagementPaymentMethod: React.FC = () => {
             unCheckedChildren="display"
             defaultChecked
             className={styles.switch}
+            checked={record.display === 'ON'}
             onChange={() => {
               editMethod(
                 {
@@ -139,15 +181,10 @@ const ManagementPaymentMethod: React.FC = () => {
               );
             }}
           />
-          <EditMethod
-            initialdata={record}
-            handleSubmit={(value) => {
-              editMethod(value, record.id);
-            }}
-          />
+          <DeleteOutlined className={styles.delete} size={25} />
         </div>
       ),
-      width: 50,
+      width: 100,
     },
   ];
 
@@ -170,7 +207,7 @@ const ManagementPaymentMethod: React.FC = () => {
         columns={columns}
         dataSource={tableData}
         className={styles.table_white}
-        rowKey={(record) => record.id}
+        rowKey={(record) => JSON.stringify(record)}
       />
     </section>
   );
