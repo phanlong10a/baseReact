@@ -14,11 +14,21 @@ export default {
   status_inactive: 'Không hoạt động',
 
   //navigation
-  navitation_home: 'Trang chủ',
-  navigation_bike_station: 'Quản lý trạm xe',
-  navigation_user: 'Quản lý người dùng',
-  navigation_user_kyc: 'Xác thực người dùng',
-  navigation_admin: 'Quản lý tài khoản admin',
+  // navitation_home: 'Trang chủ',
+  navigation_bike_station: 'Trạm xe',
+  navigation_user: 'Người dùng',
+  // navigation_user_kyc: 'Xác thực người dùng',
+  navigation_admin_manage: 'Tài khoản admin',
+  navigation_vihicle: 'Xe',
+  navigation_lock: 'Khoá xe',
+  navigation_travel: 'Chuyến đi',
+  navigation_user_wallet: 'Ví người dùng',
+  navigation_ticket: 'Vé thuê xe',
+  navigation_method: 'Phương thức',
+  navigation_promotion: 'Mã khuyến mại',
+  navigation_tutorial: 'Thông tin hưỡng dẫn sử dụng',
+  navigation_news: 'Tin tức',
+  navigation_rate: 'Đánh giá',
 
   //breadcrumb
   user_management: 'Quản lý người dùng',
