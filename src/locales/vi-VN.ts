@@ -18,15 +18,18 @@ export default {
   navigation_bike_station: 'Quản lý trạm xe',
   navigation_user: 'Quản lý người dùng',
   navigation_user_kyc: 'Xác thực người dùng',
+  navigation_admin: 'Quản lý tài khoản admin',
 
   //breadcrumb
   user_management: 'Quản lý người dùng',
-  user_management_list_user: 'Danh sách người dùng',
-  user_management_list_kyc: 'Danh sách chờ xác thực',
+  user_management_list_user: 'Quản lý người dùng',
+  user_management_list_kyc: 'Xác thực người dùng',
+  admin_management_list_user: 'Quản lý tài khoản admin',
 
   //general
 
   general_preview_image: 'Phóng to',
+  general_tooltip_show_infomation: 'Xem thông tin',
 
   general_add: 'Thêm mới',
 

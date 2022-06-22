@@ -1,24 +1,14 @@
-import './index.less';
+import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useToggle } from 'ahooks';
-import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
-import { useRequest } from 'ahooks';
-import { useIntl } from 'umi';
-import {
-  Breadcrumb,
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  Table,
-  Tag,
-  Tooltip,
-} from 'antd';
-import { STATUS_ACCOUNT, STATUS_ACTIVE } from './constant';
-import { getTableData, getUserData } from './service';
-import Dialog from './components/dialog';
+import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
+import { setLocale, useIntl } from 'umi';
+import Dialog from './Components/Dialog';
+import { STATUS_ACTIVE } from './constant';
+import styles from './index.less';
+import { getTableData } from './service';
+import { getLocale } from 'umi';
 
 const { Option } = Select;
 
@@ -93,7 +83,9 @@ export default () => {
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.isActive ? 'Hoạt động' : 'Không hoạt động'}
+            {record.isActive
+              ? formatMessage({ id: 'status_active' })
+              : formatMessage({ id: 'status_inactive' })}
           </React.Fragment>
         );
       },
@@ -104,7 +96,9 @@ export default () => {
       align: 'center',
       render: (value: any, record: any, index: number) => {
         return (
-          <Tooltip title="Xem thông tin">
+          <Tooltip
+            title={formatMessage({ id: 'general_tooltip_show_infomation' })}
+          >
             <div
               style={{ cursor: 'pointer' }}
               onClick={() => handleViewUser(record.id)}
@@ -120,22 +114,27 @@ export default () => {
   });
 
   const searchForm = (
-    <div className="search-container">
-      <Form form={form} className="search-form">
-        <Form.Item name="isActive" initialValue="" className="search-item">
-          <Select onChange={submit}>
-            {STATUS_ACTIVE.map((item) => (
-              <Option value={item.value}>{item.name}</Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item name="fullName">
+    <div className={styles.searchContainer}>
+      <Form form={form} className={styles.searchForm}>
+        <Form.Item name="fullName" className={styles.searchItem}>
           <Input.Search
             placeholder={formatMessage({ id: 'form_search_text' })}
-            style={{ width: 240 }}
             allowClear
             onSearch={submit}
           />
+        </Form.Item>
+        <Form.Item
+          name="isActive"
+          initialValue=""
+          className={styles.searchItem}
+        >
+          <Select onChange={submit}>
+            {STATUS_ACTIVE.map((item) => (
+              <Option value={item.value}>
+                {formatMessage({ id: item.name })}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
       </Form>
     </div>
@@ -143,19 +142,17 @@ export default () => {
 
   return (
     <>
-      <Breadcrumb style={{ margin: '16px 0' }}>
+      <Breadcrumb className={styles.breadcrumb}>
         <Breadcrumb.Item>
-          {formatMessage({ id: 'user_management' })}
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          {formatMessage({ id: 'user_management_list_kyc' })}
+          {formatMessage({ id: 'user_management_list_user' })}
         </Breadcrumb.Item>
       </Breadcrumb>
       {searchForm}
-      <div style={{ padding: 24, minHeight: '240px' }}>
+      <div className={styles.tableComponent}>
         <Table
           columns={columns}
-          locale={{ emptyText: 'Không có dữ liệu' }}
+          locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
+          scroll={{ x: 1000 }}
           {...tableProps}
         />
       </div>

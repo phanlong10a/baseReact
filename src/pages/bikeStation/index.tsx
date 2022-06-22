@@ -81,7 +81,9 @@ export default () => {
       align: 'center',
       render: (value: any, record: any, index: number) => {
         return (
-          <Tooltip title="Xem thông tin">
+          <Tooltip
+            title={formatMessage({ id: 'general_tooltip_show_infomation' })}
+          >
             <div style={{ cursor: 'pointer' }}>
               <EyeOutlined />
             </div>

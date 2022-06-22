@@ -31,6 +31,22 @@ export default [
       },
       {
         exact: true,
+        path: '/kyc',
+        component: '@/pages/Kyc',
+        title: 'navbar.Profile',
+        routes: [],
+        wrappers: ['@/layouts/Wrapper'],
+      },
+      {
+        exact: true,
+        path: '/admin',
+        component: '@/pages/Admin',
+        title: 'navbar.Profile',
+        routes: [],
+        wrappers: ['@/layouts/Wrapper'],
+      },
+      {
+        exact: true,
         path: '/bike-station',
         component: '@/pages/bikeStation',
         title: 'navbar.Profile',

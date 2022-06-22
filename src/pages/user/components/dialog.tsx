@@ -1,7 +1,7 @@
 import { useRequest, useSetState } from 'ahooks';
 import {
   Col,
-  Drawer,
+  Modal,
   Form,
   Image,
   Input,
@@ -9,11 +9,13 @@ import {
   Row,
   Select,
   Skeleton,
+  Button,
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
 import { getUserData } from '../service';
 const { Option } = Select;
+import styles from '../index.less';
 
 interface Iprops {
   open: boolean;
@@ -74,14 +76,13 @@ const Dialog: React.FC<Iprops> = ({
   console.log(requestUser.loading, loading, userInfo);
   return (
     <>
-      <Drawer
+      <Modal
         title="Xem thông tin tài khoản"
+        centered
         width={720}
-        onClose={() => setOpen(false)}
+        onCancel={() => setOpen(false)}
         visible={open}
-        bodyStyle={{
-          paddingBottom: 80,
-        }}
+        footer={null}
         // extra={
         //     <Space>
         //         <Button onClick={() => setOpen(false)}>Cancel</Button>
@@ -159,10 +160,16 @@ const Dialog: React.FC<Iprops> = ({
                   </Form.Item>
                 </Col>
               </Row>
+              <div className={styles.addGroupButton}>
+                {/* <Button className={styles.addButton}>Thêm mới</Button> */}
+                <Button danger onClick={() => setOpen(false)}>
+                  Hủy
+                </Button>
+              </div>
             </Form>
           </>
         )}
-      </Drawer>
+      </Modal>
     </>
   );
 };
