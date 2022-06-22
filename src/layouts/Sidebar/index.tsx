@@ -54,7 +54,6 @@ const Sidebar = ({
   };
 
   const items: MenuItem[] = [
-    // getItem(renderLink('/', 'navitation_home'), '/', <PieChartOutlined />),
     getItem(
       renderLink('/account', 'navigation_user'),
       '/user',

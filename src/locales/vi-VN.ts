@@ -22,7 +22,7 @@ export default {
   navigation_vihicle: 'Xe',
   navigation_lock: 'Khoá xe',
   navigation_travel: 'Chuyến đi',
-  navigation_user_wallet: 'Người dùng',
+  navigation_user_wallet: 'Ví người dùng',
   navigation_ticket: 'Vé thuê xe',
   navigation_method: 'Phương thức',
   navigation_promotion: 'Mã khuyến mại',
