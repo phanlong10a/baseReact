@@ -16,7 +16,7 @@ import { useIntl } from 'umi';
 import { getUserData } from '../service';
 const { Option } = Select;
 import styles from '../index.less';
-import { GENDER } from '@/utils/constant';
+import { OPTION_GENDER, OPTION_STATUS_ACTIVE } from '@/utils/constant';
 
 interface Iprops {
   open: boolean;
@@ -75,14 +75,27 @@ const Dialog: React.FC<Iprops> = ({
       requestUser.run(itemEdit);
     } else {
       setLoading(false);
+      setUserInfo({});
       setEditable.set(true);
     }
   }, [itemEdit]);
 
+  const onEdit = () => {
+    setEditable.set(true);
+  };
+
+  const onFinish = (value: any) => {
+    console.log(value);
+  };
+
   return (
     <>
       <Modal
-        title="Xem thông tin tài khoản"
+        title={
+          editable
+            ? formatMessage({ id: 'general_edit_infomation' })
+            : formatMessage({ id: 'general_view_infomation' })
+        }
         centered
         width={720}
         onCancel={() => setOpen(false)}
@@ -111,50 +124,108 @@ const Dialog: React.FC<Iprops> = ({
                   src={userInfo.avatar?.url}
                   style={{ borderRadius: '100%' }}
                   placeholder={formatMessage({ id: 'general_preview_image' })}
+                  preview={{
+                    mask: <>{formatMessage({ id: 'general_preview_image' })}</>,
+                    maskClassName: 'round-circle',
+                  }}
                   width={100}
                 />
               </div>
             )}
-            <Form layout="vertical" hideRequiredMark>
+            <Form
+              layout="vertical"
+              hideRequiredMark
+              onFinish={onFinish}
+              autoComplete="off"
+              initialValues={userInfo}
+            >
               <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="fullName"
-                    label="Tên"
-                    initialValue={userInfo.fullName}
+                    label={formatMessage({ id: 'fullname' })}
+                    // initialValue={userInfo.fullName}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'fullname' }),
+                          },
+                        ),
+                      },
+                    ]}
                   >
-                    <Input placeholder="Tên" disabled={!editable} />
+                    <Input
+                      placeholder={formatMessage({ id: 'fullname' })}
+                      disabled={!editable}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="phone"
-                    label="Số điện thoại"
-                    initialValue={userInfo.phone}
+                    label={formatMessage({ id: 'phone_number' })}
+                    // initialValue={userInfo.phone}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'phone_number' }),
+                          },
+                        ),
+                      },
+                    ]}
                   >
-                    <Input placeholder="Số điện thoại" disabled={!editable} />
+                    <Input
+                      placeholder={formatMessage({ id: 'phone_number' })}
+                      disabled={!editable}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
-                    name="isActive"
-                    label="Trạng thái"
-                    initialValue={
-                      userInfo.isActive ? 'Hoạt động' : 'Không hoạt động'
-                    }
+                    name="status"
+                    label={formatMessage({ id: 'status' })}
                   >
-                    <Input placeholder="Trạng thái" disabled={!editable} />
+                    <Select disabled={!editable}>
+                      {OPTION_STATUS_ACTIVE.map((status, index) => (
+                        <Option value={status.value} key={index}>
+                          {formatMessage({ id: status.name })}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="gender"
                     label={formatMessage({ id: 'general_gender' })}
-                    initialValue={userInfo.gender == 'MALE' ? 'Nam' : 'Nữ'}
+                    initialValue={
+                      userInfo.gender
+                        ? OPTION_GENDER.find(
+                            (item) => item.value === userInfo.gender,
+                          )
+                        : OPTION_GENDER[0].value
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'general_gender' }),
+                          },
+                        ),
+                      },
+                    ]}
                   >
                     <Select disabled={!editable}>
-                      {GENDER.map((gender, index) => (
-                        <Option value={gender.name}>
+                      {OPTION_GENDER.map((gender, index) => (
+                        <Option value={gender.value} key={index}>
                           {formatMessage({ id: gender.name })}
                         </Option>
                       ))}
@@ -164,15 +235,50 @@ const Dialog: React.FC<Iprops> = ({
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="email"
-                    label="Email"
+                    label={formatMessage({ id: 'email' })}
                     initialValue={userInfo.email}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'email' }),
+                          },
+                        ),
+                      },
+                      {
+                        type: 'email',
+                        message: formatMessage({ id: 'error.email' }),
+                      },
+                    ]}
                   >
-                    <Input placeholder="Email" disabled={!editable} />
+                    <Input
+                      placeholder={formatMessage({ id: 'email' })}
+                      disabled={!editable}
+                    />
                   </Form.Item>
                 </Col>
               </Row>
               <div className={styles.addGroupButton}>
                 {/* <Button className={styles.addButton}>Thêm mới</Button> */}
+                {editable ? (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className={styles.addButton}
+                  >
+                    {formatMessage({ id: 'general_save' })}
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => onEdit()}
+                    className={styles.addButton}
+                  >
+                    {formatMessage({ id: 'general_edit' })}
+                  </Button>
+                )}
                 <Button
                   danger
                   onClick={() => setOpen(false)}

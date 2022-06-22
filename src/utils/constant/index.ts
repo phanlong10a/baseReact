@@ -8,9 +8,14 @@ export const STATUS_ACTIVE: IObjectProperty[] = [
   { name: 'general_inactive', value: 'false' },
 ];
 
-export const GENDER: IObjectProperty[] = [
-  { name: 'general_gender_male', value: 'male' },
-  { name: 'general_gender_female', value: 'female' },
+export const OPTION_STATUS_ACTIVE: IObjectProperty[] = [
+  { name: 'general_active', value: 'ACTIVE' },
+  { name: 'general_inactive', value: 'INACTIVE' },
+];
+
+export const OPTION_GENDER: IObjectProperty[] = [
+  { name: 'general_gender_male', value: 'MALE' },
+  { name: 'general_gender_female', value: 'FEMALE' },
 ];
 
 export const STATUS_ACCOUNT: IObjectProperty[] = [

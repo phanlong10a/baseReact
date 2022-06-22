@@ -54,15 +54,20 @@ const Sidebar = ({
   };
 
   const items: MenuItem[] = [
-    getItem(renderLink('/user', 'navigation_user'), '/user', <UserOutlined />),
     getItem(
       renderLink('/bike-station', 'navigation_bike_station'),
       '/bike-station',
       <DesktopOutlined />,
     ),
+    getItem(renderLink('/user', 'navigation_user'), '/user', <UserOutlined />),
     getItem(
-      renderLink('/kyc', 'navigation_admin_manage'),
+      renderLink('/kyc', 'navigation_user_kyc'),
       '/kyc',
+      <UserOutlined />,
+    ),
+    getItem(
+      renderLink('/admin', 'navigation_admin_manage'),
+      '/admin',
       <UserOutlined />,
     ),
     getItem(

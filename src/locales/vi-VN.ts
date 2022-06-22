@@ -5,12 +5,25 @@ export default {
   'about.title': 'ZH - About - Title',
   // error
   'error.require': '{field} không được để trống.',
+  'error.email': 'Email không đúng định dạng.',
+
+  //mesages
+
+  message_success: 'Thành công',
+  message_kyc_success: 'Cập nhật trạng thái xác thực thành công',
+  message_failure: 'Thất bại',
+  message_kyc_failure: 'Cập nhật trạng thái xác thực thất bại',
 
   // Form
   password: 'Mật khẩu',
   phone_number: 'Số điện thoại',
   login: 'Đăng nhập',
   register: 'Đăng ký',
+  fullname: 'Họ và tên',
+  status: 'Trạng thái',
+  email: 'Email',
+  identification_code: 'Mã định danh',
+  date_of_birth: 'Ngày sinh',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
@@ -26,7 +39,7 @@ export default {
   // navitation_home: 'Trang chủ',
   navigation_bike_station: 'Trạm xe',
   navigation_user: 'Người dùng',
-  // navigation_user_kyc: 'Xác thực người dùng',
+  navigation_user_kyc: 'Xác thực người dùng',
   navigation_admin_manage: 'Tài khoản admin',
   navigation_vihicle: 'Xe',
   navigation_lock: 'Khoá xe',
@@ -47,10 +60,15 @@ export default {
 
   //general
 
+  general_view_infomation: 'Xem thông tin',
+  general_edit_infomation: 'Sửa thông tin',
+
   general_preview_image: 'Phóng to',
   general_tooltip_show_infomation: 'Xem thông tin',
 
   general_add: 'Thêm mới',
+  general_edit: 'Chỉnh sửa',
+  general_save: 'Lưu',
   general_cancel: 'Huỷ',
   general_verify: 'Xác thực',
   general_gender: 'Giới tính',
@@ -58,8 +76,8 @@ export default {
   general_gender_female: 'Nữ',
 
   general_status_active: 'Trạng thái hoạt động',
-  general_inactive: 'Hoạt động',
-  general_active: 'Không hoạt động',
+  general_inactive: 'Không hoạt động',
+  general_active: 'Hoạt động',
 
   general_status_account: 'Trạng thái tài khoản',
   general_denied_verify: 'Từ chối xác thực',
@@ -77,8 +95,8 @@ export default {
   general_kyc_type_driving_license: 'Bằng lái xe',
 
   general_kyc_photo_type: 'Loại hình ảnh',
-  general_kyc_photo_type_front: 'Mặt trước',
-  general_kyc_photo_type_back: 'Mặt sau',
+  general_kyc_photo_type_front: 'Ảnh giấy tờ mặt trước',
+  general_kyc_photo_type_back: 'Ảnh giấy tờ mặt sau',
 
   //form
   form_search_text: 'Nhập từ khoá',

@@ -11,11 +11,12 @@ import {
   STATUS_KYC,
   KYC_TYPE,
   STATUS_ACCOUNT,
-  GENDER,
+  OPTION_GENDER,
 } from '@/utils/constant';
 import styles from './index.less';
 import { getTableData } from './service';
 import { getLocale } from 'umi';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 
@@ -42,7 +43,7 @@ export default () => {
   );
   const [form] = Form.useForm();
 
-  const { tableProps, search, params } = useAntdTable(getTableData, {
+  const { tableProps, search, params, refresh } = useAntdTable(getTableData, {
     defaultPageSize: 5,
     form,
   });
@@ -101,19 +102,10 @@ export default () => {
       title: 'const_column_date_of_birth',
       dataIndex: 'dateOfBirth',
       key: 'email',
-    },
-    {
-      title: 'const_column_status',
-      dataIndex: 'active',
-      key: 'active',
-      render: (value: any, record: any, index: number) => {
-        return (
-          <React.Fragment key={index}>
-            {record.isActive
-              ? formatMessage({ id: 'status_active' })
-              : formatMessage({ id: 'status_inactive' })}
-          </React.Fragment>
-        );
+      render: (_: any, record: any, index: number) => {
+        return record.dateOfBirth
+          ? dayjs(record.dateOfBirth).format('DD/MM/YYYY')
+          : '';
       },
     },
     {
@@ -185,7 +177,10 @@ export default () => {
       {openDialog && (
         <Dialog
           open={openDialog}
-          setOpen={(b) => setOpenDialog.set(b)}
+          setOpen={(b) => {
+            setOpenDialog.set(b);
+            refresh();
+          }}
           itemEdit={idSelected}
         />
       )}

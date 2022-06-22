@@ -3,6 +3,7 @@ export default {
   'index.hello': 'en - {name}',
   'index.title': 'English Title',
   'about.title': 'About-Title',
+
   auth_login: 'CMS V-Bike',
   auth_phone: 'Phone',
   auth_password: 'Password',
@@ -18,7 +19,7 @@ export default {
   navigation_bike_station: 'Bike Station Management',
   navigation_user: 'User Management',
   navigation_user_kyc: 'Verify User Management',
-  navigation_admin: 'Admin User Management',
+  navigation_admin_manage: 'Admin User Management',
 
   //breadcrumb
   user_management: 'User management',
@@ -31,15 +32,26 @@ export default {
   phone_number: 'Phone Number',
   login: 'Login',
   register: 'Register',
+  fullname: 'Full Name',
+  status: 'Status',
+  email: 'Email',
 
   // error
   'error.require': '{field} must be required.',
-
+  'error.email': 'Email invalid.',
   //general
+
+  general_view_infomation: 'View infomation',
+  general_edit_infomation: 'Edit infomation',
+
   general_preview_image: 'Preview',
   general_tooltip_show_infomation: 'Show infomation',
 
   general_add: 'Add',
+  general_edit: 'Edit',
+  general_save: 'Save',
+  general_cancel: 'Cancel',
+  general_verify: 'Verify',
   general_status_active: 'Active status',
   general_inactive: 'Inactive',
   general_active: 'Active',
@@ -50,7 +62,6 @@ export default {
   general_status_account: 'Account status',
   general_denied_verify: 'Denied',
   general_success_verify: 'Success',
-  general_verify: 'Verify',
   general_waiting_verify: 'Waiting',
 
   general_kyc_not_verified: 'Not verified',
