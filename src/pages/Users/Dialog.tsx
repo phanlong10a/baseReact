@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
-import { getUserData } from '../service';
+import { getUserData } from './service';
 const { Option } = Select;
 import styles from '../index.less';
 
