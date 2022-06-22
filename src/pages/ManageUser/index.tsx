@@ -123,7 +123,7 @@ export default () => {
             onSearch={submit}
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="isActive"
           initialValue=""
           className={styles.searchItem}
@@ -135,7 +135,7 @@ export default () => {
               </Option>
             ))}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </div>
   );
