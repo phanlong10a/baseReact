@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 import { useIntl } from 'umi';
 import { getUserData } from './service';
 const { Option } = Select;
-import styles from '../index.less';
+import styles from './index.less';
 
 interface Iprops {
   open: boolean;
