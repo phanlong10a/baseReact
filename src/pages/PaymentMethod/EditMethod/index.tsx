@@ -1,34 +1,38 @@
 import Dialog from '@/components/Dialog';
-import { PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import React, { useState } from 'react';
+import { tableData } from '../interface';
 import { IMethod } from '../services';
 import styles from './index.less';
 
 interface INewMethod {
+  initialdata: tableData;
   handleSubmit?: (newMethod: IMethod) => typeof newMethod | void;
 }
-const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
+const EditMethod: React.FC<INewMethod> = ({
+  handleSubmit = () => {},
+  initialdata,
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const initialValue = {
-    imageId: '',
-    method: '',
-    description: '',
+    imageId: initialdata.image.id,
+    method: initialdata.method,
   };
   return (
     <div>
       <header className={styles.header}>
         <Button
           type="primary"
-          icon={<PlusOutlined />}
+          icon={<EditOutlined />}
           className={styles.button}
           onClick={() => {
             setVisible(true);
           }}
         >
-          Thêm phương thức
+          Sua
         </Button>
       </header>
       <Dialog
@@ -63,11 +67,6 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
                 <Input placeholder="Tên" />
               </Form.Item>
             </Col>
-            <Col span={12}>
-              <Form.Item name="description" label="Trạng thái hoạt động">
-                <Input placeholder="Tên" />
-              </Form.Item>
-            </Col>
           </Row>
           <div className={styles.addGroupButton}>
             <Button
@@ -87,7 +86,7 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
                 form.submit();
               }}
             >
-              tạo mới
+              cap nhat
             </Button>
           </div>
         </Form>
@@ -96,4 +95,4 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
   );
 };
 
-export default NewMethod;
+export default EditMethod;

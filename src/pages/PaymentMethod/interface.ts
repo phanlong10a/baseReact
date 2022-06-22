@@ -5,7 +5,7 @@ export interface Root2 {
   method: string;
   description: string;
   isActive: boolean;
-  display: string;
+  display: 'ON' | 'OFF';
   status: string;
   createdAt: string;
   updatedAt: string;

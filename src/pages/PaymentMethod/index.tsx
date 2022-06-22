@@ -4,19 +4,62 @@ import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
 import React, { useRef, useState } from 'react';
 import { useIntl, useRequest } from 'umi';
+import EditMethod from './EditMethod';
 import styles from './index.less';
 import { Image, tableData } from './interface';
 import NewMethod from './NewMethod';
-import { createPayment, getAllPayment, IMethod } from './services';
+import { createPayment, editPayment, getAllPayment, IMethod } from './services';
 
 const ManagementPaymentMethod: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const { data: tableData, run: requestData } = useRequest(
+    async (lastResult: any, params: string) => {
+      return getAllPayment({
+        page: 1,
+        pageSize: 10,
+      });
+    },
+    {
+      onSuccess: () => {
+        setSelectedRowKeys(
+          tableData
+            ?.filter((method: tableData) => method.isActive)
+            .map((method: tableData) => method.id),
+        );
+      },
+    },
+  );
+  const { run: editMethod } = useRequest(editPayment, {
+    manual: true,
+    onSuccess: (res) => {
+      requestData;
+    },
+  });
+
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
+    // editMethod(
+    //   {
+    //     description: selectedRows.description,
+    //     isActive: selectedRows.isActive,
+    //     display: selectedRows.display,
+    //   },
+    //   selectedRows.id,
+    // );
   };
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    onSelect: (record: tableData) => {
+      editMethod(
+        {
+          description: record.description,
+          isActive: !record.isActive,
+          display: record.display,
+        },
+        record.id,
+      );
+    },
   };
   type DataIndex = keyof tableData;
   const [searchText, setSearchText] = useState('');
@@ -31,10 +74,6 @@ const ManagementPaymentMethod: React.FC = () => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
-  };
-  const handleReset = (clearFilters: () => void) => {
-    clearFilters();
-    setSearchText('');
   };
 
   const getColumnSearchProps = (
@@ -81,56 +120,32 @@ const ManagementPaymentMethod: React.FC = () => {
     {
       title: 'PHƯƠNG THỨC THANH TOÁN',
       dataIndex: 'method',
-      filters: [
-        { text: 'Joe', value: 'Joe' },
-        { text: 'Jim', value: 'Jim' },
-      ],
       onFilter: (value, record) => record.method.includes(String(value)),
       ...getColumnSearchProps('method'),
+      width: 300,
     },
     {
-      title: 'hinh anh',
+      title: 'Hinh anh',
       dataIndex: 'image',
       render: (image: Image) => {
         return <img src={image.url} alt="" />;
       },
+      width: 500,
     },
     {
-      title: 'ten',
+      title: 'sua',
       dataIndex: 'name',
-      render: () => <DeleteOutlined className="pointer" />,
+      render: (_, record: tableData) => <EditMethod initialdata={record} />,
+      width: 50,
     },
   ];
 
-  const {
-    loading,
-    data,
-    run: newMethod,
-  } = useRequest(createPayment, {
+  const { run: newMethod } = useRequest(createPayment, {
     manual: true,
     onSuccess: (res) => {
       console.log(res);
     },
   });
-
-  const { data: tableData } = useRequest(
-    async (lastResult: any, params: string) => {
-      // skip take
-      // const result = privateRequest(axios.get | fetch | request.get, path, configs = { customHeaders, body, params});
-      // const results2 = request(get, configs);
-      // gop ket qua
-      // tra ve ket qua
-      return getAllPayment({
-        page: 1,
-        pageSize: 10,
-        // SortBy: 'id' | 'method' | 'createdAt' | 'updatedAt',
-        // orderby: 'ASC' | 'DESC',
-        // method: 'string',
-        // isActive: boolean,
-        // display: 'ON' | 'OFF',
-      });
-    },
-  );
   return (
     <section className={styles.Manage_payment_method}>
       <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>

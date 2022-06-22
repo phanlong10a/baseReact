@@ -1,5 +1,5 @@
 import { privateRequest, request } from '@/utils/apis';
-const getPaymentMethodById = (id: string): string => `/payment/method${id}`;
+const getPaymentMethodById = (id: string): string => `/payment/method/${id}`;
 const deletePaymentMethod = (id: string): string => `/payment/${id}`;
 const API_PAYMENT = {
   CREATE: '/payment/method',
@@ -26,6 +26,24 @@ const createPayment = (method: IMethod) => {
     .catch((er) => Promise.reject(er));
 };
 export { createPayment };
+
+export interface IUpdateMethod {
+  description: string;
+  isActive: boolean;
+  display: 'ON' | 'OFF';
+}
+
+const editPayment = (method: IUpdateMethod, id: number) => {
+  const url = API_PAYMENT.UPDATE(String(id));
+  return privateRequest(request.put, url, {
+    data: method,
+  })
+    .then((result) => {
+      return result;
+    })
+    .catch((er) => Promise.reject(er));
+};
+export { editPayment };
 
 interface IGetAllPayment {
   page?: number;
