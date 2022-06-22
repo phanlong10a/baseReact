@@ -6,7 +6,8 @@ import React, { useRef, useState } from 'react';
 import { useIntl, useRequest } from 'umi';
 import styles from './index.less';
 import { Image, tableData } from './interface';
-import { createPayment, getAllPayment } from './services';
+import NewMethod from './NewMethod';
+import { createPayment, getAllPayment, IMethod } from './services';
 
 const ManagementPaymentMethod: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -101,18 +102,16 @@ const ManagementPaymentMethod: React.FC = () => {
     },
   ];
 
-  // const { loading, data, run } = useRequest(
-  //   createPayment({
-  //     imageId: 1,
-  //     method: 'VTCPAY',
-  //     description: 'This is descriptionasd',
-  //     isActive: true,
-  //     display: 'OFF',
-  //   }),
-  //   {
-  //     manual: true,
-  //   },
-  // );
+  const {
+    loading,
+    data,
+    run: newMethod,
+  } = useRequest(createPayment, {
+    manual: true,
+    onSuccess: (res) => {
+      console.log(res);
+    },
+  });
 
   const { data: tableData } = useRequest(
     async (lastResult: any, params: string) => {
@@ -132,11 +131,14 @@ const ManagementPaymentMethod: React.FC = () => {
       });
     },
   );
-
   return (
     <section className={styles.Manage_payment_method}>
       <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
-      {/* <button onClick={run}>run</button> */}
+      <NewMethod
+        handleSubmit={(method) => {
+          newMethod(method);
+        }}
+      />
       <Table
         rowSelection={rowSelection}
         columns={columns}

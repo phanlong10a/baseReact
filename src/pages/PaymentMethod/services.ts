@@ -9,7 +9,7 @@ const API_PAYMENT = {
   UPDATE: getPaymentMethodById,
   DELETE: deletePaymentMethod,
 };
-interface IMethod {
+export interface IMethod {
   imageId: number;
   method: string;
   description: string;
@@ -17,10 +17,13 @@ interface IMethod {
   display: 'ON' | 'OFF';
 }
 const createPayment = (method: IMethod) => {
-  return privateRequest(API_PAYMENT.CREATE, {
+  return privateRequest(request.post, API_PAYMENT.CREATE, {
     data: method,
-    method: 'POST',
-  });
+  })
+    .then((result) => {
+      return result;
+    })
+    .catch((er) => Promise.reject(er));
 };
 export { createPayment };
 
@@ -34,7 +37,7 @@ interface IGetAllPayment {
   display?: 'ON' | 'OFF';
 }
 const getAllPayment = (params: IGetAllPayment) => {
-  return privateRequest(API_PAYMENT.GET_ALL, {
+  return privateRequest(request, API_PAYMENT.GET_ALL, {
     params,
   });
 };
