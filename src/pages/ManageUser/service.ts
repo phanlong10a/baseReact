@@ -16,16 +16,16 @@ export const getTableData = (
     }
   });
 
-  return privateRequest(API_PATH.USER + '?' + query, {
-    method: 'GET',
-  }).then((res: any) => {
-    return {
-      total: res?.total,
-      list: res?.data,
-    };
-  });
+  return privateRequest(request.get, API_PATH.USER + '?' + query).then(
+    (res: any) => {
+      return {
+        total: res?.total,
+        list: res?.data,
+      };
+    },
+  );
 };
 
 export const getUserData = (id: any) => {
-  return privateRequest(API_PATH.USER + '/' + id);
+  return privateRequest(request.get, API_PATH.USER + '/' + id);
 };

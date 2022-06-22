@@ -16,9 +16,7 @@ export const getTableData = (
     }
   });
 
-  return privateRequest('/user?' + query, {
-    method: 'GET',
-  }).then((res: any) => {
+  return privateRequest(request.post, '/user?' + query).then((res: any) => {
     return {
       total: res?.total,
       list: res?.data,
@@ -27,5 +25,5 @@ export const getTableData = (
 };
 
 export const getUserData = (id: any) => {
-  return privateRequest('/user/' + id);
+  return privateRequest(request.get, '/user/' + id);
 };
