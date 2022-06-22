@@ -16,7 +16,7 @@ export const getTableData = (
     }
   });
 
-  return privateRequest(request.post, '/station?' + query).then((res: any) => {
+  return privateRequest(request.get, '/station?' + query).then((res: any) => {
     return {
       total: res?.total,
       list: res?.data,
@@ -29,14 +29,18 @@ export const getUserData = (id: any) => {
 };
 
 export const getListBicycle = (values: string) => {
-  const url = `/bicycle?page=1&pageSize=10000&sortBy=id&isActive=true${
+  const url = `/bicycle?page=1&pageSize=10000&status=LOCKED&sortBy=id&isActive=true${
     values ? `&name=${values}` : ''
   }`;
-  return privateRequest(url, {
-    method: 'GET',
-  }).then((res: any) => {
+  return privateRequest(request.get, url).then((res: any) => {
     return {
       list: res?.data,
     };
+  });
+};
+
+export const addStation = async (params: any) => {
+  return privateRequest(request.post, '/station', {
+    data: params,
   });
 };

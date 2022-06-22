@@ -4,11 +4,12 @@ import TokenManagement from './TokenManagement';
 
 const request = extend({
   prefix: ENVIRONMENTS.API_URL,
-  errorHandler: (error) => {
-    if (error.response?.status === 401) {
-      // clean all token
-    }
-  },
+  // errorHandler: (error) => {
+  //   if (error.response?.status === 401) {
+  //     // clean all token
+  //   }
+  //   throw error;
+  // },
 });
 
 const injectBearer = (token: string, configs: any) => {
