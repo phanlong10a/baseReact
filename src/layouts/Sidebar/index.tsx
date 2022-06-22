@@ -66,6 +66,11 @@ const Sidebar = ({
       '/kyc',
       <UserOutlined />,
     ),
+    getItem(
+      renderLink('/admin', 'navigation_admin'),
+      '/admin',
+      <UserOutlined />,
+    ),
   ];
 
   return (
@@ -74,6 +79,8 @@ const Sidebar = ({
       collapsed={collapsed}
       onCollapse={onToggle}
       className={styles.layoutSlider}
+      breakpoint="md"
+      width={250}
     >
       <div className="logo" />
       <Menu

@@ -15,11 +15,13 @@ export default {
   navigation_bike_station: 'Bike Station Management',
   navigation_user: 'User Management',
   navigation_user_kyc: 'Verify User Management',
+  navigation_admin: 'Admin User Management',
 
   //breadcrumb
   user_management: 'User management',
   user_management_list_user: 'List user',
-  user_management_list_kyc: 'List KYC',
+  user_management_list_kyc: 'Verify user',
+  admin_management_list_user: 'Admin User Management',
 
   // Form
   password: 'Password',
@@ -35,6 +37,7 @@ export default {
 
   //general
   general_preview_image: 'Preview',
+  general_tooltip_show_infomation: 'Show infomation',
 
   general_add: 'Add',
   general_status_active: 'Active status',

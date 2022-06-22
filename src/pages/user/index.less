@@ -2,17 +2,17 @@
 @tablet: ~'only screen and (min-width: 720px) and (max-width: 959px)';
 @mobile: ~'only screen and (min-width: 0px) and (max-width: 719px)';
 
-.ant-image-mask {
+.antImageMask {
   border-radius: 100%;
 }
-.search-form {
+.searchForm {
   display: flex;
   justify-content: flex-start;
   @media @tablet, @mobile {
     flex-direction: column;
   }
 }
-.search-container {
+.searchContainer {
   padding: 0px 24px;
   display: flex;
   justify-content: space-between;
@@ -20,7 +20,7 @@
     flex-direction: column;
   }
 }
-.search-item {
+.searchItem {
   @media @desktop {
     margin-right: 16px !important;
     width: 220px;
@@ -31,4 +31,21 @@
 }
 .w-100 {
   width: 100%;
+}
+
+.tableComponent {
+  padding: 24px;
+  min-height: 240px;
+}
+.breadcrumb {
+  margin: 16px 0;
+}
+
+.addGroupButton {
+  text-align: center;
+  padding-top: 24px;
+}
+
+.addButton {
+  margin-right: 16px !important;
 }
