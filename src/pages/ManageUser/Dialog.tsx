@@ -1,4 +1,4 @@
-import { useRequest, useSetState } from 'ahooks';
+import { useRequest, useSetState, useToggle } from 'ahooks';
 import {
   Col,
   Modal,
@@ -13,9 +13,15 @@ import {
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
-import { getUserData } from './service';
+import { getUserData, cancelUser, verifyUser } from './service';
 const { Option } = Select;
 import styles from './index.less';
+import {
+  OPTION_GENDER,
+  OPTION_STATUS_ACTIVE,
+  STATUS_KYC,
+} from '@/utils/constant';
+import dayjs from 'dayjs';
 
 interface Iprops {
   open: boolean;
@@ -50,7 +56,9 @@ const Dialog: React.FC<Iprops> = ({
   ...rest
 }) => {
   const [loading, setLoading] = useState(true);
+  const [editable, setEditable] = useToggle(false);
   const [userInfo, setUserInfo] = useSetState<IUser>({});
+
   const { formatMessage } = useIntl();
   const requestUser = useRequest(getUserData, {
     manual: true,
@@ -65,19 +73,59 @@ const Dialog: React.FC<Iprops> = ({
       setLoading(false);
     },
   });
+
+  const requestVerifyUser = useRequest(verifyUser, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_kyc_success' }));
+      setOpen(false);
+    },
+    onError: (rej) => {
+      message.error(formatMessage({ id: 'message_kyc_failure' }));
+    },
+    onFinally: () => {},
+  });
+  const requestCancelUser = useRequest(cancelUser, {
+    manual: true,
+    onSuccess: (result: any, params: any) => {
+      console.log(result);
+      message.success(formatMessage({ id: 'message_kyc_success' }));
+      setOpen(false);
+    },
+    onError: (rej) => {
+      message.error(formatMessage({ id: 'message_kyc_failure' }));
+    },
+    onFinally: () => {},
+  });
+
   const getUser = () => {};
 
   React.useEffect(() => {
     if (itemEdit) {
       requestUser.run(itemEdit);
-    } else setLoading(false);
+    } else {
+      setLoading(false);
+      // setUserInfo({})
+      // setEditable.set(true);
+    }
   }, [itemEdit]);
 
-  console.log(requestUser.loading, loading, userInfo);
+  const onEdit = () => {
+    setEditable.set(true);
+  };
+
+  const onFinish = (value: any) => {
+    console.log(value);
+  };
+
   return (
     <>
       <Modal
-        title="Xem thông tin tài khoản"
+        title={
+          editable
+            ? formatMessage({ id: 'general_edit_infomation' })
+            : formatMessage({ id: 'general_view_infomation' })
+        }
         centered
         width={720}
         onCancel={() => setOpen(false)}
@@ -96,67 +144,152 @@ const Dialog: React.FC<Iprops> = ({
           <Skeleton active />
         ) : (
           <>
-            {userInfo.avatar && (
-              <div
-                style={{
-                  marginBottom: 24,
-                }}
-              >
-                <Image
-                  src={userInfo.avatar?.url}
-                  style={{ borderRadius: '100%' }}
-                  placeholder={formatMessage({ id: 'general_preview_image' })}
-                  width={100}
-                />
-              </div>
-            )}
-            <Form layout="vertical" hideRequiredMark>
+            <Form
+              layout="vertical"
+              hideRequiredMark
+              onFinish={onFinish}
+              autoComplete="off"
+            >
               <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
+                    label={formatMessage({
+                      id: 'general_kyc_photo_type_front',
+                    })}
+                  >
+                    <Image
+                      src={
+                        'https://luatvietphong.vn/wp-content/uploads/2021/08/lam-gia-chung-minh-thu-bang-photoshop.png'
+                      }
+                      placeholder={formatMessage({
+                        id: 'general_preview_image',
+                      })}
+                      preview={{
+                        mask: (
+                          <>{formatMessage({ id: 'general_preview_image' })}</>
+                        ),
+                      }}
+                      width={'100%'}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    label={formatMessage({ id: 'general_kyc_photo_type_back' })}
+                  >
+                    <Image
+                      src={
+                        'https://luatvietphong.vn/wp-content/uploads/2021/08/lam-gia-chung-minh-thu-bang-photoshop.png'
+                      }
+                      placeholder={formatMessage({
+                        id: 'general_preview_image',
+                      })}
+                      preview={{
+                        mask: (
+                          <>{formatMessage({ id: 'general_preview_image' })}</>
+                        ),
+                      }}
+                      width={'100%'}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
                     name="fullName"
-                    label="Tên"
+                    label={formatMessage({ id: 'fullname' })}
                     initialValue={userInfo.fullName}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'fullname' }),
+                          },
+                        ),
+                      },
+                    ]}
                   >
-                    <Input placeholder="Tên" disabled />
+                    <Input
+                      placeholder={formatMessage({ id: 'fullname' })}
+                      disabled={!editable}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
-                    name="phone"
-                    label="Số điện thoại"
-                    initialValue={userInfo.phone}
+                    name="identificationCode"
+                    label={formatMessage({ id: 'identification_code' })}
+                    initialValue={userInfo.identificationCode}
                   >
-                    <Input placeholder="Số điện thoại" disabled />
+                    <Input
+                      placeholder={formatMessage({ id: 'identification_code' })}
+                      disabled={!editable}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
-                    name="isActive"
-                    label="Trạng thái"
+                    name="dateOfBirth"
+                    label={formatMessage({ id: 'date_of_birth' })}
                     initialValue={
-                      userInfo.isActive ? 'Hoạt động' : 'Không hoạt động'
+                      userInfo.dateOfBirth
+                        ? dayjs(userInfo.dateOfBirth).format('DD/MM/YYYY')
+                        : ''
                     }
                   >
-                    <Input placeholder="Trạng thái" disabled />
+                    <Input
+                      placeholder={formatMessage({ id: 'date_of_birth' })}
+                      disabled={!editable}
+                      value={'editable'}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="status"
+                    label={formatMessage({ id: 'status' })}
+                    initialValue={userInfo.status}
+                  >
+                    <Select disabled={!editable}>
+                      {STATUS_KYC.map((status, index) => (
+                        <Option value={status.value} key={index}>
+                          {formatMessage({ id: status.name })}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="gender"
-                    label="Giới tính"
-                    initialValue={userInfo.gender == 'MALE' ? 'Nam' : 'Nữ'}
+                    label={formatMessage({ id: 'general_gender' })}
+                    initialValue={
+                      userInfo.gender
+                        ? OPTION_GENDER.find(
+                            (item) => item.value === userInfo.gender,
+                          )
+                        : OPTION_GENDER[0].value
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'general_gender' }),
+                          },
+                        ),
+                      },
+                    ]}
                   >
-                    <Input placeholder="Giới tính" disabled />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="email"
-                    label="Email"
-                    initialValue={userInfo.email}
-                  >
-                    <Input placeholder="Email" disabled />
+                    <Select disabled={!editable}>
+                      {OPTION_GENDER.map((gender, index) => (
+                        <Option value={gender.value} key={index}>
+                          {formatMessage({ id: gender.name })}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
               </Row>
@@ -169,10 +302,22 @@ const Dialog: React.FC<Iprops> = ({
                 >
                   {formatMessage({ id: 'general_cancel' })}
                 </Button>
-                <Button danger type="primary" className={styles.addButton}>
+                <Button
+                  danger
+                  type="primary"
+                  className={styles.addButton}
+                  onClick={() => {
+                    requestCancelUser.run(userInfo.id);
+                  }}
+                >
                   {formatMessage({ id: 'general_denied_verify' })}
                 </Button>
-                <Button type="primary">
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    requestVerifyUser.run(userInfo.id);
+                  }}
+                >
                   {formatMessage({ id: 'general_verify' })}
                 </Button>
               </div>
