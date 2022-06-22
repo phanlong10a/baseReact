@@ -42,6 +42,11 @@ export default {
   general_tooltip_show_infomation: 'Xem thông tin',
 
   general_add: 'Thêm mới',
+  general_cancel: 'Huỷ',
+  general_verify: 'Xác thực',
+  general_gender: 'Giới tính',
+  general_gender_male: 'Nam',
+  general_gender_female: 'Nữ',
 
   general_status_active: 'Trạng thái hoạt động',
   general_inactive: 'Hoạt động',
@@ -50,7 +55,6 @@ export default {
   general_status_account: 'Trạng thái tài khoản',
   general_denied_verify: 'Từ chối xác thực',
   general_success_verify: 'Xác thực thành công',
-  general_verify: 'Đang xác thực',
   general_waiting_verify: 'Chờ xác thực',
 
   //form

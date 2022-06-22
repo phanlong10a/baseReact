@@ -18,7 +18,7 @@ const Wrapper = ({
     const token = getAccessToken();
 
     if (!token) history.push('/login');
-    if (token && location.pathname === '/login') history.push('/');
+    if (token && location.pathname === '/login') history.push('/user');
   }, []);
 
   if (auth?.loading) return <LoadingOutlined />;

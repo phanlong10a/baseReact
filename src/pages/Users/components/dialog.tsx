@@ -163,7 +163,7 @@ const Dialog: React.FC<Iprops> = ({
               <div className={styles.addGroupButton}>
                 {/* <Button className={styles.addButton}>Thêm mới</Button> */}
                 <Button danger onClick={() => setOpen(false)}>
-                  Hủy
+                  {formatMessage({ id: 'general_cancel' })}
                 </Button>
               </div>
             </Form>

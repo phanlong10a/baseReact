@@ -115,6 +115,8 @@ const API_PATH = {
   FORGOT_PASSWORD: '/auth/forgotPassword',
   RESET_PASSWORD: '/auth/resetPassword',
   LOGOUT: '/auth/logout',
+  USER: '/user',
+  KYC: '/kyc',
 };
 
 export { API_PATH, request, privateRequest };

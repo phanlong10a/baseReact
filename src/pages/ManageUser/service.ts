@@ -1,4 +1,4 @@
-import { privateRequest, request } from '@/utils/apis';
+import { API_PATH, privateRequest, request } from '@/utils/apis';
 import { ENVIRONMENTS } from '@/utils/constant';
 
 interface Result {
@@ -16,7 +16,7 @@ export const getTableData = (
     }
   });
 
-  return privateRequest('/user?' + query, {
+  return privateRequest(API_PATH.USER + '?' + query, {
     method: 'GET',
   }).then((res: any) => {
     return {
@@ -27,5 +27,5 @@ export const getTableData = (
 };
 
 export const getUserData = (id: any) => {
-  return privateRequest('/user/' + id);
+  return privateRequest(API_PATH.USER + '/' + id);
 };
