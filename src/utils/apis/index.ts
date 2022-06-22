@@ -99,12 +99,12 @@ const TokenManager = new TokenManagement({
 });
 
 const privateRequest = async (
+  request: any,
   suffixUrl: string,
   configs?: any,
-  baseRequest = request,
 ) => {
   const token: string = (await TokenManager.getToken()) as string;
-  return baseRequest(suffixUrl, injectBearer(token, configs));
+  return request(suffixUrl, injectBearer(token, configs));
 };
 
 const API_PATH = {
@@ -115,6 +115,8 @@ const API_PATH = {
   FORGOT_PASSWORD: '/auth/forgotPassword',
   RESET_PASSWORD: '/auth/resetPassword',
   LOGOUT: '/auth/logout',
+  USER: '/user',
+  KYC: '/kyc',
 };
 
 export { API_PATH, request, privateRequest };

@@ -1,12 +1,12 @@
 import { Button, Form, Input } from 'antd';
 import React from 'react';
-import { history, useIntl } from 'umi';
 import { useLogin } from './service';
 
 import styles from './index.less';
+import { useTranslate } from '@/utils/hooks/useTranslate';
 
 const Login: React.FC = () => {
-  const intl = useIntl();
+  const { t } = useTranslate();
   const { loading, run } = useLogin();
 
   const onFinish = (values: any) => {
@@ -26,44 +26,33 @@ const Login: React.FC = () => {
       >
         <Form.Item
           className={styles.formItem}
-          label={intl.formatMessage({ id: 'phone_number' })}
+          label={t('phone_number')}
           name="phone_number"
           rules={[
             {
               required: true,
-              message: intl.formatMessage(
-                {
-                  id: 'error.require',
-                },
-                { field: intl.formatMessage({ id: 'phone_number' }) },
-              ),
+              message: t('error.require', {
+                field: t('phone_number'),
+              }),
             },
           ]}
         >
-          <Input
-            type="text"
-            placeholder={intl.formatMessage({ id: 'phone_number' })}
-          />
+          <Input type="text" placeholder={t('phone_number')} />
         </Form.Item>
 
         <Form.Item
-          label={intl.formatMessage({ id: 'password' })}
+          label={t('password')}
           name="password"
           rules={[
             {
               required: true,
-              message: intl.formatMessage(
-                {
-                  id: 'error.require',
-                },
-                { field: intl.formatMessage({ id: 'password' }) },
-              ),
+              message: t('error.require', {
+                field: t('password'),
+              }),
             },
           ]}
         >
-          <Input.Password
-            placeholder={intl.formatMessage({ id: 'password' })}
-          />
+          <Input.Password placeholder={t('password')} />
         </Form.Item>
 
         <Button
@@ -72,7 +61,7 @@ const Login: React.FC = () => {
           loading={loading}
           className={styles.btnSubmit}
         >
-          {intl.formatMessage({ id: 'login' })}
+          {t('login')}
         </Button>
       </Form>
     </div>

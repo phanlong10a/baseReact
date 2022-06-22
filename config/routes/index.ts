@@ -2,10 +2,12 @@ export default [
   {
     exact: true,
     path: '/login',
-    component: '@/layouts/AuthLayout',
+    component: '@/layouts/AuthLayout/index',
     title: 'Login',
     wrappers: ['@/layouts/Wrapper'],
-    routes: [{ exact: true, path: '/login', component: '@/pages/Login' }],
+    routes: [
+      { exact: true, path: '/login', component: '@/pages/SignIn/index' },
+    ],
   },
   {
     exact: false,
@@ -15,8 +17,16 @@ export default [
     routes: [
       {
         exact: true,
+        path: '/',
+        component: '@/pages/Users/index',
+        title: 'navbar.Profile',
+        routes: [],
+        wrappers: ['@/layouts/Wrapper'],
+      },
+      {
+        exact: true,
         path: '/profile',
-        component: '@/pages/Profile',
+        component: '@/pages/Profile/index',
         title: 'navbar.Profile',
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
@@ -24,7 +34,7 @@ export default [
       {
         exact: true,
         path: '/user',
-        component: '@/pages/User',
+        component: '@/pages/Users/index',
         title: 'navbar.Profile',
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
@@ -32,7 +42,7 @@ export default [
       {
         exact: true,
         path: '/kyc',
-        component: '@/pages/Kyc',
+        component: '@/pages/ManageUser/index',
         title: 'navbar.Profile',
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
@@ -40,7 +50,7 @@ export default [
       {
         exact: true,
         path: '/admin',
-        component: '@/pages/Admin',
+        component: '@/pages/Admin/index',
         title: 'navbar.Profile',
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
@@ -48,10 +58,76 @@ export default [
       {
         exact: true,
         path: '/bike-station',
-        component: '@/pages/bikeStation',
+        component: '@/pages/bikeStation/index',
         title: 'navbar.Profile',
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
+      },
+      {
+        exact: true,
+        path: '/admin_account',
+        component: '@/pages/AdminAccount/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/vehicles',
+        component: '@/pages/Vehicle/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/lock',
+        component: '@/pages/Locks/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/travel',
+        component: '@/pages/Travel/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/user_wallet',
+        component: '@/pages/UserWallet/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/ticket',
+        component: '@/pages/Ticket/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/payment_method',
+        component: '@/pages/PaymentMethod/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/promotion',
+        component: '@/pages/Promotion/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/tutorial',
+        component: '@/pages/Tutorial/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/news',
+        component: '@/pages/News/index',
+        title: 'navbar.Profile',
+      },
+      {
+        exact: true,
+        path: '/rate',
+        component: '@/pages/Rate/index',
+        title: 'navbar.Profile',
       },
     ],
   },

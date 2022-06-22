@@ -13,9 +13,9 @@ import {
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
-import { getUserData } from '../service';
+import { getUserData } from './service';
 const { Option } = Select;
-import styles from '../index.less';
+import styles from './index.less';
 
 interface Iprops {
   open: boolean;
@@ -112,7 +112,7 @@ const Dialog: React.FC<Iprops> = ({
             )}
             <Form layout="vertical" hideRequiredMark>
               <Row gutter={16}>
-                <Col span={12}>
+                <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="fullName"
                     label="Tên"
@@ -121,7 +121,7 @@ const Dialog: React.FC<Iprops> = ({
                     <Input placeholder="Tên" disabled />
                   </Form.Item>
                 </Col>
-                <Col span={12}>
+                <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="phone"
                     label="Số điện thoại"
@@ -130,7 +130,7 @@ const Dialog: React.FC<Iprops> = ({
                     <Input placeholder="Số điện thoại" disabled />
                   </Form.Item>
                 </Col>
-                <Col span={12}>
+                <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="isActive"
                     label="Trạng thái"
@@ -141,7 +141,7 @@ const Dialog: React.FC<Iprops> = ({
                     <Input placeholder="Trạng thái" disabled />
                   </Form.Item>
                 </Col>
-                <Col span={12}>
+                <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="gender"
                     label="Giới tính"
@@ -150,7 +150,7 @@ const Dialog: React.FC<Iprops> = ({
                     <Input placeholder="Giới tính" disabled />
                   </Form.Item>
                 </Col>
-                <Col span={12}>
+                <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="email"
                     label="Email"
@@ -162,8 +162,18 @@ const Dialog: React.FC<Iprops> = ({
               </Row>
               <div className={styles.addGroupButton}>
                 {/* <Button className={styles.addButton}>Thêm mới</Button> */}
-                <Button danger onClick={() => setOpen(false)}>
-                  Hủy
+                <Button
+                  danger
+                  onClick={() => setOpen(false)}
+                  className={styles.addButton}
+                >
+                  {formatMessage({ id: 'general_cancel' })}
+                </Button>
+                <Button danger type="primary" className={styles.addButton}>
+                  {formatMessage({ id: 'general_denied_verify' })}
+                </Button>
+                <Button type="primary">
+                  {formatMessage({ id: 'general_verify' })}
                 </Button>
               </div>
             </Form>

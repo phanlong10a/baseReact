@@ -4,11 +4,11 @@ import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
-import Dialog from './Components/Dialog';
-import { STATUS_ACTIVE } from './constant';
+import Dialog from './Dialog';
 import styles from './index.less';
 import { getTableData } from './service';
 import { getLocale } from 'umi';
+import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
 
 const { Option } = Select;
 
@@ -122,6 +122,15 @@ export default () => {
             allowClear
             onSearch={submit}
           />
+        </Form.Item>
+        <Form.Item name="status" initialValue="" className={styles.searchItem}>
+          <Select onChange={submit}>
+            {STATUS_ACCOUNT.map((item) => (
+              <Option value={item.value}>
+                {formatMessage({ id: item.name })}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           name="isActive"

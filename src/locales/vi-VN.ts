@@ -3,6 +3,15 @@ export default {
   'index.hello': 'ZH - {name}',
   'index.title': 'ZH Title',
   'about.title': 'ZH - About - Title',
+  // error
+  'error.require': '{field} không được để trống.',
+
+  // Form
+  password: 'Mật khẩu',
+  phone_number: 'Số điện thoại',
+  login: 'Đăng nhập',
+  register: 'Đăng ký',
+
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
   account: 'Tài khoản',
@@ -14,11 +23,21 @@ export default {
   status_inactive: 'Không hoạt động',
 
   //navigation
-  navitation_home: 'Trang chủ',
-  navigation_bike_station: 'Quản lý trạm xe',
-  navigation_user: 'Quản lý người dùng',
-  navigation_user_kyc: 'Xác thực người dùng',
-  navigation_admin: 'Quản lý tài khoản admin',
+  // navitation_home: 'Trang chủ',
+  navigation_bike_station: 'Trạm xe',
+  navigation_user: 'Người dùng',
+  // navigation_user_kyc: 'Xác thực người dùng',
+  navigation_admin_manage: 'Tài khoản admin',
+  navigation_vihicle: 'Xe',
+  navigation_lock: 'Khoá xe',
+  navigation_travel: 'Chuyến đi',
+  navigation_user_wallet: 'Ví người dùng',
+  navigation_ticket: 'Vé thuê xe',
+  navigation_method: 'Phương thức',
+  navigation_promotion: 'Mã khuyến mại',
+  navigation_tutorial: 'Thông tin hưỡng dẫn sử dụng',
+  navigation_news: 'Tin tức',
+  navigation_rate: 'Đánh giá',
 
   //breadcrumb
   user_management: 'Quản lý người dùng',
@@ -32,6 +51,11 @@ export default {
   general_tooltip_show_infomation: 'Xem thông tin',
 
   general_add: 'Thêm mới',
+  general_cancel: 'Huỷ',
+  general_verify: 'Xác thực',
+  general_gender: 'Giới tính',
+  general_gender_male: 'Nam',
+  general_gender_female: 'Nữ',
 
   general_status_active: 'Trạng thái hoạt động',
   general_inactive: 'Hoạt động',
@@ -40,7 +64,6 @@ export default {
   general_status_account: 'Trạng thái tài khoản',
   general_denied_verify: 'Từ chối xác thực',
   general_success_verify: 'Xác thực thành công',
-  general_verify: 'Đang xác thực',
   general_waiting_verify: 'Chờ xác thực',
 
   //form

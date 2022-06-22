@@ -54,23 +54,55 @@ const Sidebar = ({
   };
 
   const items: MenuItem[] = [
-    getItem(renderLink('/', 'navitation_home'), '/', <PieChartOutlined />),
+    getItem(renderLink('/user', 'navigation_user'), '/user', <UserOutlined />),
     getItem(
       renderLink('/bike-station', 'navigation_bike_station'),
       '/bike-station',
       <DesktopOutlined />,
     ),
-    getItem(renderLink('/user', 'navigation_user'), '/user', <UserOutlined />),
     getItem(
-      renderLink('/kyc', 'navigation_user_kyc'),
+      renderLink('/kyc', 'navigation_admin_manage'),
       '/kyc',
       <UserOutlined />,
     ),
     getItem(
-      renderLink('/admin', 'navigation_admin'),
-      '/admin',
+      renderLink('/vehicles', 'navigation_vihicle'),
+      '/vehicles',
       <UserOutlined />,
     ),
+    getItem(renderLink('/lock', 'navigation_lock'), '/lock', <UserOutlined />),
+    getItem(
+      renderLink('/travel', 'navigation_travel'),
+      '/travel',
+      <UserOutlined />,
+    ),
+    getItem(
+      renderLink('/user_wallet', 'navigation_user_wallet'),
+      '/user_wallet',
+      <UserOutlined />,
+    ),
+    getItem(
+      renderLink('/ticket', 'navigation_ticket'),
+      '/ticket',
+      <UserOutlined />,
+    ),
+    getItem(
+      renderLink('/payment_method', 'navigation_method'),
+      '/method',
+      <UserOutlined />,
+    ),
+    getItem(
+      renderLink('/promotion', 'navigation_promotion'),
+      '/promotion',
+      <UserOutlined />,
+    ),
+    getItem(
+      renderLink('/tutorial', 'navigation_tutorial'),
+      '/tutorial',
+      <UserOutlined />,
+    ),
+    getItem(renderLink('/news', 'navigation_news'), '/news', <UserOutlined />),
+    getItem(renderLink('/rate', 'navigation_rate'), '/rate', <UserOutlined />),
   ];
 
   return (
