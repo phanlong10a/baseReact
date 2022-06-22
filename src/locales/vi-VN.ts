@@ -3,6 +3,15 @@ export default {
   'index.hello': 'ZH - {name}',
   'index.title': 'ZH Title',
   'about.title': 'ZH - About - Title',
+  // error
+  'error.require': '{field} không được để trống.',
+
+  // Form
+  password: 'Mật khẩu',
+  phone_number: 'Số điện thoại',
+  login: 'Đăng nhập',
+  register: 'Đăng ký',
+
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
   account: 'Tài khoản',

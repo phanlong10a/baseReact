@@ -3,6 +3,9 @@ export default {
   'index.hello': 'en - {name}',
   'index.title': 'English Title',
   'about.title': 'About-Title',
+  auth_login: 'CMS V-Bike',
+  auth_phone: 'Phone',
+  auth_password: 'Password',
   vietnamese: 'Vietnamese',
   english: 'English',
   account: 'Account',
@@ -31,9 +34,6 @@ export default {
 
   // error
   'error.require': '{field} must be required.',
-  auth_login: 'CMS V-Bike',
-  auth_phone: 'Phone',
-  auth_password: 'Password',
 
   //general
   general_preview_image: 'Preview',

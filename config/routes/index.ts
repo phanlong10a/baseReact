@@ -17,6 +17,14 @@ export default [
     routes: [
       {
         exact: true,
+        path: '/',
+        component: '@/pages/Users/index',
+        title: 'navbar.Profile',
+        routes: [],
+        wrappers: ['@/layouts/Wrapper'],
+      },
+      {
+        exact: true,
         path: '/profile',
         component: '@/pages/Profile/index',
         title: 'navbar.Profile',
