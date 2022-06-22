@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import Sidebar from '../Sidebar';
 import { Link } from 'umi';
 import styles from './index.less';
+import '/src/global/styles.less';
 import MainHeader from '../Header/main.header';
 import { useToggle } from 'ahooks';
 

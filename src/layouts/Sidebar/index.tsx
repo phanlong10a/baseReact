@@ -91,7 +91,7 @@ const Sidebar = ({
       <UserOutlined />,
     ),
     getItem(
-      renderLink('/method', 'navigation_method'),
+      renderLink('/payment_method', 'navigation_method'),
       '/method',
       <UserOutlined />,
     ),
