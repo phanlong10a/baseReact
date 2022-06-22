@@ -1,5 +1,5 @@
-import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
-import { Input, InputRef, Table } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Input, InputRef, Switch, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
 import React, { useRef, useState } from 'react';
@@ -35,35 +35,7 @@ const ManagementPaymentMethod: React.FC = () => {
       requestData;
     },
   });
-
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-    // editMethod(
-    //   {
-    //     description: selectedRows.description,
-    //     isActive: selectedRows.isActive,
-    //     display: selectedRows.display,
-    //   },
-    //   selectedRows.id,
-    // );
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    onSelect: (record: tableData) => {
-      editMethod(
-        {
-          description: record.description,
-          isActive: !record.isActive,
-          display: record.display,
-        },
-        record.id,
-      );
-    },
-  };
   type DataIndex = keyof tableData;
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
 
   const handleSearch = (
@@ -72,8 +44,6 @@ const ManagementPaymentMethod: React.FC = () => {
     dataIndex: DataIndex,
   ) => {
     confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
   };
 
   const getColumnSearchProps = (
@@ -135,7 +105,48 @@ const ManagementPaymentMethod: React.FC = () => {
     {
       title: 'sua',
       dataIndex: 'name',
-      render: (_, record: tableData) => <EditMethod initialdata={record} />,
+      render: (_, record: tableData) => (
+        <div className={styles.edit}>
+          <Switch
+            checkedChildren="active"
+            unCheckedChildren="active"
+            defaultChecked
+            className={styles.switch}
+            onChange={() => {
+              editMethod(
+                {
+                  description: record.description,
+                  isActive: !record.isActive,
+                  display: record.display,
+                },
+                record.id,
+              );
+            }}
+          />
+          <Switch
+            checkedChildren="display"
+            unCheckedChildren="display"
+            defaultChecked
+            className={styles.switch}
+            onChange={() => {
+              editMethod(
+                {
+                  description: record.description,
+                  isActive: record.isActive,
+                  display: record.display === 'ON' ? 'OFF' : 'ON',
+                },
+                record.id,
+              );
+            }}
+          />
+          <EditMethod
+            initialdata={record}
+            handleSubmit={(value) => {
+              editMethod(value, record.id);
+            }}
+          />
+        </div>
+      ),
       width: 50,
     },
   ];
@@ -146,6 +157,7 @@ const ManagementPaymentMethod: React.FC = () => {
       console.log(res);
     },
   });
+
   return (
     <section className={styles.Manage_payment_method}>
       <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
@@ -155,7 +167,6 @@ const ManagementPaymentMethod: React.FC = () => {
         }}
       />
       <Table
-        rowSelection={rowSelection}
         columns={columns}
         dataSource={tableData}
         className={styles.table_white}

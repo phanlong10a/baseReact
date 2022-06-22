@@ -1,7 +1,6 @@
 import Dialog from '@/components/Dialog';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
 import React, { useState } from 'react';
 import { IMethod } from '../services';
 import styles from './index.less';

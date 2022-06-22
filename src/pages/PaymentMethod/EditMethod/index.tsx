@@ -1,15 +1,14 @@
 import Dialog from '@/components/Dialog';
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
 import React, { useState } from 'react';
 import { tableData } from '../interface';
-import { IMethod } from '../services';
+import { IUpdateMethod } from '../services';
 import styles from './index.less';
 
 interface INewMethod {
   initialdata: tableData;
-  handleSubmit?: (newMethod: IMethod) => typeof newMethod | void;
+  handleSubmit?: (newMethod: IUpdateMethod) => typeof newMethod | void;
 }
 const EditMethod: React.FC<INewMethod> = ({
   handleSubmit = () => {},
@@ -18,8 +17,7 @@ const EditMethod: React.FC<INewMethod> = ({
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const initialValue = {
-    imageId: initialdata.image.id,
-    method: initialdata.method,
+    description: initialdata.description,
   };
   return (
     <div>
@@ -32,7 +30,7 @@ const EditMethod: React.FC<INewMethod> = ({
             setVisible(true);
           }}
         >
-          Sua
+          mo ta
         </Button>
       </header>
       <Dialog
@@ -50,21 +48,16 @@ const EditMethod: React.FC<INewMethod> = ({
           onFinish={(values) => {
             const newMethod = {
               ...values,
-              isActive: true,
-              display: 'ON',
+              isActive: initialdata.isActive,
+              display: initialdata.display,
             };
             handleSubmit(newMethod);
           }}
         >
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name="imageId" label="Hình ảnh">
-                <Input placeholder="Tên" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="method" label="Tên phương thức">
-                <Input placeholder="Tên" />
+              <Form.Item name="description" label="Tên phương thức">
+                <Input />
               </Form.Item>
             </Col>
           </Row>
@@ -80,9 +73,11 @@ const EditMethod: React.FC<INewMethod> = ({
               huỷ
             </Button>
             <Button
+              htmlType="submit"
               type="primary"
               className={styles.addButton}
               onClick={() => {
+                setVisible(false);
                 form.submit();
               }}
             >
