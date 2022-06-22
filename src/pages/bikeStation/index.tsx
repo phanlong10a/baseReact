@@ -3,7 +3,7 @@ import { useIntl } from 'umi';
 import { Breadcrumb, Table, Tooltip, Form } from 'antd';
 import { EyeOutlined, DeleteFilled } from '@ant-design/icons';
 import Search from './Search';
-import CustomerDialog from './CustomerDialog';
+import CustomerDialog from './components/CustomerDialog';
 import { getTableData } from './service';
 import { useAntdTable, useToggle, useSetState } from 'ahooks';
 
@@ -13,23 +13,6 @@ export default () => {
     id: null,
   });
   const intl = useIntl();
-
-  const demo = [
-    {
-      id: 1,
-      name: 'trạm 1',
-      location: 'Cầu giây',
-      bike_number: 4,
-      parking_number: 5,
-    },
-    {
-      id: 2,
-      name: 'trạm 2',
-      location: 'Cầu giây q',
-      bike_number: 10,
-      parking_number: 5,
-    },
-  ];
 
   const [query, setQuery] = useSetState({ name: 'huy' });
   const [form] = Form.useForm();
@@ -62,8 +45,8 @@ export default () => {
         id: 'manager_bike_stattion_table_location',
       }),
       width: 100,
-      dataIndex: 'location',
-      key: 'location',
+      dataIndex: 'address',
+      key: 'address',
       align: 'center',
     },
     {
@@ -80,9 +63,28 @@ export default () => {
         id: 'manager_bike_stattion_table_parking',
       }),
       width: 100,
-      dataIndex: 'parking_number',
-      key: 'parking_number',
+      dataIndex: 'parking',
+      key: 'parking',
       align: 'center',
+      // bicycles.length
+    },
+    {
+      title: intl.formatMessage({
+        id: 'manager_bike_stattion_table_status',
+      }),
+      width: 100,
+      dataIndex: 'status',
+      key: 'status',
+      align: 'center',
+      render: (_: any, record: any, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            {record.isActive
+              ? intl.formatMessage({ id: 'status_active' })
+              : intl.formatMessage({ id: 'status_inactive' })}
+          </React.Fragment>
+        );
+      },
     },
     {
       title: intl.formatMessage({
@@ -109,6 +111,13 @@ export default () => {
     },
   ];
 
+  const setAddpopup = () => {
+    setDiolog({
+      status: true,
+      id: null,
+    });
+  };
+
   return (
     <>
       <Breadcrumb style={{ margin: '16px 0' }}>
@@ -119,7 +128,7 @@ export default () => {
           })}
         </Breadcrumb.Item>
       </Breadcrumb>
-      <Search submit={submit} form={form} />
+      <Search submit={submit} form={form} setAddpopup={setAddpopup} />
       <div style={{ padding: 24, minHeight: '240px' }}>
         <Table
           columns={columns}

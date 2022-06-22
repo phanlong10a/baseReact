@@ -1,7 +1,11 @@
-import React from 'react';
-import { Modal, Form, Input, InputNumber, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, InputNumber, Button, Select } from 'antd';
 import { FormattedMessage, useIntl } from 'umi';
-import styles from './index.less';
+import styles from '../index.less';
+import { getListBicycle } from '../service';
+import { useDebounceFn } from 'ahooks';
+
+const { Option } = Select;
 
 interface PROPS {
   status: boolean;
@@ -10,14 +14,42 @@ interface PROPS {
 
 const CustomerDialog = (props: PROPS): JSX.Element => {
   const { status, onCancel } = props;
+  const [listBicycle, setListBicycle] = useState([]);
   const intl = useIntl();
+
+  useEffect(() => {
+    const init = async () => {
+      await setListSearch('');
+    };
+    init();
+  }, []);
+
+  const setListSearch = async (values: string) => {
+    const req = await getListBicycle(values);
+    setListBicycle(req.list);
+  };
+
+  console.log(listBicycle);
+
+  const onFiltersChangeDebounce = useDebounceFn(
+    async (values: string) => {
+      await setListSearch(values);
+    },
+    {
+      wait: 500,
+    },
+  );
+
+  const onSearch = (values: string) => {
+    onFiltersChangeDebounce.run(values);
+  };
 
   return (
     <Modal
       title="Thêm mới trạm xe"
       centered
       visible={status}
-      width={1000}
+      width={720}
       onCancel={onCancel}
       footer={null}
     >
@@ -65,7 +97,11 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
           }
           name="bike_number"
         >
-          <InputNumber style={{ width: '100%' }} />
+          <Select mode="multiple" allowClear onSearch={onSearch}>
+            {listBicycle.map((item: any) => (
+              <Option value={item.id}>{item.name}</Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           label={
@@ -76,8 +112,10 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
           <InputNumber style={{ width: '100%' }} />
         </Form.Item>
         <div className={styles.addGroupButton}>
-          <Button className={styles.button}>Thêm mới</Button>
-          <Button>Hủy</Button>
+          <Button danger className={styles.button}>
+            Hủy
+          </Button>
+          <Button type="primary">Thêm mới</Button>
         </div>
       </Form>
     </Modal>

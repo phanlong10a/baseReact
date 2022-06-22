@@ -61,4 +61,5 @@ export default {
   manager_bike_stattion_table_number: 'Số xe có trong trạm',
   manager_bike_stattion_table_parking: 'Số lượng chỗ đỗ xe',
   manager_bike_stattion_table_actionr: 'Thao tác',
+  manager_bike_stattion_table_status: 'Trạng thái',
 };

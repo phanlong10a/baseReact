@@ -29,3 +29,16 @@ export const getTableData = (
 export const getUserData = (id: any) => {
   return privateRequest('/user/' + id);
 };
+
+export const getListBicycle = (values: string) => {
+  const url = `/bicycle?page=1&pageSize=10000&sortBy=id&isActive=true${
+    values ? `&name=${values}` : ''
+  }`;
+  return privateRequest(url, {
+    method: 'GET',
+  }).then((res: any) => {
+    return {
+      list: res?.data,
+    };
+  });
+};
