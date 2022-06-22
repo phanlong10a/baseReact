@@ -21,6 +21,14 @@ const Wrapper = ({
     if (token && location.pathname === '/login') history.push('/user');
   }, []);
 
+  useLayoutEffect(() => {
+    const localeInfo = localStorage.getItem('umi_locale');
+    if (!localeInfo) {
+      localStorage.setItem('umi_locale', 'vi-VN');
+      window.location.reload();
+    }
+  }, []);
+
   if (auth?.loading) return <LoadingOutlined />;
 
   return <>{children}</>;
