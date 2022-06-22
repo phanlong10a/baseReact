@@ -4,7 +4,7 @@ import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
-import Dialog from './Components/Dialog';
+import Dialog from './components/Dialog';
 import styles from './index.less';
 import { getTableData } from './service';
 import { getLocale } from 'umi';
