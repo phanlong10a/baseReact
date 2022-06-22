@@ -54,11 +54,7 @@ const Sidebar = ({
   };
 
   const items: MenuItem[] = [
-    getItem(
-      renderLink('/account', 'navigation_user'),
-      '/user',
-      <UserOutlined />,
-    ),
+    getItem(renderLink('/user', 'navigation_user'), '/user', <UserOutlined />),
     getItem(
       renderLink('/bike-station', 'navigation_bike_station'),
       '/bike-station',
@@ -70,8 +66,8 @@ const Sidebar = ({
       <UserOutlined />,
     ),
     getItem(
-      renderLink('/vihicle', 'navigation_vihicle'),
-      '/vihicle',
+      renderLink('/vehicles', 'navigation_vihicle'),
+      '/vehicles',
       <UserOutlined />,
     ),
     getItem(renderLink('/lock', 'navigation_lock'), '/lock', <UserOutlined />),
