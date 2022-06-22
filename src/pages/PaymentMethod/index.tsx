@@ -3,29 +3,12 @@ import { Input, InputRef, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
 import React, { useRef, useState } from 'react';
-import { useIntl } from 'umi';
+import { useIntl, useRequest } from 'umi';
 import styles from './index.less';
-interface DataType {
-  key: React.Key;
-  name: string;
-  method: string;
-  active: boolean;
-  images: string;
-}
-const data: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Tên phương thức ` + Math.floor(Math.random() * (10 - 0)) + 0,
-    method: 'Tên phương thức',
-    active: Math.floor(Math.random() * (1 - 0)) + 0 ? true : false,
-    images:
-      'https://i.pinimg.com/236x/aa/60/07/aa60072bac86acb04821937bf8daff5f.jpg',
-  });
-}
+import { Image, tableData } from './interface';
+import { createPayment, getAllPayment } from './services';
 
 const ManagementPaymentMethod: React.FC = () => {
-  const { formatMessage } = useIntl();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -34,10 +17,11 @@ const ManagementPaymentMethod: React.FC = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  type DataIndex = keyof DataType;
+  type DataIndex = keyof tableData;
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
+
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -51,9 +35,10 @@ const ManagementPaymentMethod: React.FC = () => {
     clearFilters();
     setSearchText('');
   };
+
   const getColumnSearchProps = (
     dataIndex: DataIndex,
-  ): ColumnType<DataType> => ({
+  ): ColumnType<tableData> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -90,38 +75,74 @@ const ManagementPaymentMethod: React.FC = () => {
     },
     render: (text) => text,
   });
-  const columns: ColumnsType<DataType> = [
+
+  const columns: ColumnsType<tableData> = [
     {
-      title: formatMessage({ id: 'management_payment_method_table_name' }),
-      dataIndex: 'name',
+      title: 'PHƯƠNG THỨC THANH TOÁN',
+      dataIndex: 'method',
       filters: [
         { text: 'Joe', value: 'Joe' },
         { text: 'Jim', value: 'Jim' },
       ],
-      onFilter: (value, record) => record.name.includes(String(value)),
-      ...getColumnSearchProps('name'),
+      onFilter: (value, record) => record.method.includes(String(value)),
+      ...getColumnSearchProps('method'),
     },
     {
-      title: formatMessage({ id: 'management_payment_method_table_image' }),
-      dataIndex: 'images',
+      title: 'hinh anh',
+      dataIndex: 'image',
+      render: (image: Image) => {
+        return <img src={image.url} alt="" />;
+      },
     },
     {
-      title: formatMessage({ id: 'management_payment_method_table_edit' }),
+      title: 'ten',
       dataIndex: 'name',
       render: () => <DeleteOutlined className="pointer" />,
     },
   ];
 
+  // const { loading, data, run } = useRequest(
+  //   createPayment({
+  //     imageId: 1,
+  //     method: 'VTCPAY',
+  //     description: 'This is descriptionasd',
+  //     isActive: true,
+  //     display: 'OFF',
+  //   }),
+  //   {
+  //     manual: true,
+  //   },
+  // );
+
+  const { data: tableData } = useRequest(
+    async (lastResult: any, params: string) => {
+      // skip take
+      // const result = privateRequest(axios.get | fetch | request.get, path, configs = { customHeaders, body, params});
+      // const results2 = request(get, configs);
+      // gop ket qua
+      // tra ve ket qua
+      return getAllPayment({
+        page: 1,
+        pageSize: 10,
+        // SortBy: 'id' | 'method' | 'createdAt' | 'updatedAt',
+        // orderby: 'ASC' | 'DESC',
+        // method: 'string',
+        // isActive: boolean,
+        // display: 'ON' | 'OFF',
+      });
+    },
+  );
+
   return (
     <section className={styles.Manage_payment_method}>
-      <h1 className="mb-3">
-        {formatMessage({ id: 'management_payment_method_title' })}
-      </h1>
+      <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
+      {/* <button onClick={run}>run</button> */}
       <Table
         rowSelection={rowSelection}
         columns={columns}
-        dataSource={data}
+        dataSource={tableData}
         className={styles.table_white}
+        rowKey={(record) => record.id}
       />
     </section>
   );
