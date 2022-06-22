@@ -76,7 +76,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
           <InputNumber style={{ width: '100%' }} />
         </Form.Item>
         <div className={styles.addGroupButton}>
-          <Button>Thêm mới</Button>
+          <Button className={styles.button}>Thêm mới</Button>
           <Button>Hủy</Button>
         </div>
       </Form>
