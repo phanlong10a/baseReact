@@ -5,7 +5,7 @@ export default [
     component: '@/layouts/AuthLayout',
     title: 'Login',
     wrappers: ['@/layouts/Wrapper'],
-    routes: [{ exact: true, path: '/login', component: '@/pages/Login' }],
+    routes: [{ exact: true, path: '/login', component: '@/pages/SignIn' }],
   },
   {
     exact: false,
@@ -24,7 +24,7 @@ export default [
       {
         exact: true,
         path: '/user',
-        component: '@/pages/User',
+        component: '@/pages/Users',
         title: 'navbar.Profile',
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
@@ -32,7 +32,7 @@ export default [
       {
         exact: true,
         path: '/kyc',
-        component: '@/pages/Kyc',
+        component: '@/pages/ManageUser',
         title: 'navbar.Profile',
         routes: [],
         wrappers: ['@/layouts/Wrapper'],
