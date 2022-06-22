@@ -4,7 +4,7 @@ import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
-import { STATUS_ACTIVE } from './constant';
+// import { STATUS_ACTIVE } from './constant.ts';
 import styles from './index.less';
 import { getTableData } from './service';
 import { getLocale } from 'umi';
@@ -123,7 +123,7 @@ export default () => {
             onSearch={submit}
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="isActive"
           initialValue=""
           className={styles.searchItem}
@@ -135,7 +135,7 @@ export default () => {
               </Option>
             ))}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </div>
   );
