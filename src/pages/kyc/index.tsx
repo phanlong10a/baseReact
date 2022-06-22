@@ -5,7 +5,7 @@ import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
 import Dialog from './Components/Dialog';
-import { STATUS_ACTIVE } from './constant';
+import { STATUS_ACTIVE } from '@/utils/constant';
 import styles from './index.less';
 import { getTableData } from './service';
 import { getLocale } from 'umi';

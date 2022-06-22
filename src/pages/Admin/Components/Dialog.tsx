@@ -1,4 +1,4 @@
-import { useRequest, useSetState } from 'ahooks';
+import { useRequest, useSetState, useToggle } from 'ahooks';
 import {
   Col,
   Modal,
@@ -16,6 +16,7 @@ import { useIntl } from 'umi';
 import { getUserData } from '../service';
 const { Option } = Select;
 import styles from '../index.less';
+import { GENDER } from '@/utils/constant';
 
 interface Iprops {
   open: boolean;
@@ -50,7 +51,9 @@ const Dialog: React.FC<Iprops> = ({
   ...rest
 }) => {
   const [loading, setLoading] = useState(true);
+  const [editable, setEditable] = useToggle(false);
   const [userInfo, setUserInfo] = useSetState<IUser>({});
+
   const { formatMessage } = useIntl();
   const requestUser = useRequest(getUserData, {
     manual: true,
@@ -70,10 +73,12 @@ const Dialog: React.FC<Iprops> = ({
   React.useEffect(() => {
     if (itemEdit) {
       requestUser.run(itemEdit);
-    } else setLoading(false);
+    } else {
+      setLoading(false);
+      setEditable.set(true);
+    }
   }, [itemEdit]);
 
-  console.log(requestUser.loading, loading, userInfo);
   return (
     <>
       <Modal
@@ -118,7 +123,7 @@ const Dialog: React.FC<Iprops> = ({
                     label="Tên"
                     initialValue={userInfo.fullName}
                   >
-                    <Input placeholder="Tên" disabled />
+                    <Input placeholder="Tên" disabled={!editable} />
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
@@ -127,7 +132,7 @@ const Dialog: React.FC<Iprops> = ({
                     label="Số điện thoại"
                     initialValue={userInfo.phone}
                   >
-                    <Input placeholder="Số điện thoại" disabled />
+                    <Input placeholder="Số điện thoại" disabled={!editable} />
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
@@ -138,16 +143,22 @@ const Dialog: React.FC<Iprops> = ({
                       userInfo.isActive ? 'Hoạt động' : 'Không hoạt động'
                     }
                   >
-                    <Input placeholder="Trạng thái" disabled />
+                    <Input placeholder="Trạng thái" disabled={!editable} />
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="gender"
-                    label="Giới tính"
+                    label={formatMessage({ id: 'general_gender' })}
                     initialValue={userInfo.gender == 'MALE' ? 'Nam' : 'Nữ'}
                   >
-                    <Input placeholder="Giới tính" disabled />
+                    <Select disabled={!editable}>
+                      {GENDER.map((gender, index) => (
+                        <Option value={gender.name}>
+                          {formatMessage({ id: gender.name })}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
@@ -156,7 +167,7 @@ const Dialog: React.FC<Iprops> = ({
                     label="Email"
                     initialValue={userInfo.email}
                   >
-                    <Input placeholder="Email" disabled />
+                    <Input placeholder="Email" disabled={!editable} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -167,12 +178,8 @@ const Dialog: React.FC<Iprops> = ({
                   onClick={() => setOpen(false)}
                   className={styles.addButton}
                 >
-                  Hủy
+                  {formatMessage({ id: 'general_cancel' })}
                 </Button>
-                <Button danger type="primary" className={styles.addButton}>
-                  Từ chối xác thực
-                </Button>
-                <Button type="primary">Xác thực</Button>
               </div>
             </Form>
           </>

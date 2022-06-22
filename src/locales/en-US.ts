@@ -43,6 +43,9 @@ export default {
   general_status_active: 'Active status',
   general_inactive: 'Inactive',
   general_active: 'Active',
+  general_gender: 'Gender',
+  general_gender_male: 'Male',
+  general_gender_female: 'Female',
 
   general_status_account: 'Account status ',
   general_denied_verify: 'Denied',

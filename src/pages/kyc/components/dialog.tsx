@@ -167,12 +167,14 @@ const Dialog: React.FC<Iprops> = ({
                   onClick={() => setOpen(false)}
                   className={styles.addButton}
                 >
-                  Hủy
+                  {formatMessage({ id: 'general_cancel' })}
                 </Button>
                 <Button danger type="primary" className={styles.addButton}>
-                  Từ chối xác thực
+                  {formatMessage({ id: 'general_denied_verify' })}
                 </Button>
-                <Button type="primary">Xác thực</Button>
+                <Button type="primary">
+                  {formatMessage({ id: 'general_verify' })}
+                </Button>
               </div>
             </Form>
           </>
