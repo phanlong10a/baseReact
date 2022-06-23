@@ -1,3 +1,7 @@
+@desktop: ~'(min-width: 960px) ';
+@tablet: ~'only screen and (min-width: 720px) and (max-width: 959px)';
+@mobile: ~'only screen and (min-width: 0px) and (max-width: 719px)';
+
 .search-container {
   padding: 0px 24px;
   display: flex;
@@ -10,5 +14,34 @@
 }
 
 .button {
-  margin-right: 16px;
+  margin-right: 16px !important;
+}
+
+.searchForm {
+  display: flex;
+  justify-content: flex-start;
+  @media @tablet, @mobile {
+    flex-direction: column;
+  }
+}
+.searchContainer {
+  padding: 0px 24px;
+  display: flex;
+  justify-content: space-between;
+  @media @tablet, @mobile {
+    flex-direction: column;
+  }
+}
+.searchItem {
+  @media @desktop {
+    margin-right: 35px !important;
+    width: 220px;
+  }
+  @media @tablet, @mobile {
+    margin-bottom: 35px !important;
+  }
+}
+
+.formItem {
+  margin-bottom: 15px !important;
 }
