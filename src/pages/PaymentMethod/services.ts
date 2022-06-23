@@ -3,7 +3,7 @@ import { privateRequest, request } from '@/utils/apis';
 import TokenManagement from '@/utils/apis/TokenManagement';
 const getPaymentMethodById = (id: string): string => `/payment/method/${id}`;
 const deletePaymentMethod = (id: string): string => `/payment/${id}`;
-const API_PAYMENT = {
+export const API_PAYMENT = {
   CREATE: '/payment/method',
   GET_ACTIVE: '/payment/method',
   GET_ALL: '/payment/method/all',
@@ -11,7 +11,7 @@ const API_PAYMENT = {
   UPDATE: getPaymentMethodById,
   DELETE: deletePaymentMethod,
 };
-const API_FILE = {
+export const API_FILE = {
   FILE: '/file',
   FILE_ID: (id: string): string => `/file/${id}`,
 };

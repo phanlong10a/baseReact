@@ -1,37 +1,37 @@
 import openNotificationWithIcon from '@/components/Notification';
+import { ENVIRONMENTS } from '@/utils/constant';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRequest } from '@umijs/hooks';
-import { Button, Form, Upload } from 'antd';
+import { Button, Form, message, Upload } from 'antd';
+import { UploadProps } from 'antd/es/upload/interface';
 import * as React from 'react';
-import { createFile } from '../../services';
-interface NewImageProps {}
+import { API_FILE, createFile } from '../../services';
+interface NewImageProps {
+  onUpload?: () => void;
+}
 
 const NewImage: React.FunctionComponent<NewImageProps> = () => {
   const { run: newIage } = useRequest(createFile, {
     manual: true,
-    onSuccess: () => {
+    onSuccess: (res) => {
       openNotificationWithIcon('success', 'upload image success');
+      console.log(res[0]);
     },
     onError: () => {
       openNotificationWithIcon('error', 'upload image failed');
     },
   });
-  const [form] = Form.useForm();
+  const props: UploadProps = {
+    onChange(info) {
+      if (info.fileList[0].originFileObj) {
+        newIage(info.fileList[0].originFileObj);
+      }
+    },
+  };
   return (
-    <Form
-      form={form}
-      onValuesChange={(value) => {
-        console.log(value.file.fileList[0].originFileObj);
-        newIage(value.file.fileList[0].originFileObj);
-        form.resetFields();
-      }}
-    >
-      <Form.Item name="file">
-        <Upload>
-          <Button icon={<UploadOutlined />}>Click to Upload</Button>
-        </Upload>
-      </Form.Item>
-    </Form>
+    <Upload {...props}>
+      <Button icon={<UploadOutlined />}>Click to Upload</Button>
+    </Upload>
   );
 };
 
