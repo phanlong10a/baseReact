@@ -118,6 +118,7 @@ const API_PATH = {
   LOGOUT: '/auth/logout',
   USER: '/user',
   KYC: '/kyc',
+  ADMIN_USER: '/user/admin-user',
 };
 
 export { API_PATH, request, privateRequest };

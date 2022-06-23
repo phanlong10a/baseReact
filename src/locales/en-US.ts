@@ -35,10 +35,13 @@ export default {
   fullname: 'Full Name',
   status: 'Status',
   email: 'Email',
+  kyc_type: 'Kyc type',
 
   // error
   'error.require': '{field} must be required.',
   'error.email': 'Email invalid.',
+  'error.patern': '{field} invalid.',
+
   //general
 
   general_view_infomation: 'View infomation',

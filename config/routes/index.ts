@@ -87,12 +87,12 @@ export default [
         component: '@/pages/Travel/index',
         title: 'navbar.Profile',
       },
-      {
-        exact: true,
-        path: '/user_wallet',
-        component: '@/pages/UserWallet/index',
-        title: 'navbar.Profile',
-      },
+      // {
+      //   exact: true,
+      //   path: '/user_wallet',
+      //   component: '@/pages/UserWallet/index',
+      //   title: 'navbar.Profile',
+      // },
       {
         exact: true,
         path: '/ticket',

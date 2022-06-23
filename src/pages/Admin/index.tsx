@@ -36,7 +36,7 @@ export default () => {
   const [form] = Form.useForm();
 
   const { tableProps, search, params } = useAntdTable(getTableData, {
-    defaultPageSize: 5,
+    defaultPageSize: 10,
     form,
   });
   const { formatMessage } = useIntl();

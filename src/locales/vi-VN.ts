@@ -6,6 +6,7 @@ export default {
   // error
   'error.require': '{field} không được để trống.',
   'error.email': 'Email không đúng định dạng.',
+  'error.patern': '{field} không đúng định dạng.',
 
   //mesages
 
@@ -24,6 +25,7 @@ export default {
   email: 'Email',
   identification_code: 'Mã định danh',
   date_of_birth: 'Ngày sinh',
+  kyc_type: 'Loại giấy tờ',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
