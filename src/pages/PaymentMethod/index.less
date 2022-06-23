@@ -5,7 +5,7 @@
       margin: 16px;
     }
     .ant-table-cell {
-      vertical-align: bottom;
+      vertical-align: middle;
     }
   }
   .delete {
@@ -32,9 +32,6 @@
 .edit {
   display: flex;
   flex-direction: column;
-  justify-content: end;
-
-  align-items: end;
   & > * {
     margin-bottom: 15px;
   }
@@ -58,4 +55,13 @@
   font-size: 100px;
   color: white;
   z-index: 99;
+}
+.deciption {
+  text-align: right;
+  & > * {
+    margin-top: 1em;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 }

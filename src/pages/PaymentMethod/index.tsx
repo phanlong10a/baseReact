@@ -10,9 +10,11 @@ import {
   FormInstance,
   Input,
   InputRef,
+  notification,
   Switch,
   Table,
 } from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
 import React, { useRef, useState } from 'react';
@@ -22,6 +24,7 @@ import { Image, tableData } from './interface';
 import NewMethod from './NewMethod';
 import {
   createPayment,
+  deletePayment,
   editPayment,
   getAllPayment,
   IMethod,
@@ -53,10 +56,23 @@ const ManagementPaymentMethod: React.FC = () => {
   );
 
   const [loading, setLoading] = useState(false);
+
+  type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
+  const openNotificationWithIcon = (
+    type: NotificationType,
+    message: string,
+    description?: string,
+  ) => {
+    notification[type]({
+      message,
+      description,
+    });
+  };
   const { run: editMethod, loading: Editloading } = useRequest(
     async (method: IUpdateMethod, id: number) => {
       setLoading(true);
-      const r = await editPayment(method, id);
+      return editPayment(method, id);
     },
     {
       manual: true,
@@ -64,13 +80,37 @@ const ManagementPaymentMethod: React.FC = () => {
         setTimeout(() => {
           setLoading(false);
           refeshData();
+          openNotificationWithIcon('success', 'update method success');
         }, 1000);
       },
       onError: () => {
         setLoading(false);
+        openNotificationWithIcon('error', 'update method failed');
       },
     },
   );
+
+  const { run: deleteMethod, loading: deleteLoading } = useRequest(
+    async (id: number) => {
+      setLoading(true);
+      return deletePayment(id);
+    },
+    {
+      manual: true,
+      onSuccess: (res) => {
+        setTimeout(() => {
+          setLoading(false);
+          refeshData();
+          openNotificationWithIcon('success', 'delete success');
+        }, 1000);
+      },
+      onError: () => {
+        setLoading(false);
+        openNotificationWithIcon('error', 'delete method failed');
+      },
+    },
+  );
+
   type DataIndex = keyof tableData;
   const searchInput = useRef<InputRef>(null);
 
@@ -137,41 +177,48 @@ const ManagementPaymentMethod: React.FC = () => {
         return (
           <div className={styles.image}>
             <img src={image.url} alt="" className={styles.image} />
-            <Form
-              onFinish={(value) => {
-                editMethod(
-                  {
-                    description: value.description,
-                    isActive: !record.isActive,
-                    display: record.display,
-                  },
-                  record.id,
-                );
-              }}
-            >
-              <Input.Group compact className={styles.editDeciption}>
-                <Form.Item name="description" initialValue={record.description}>
-                  <Input />
-                </Form.Item>
-                <Button type="primary" htmlType="submit">
-                  <EditOutlined />
-                  Save change
-                </Button>
-              </Input.Group>
-            </Form>
           </div>
         );
       },
       width: 500,
     },
     {
-      title: 'sua',
+      title: 'deciption',
+      dataIndex: 'image',
+      render: (image: Image, record: tableData) => {
+        return (
+          <Form
+            onFinish={(value) => {
+              editMethod(
+                {
+                  description: value.description,
+                  isActive: !record.isActive,
+                  display: record.display,
+                },
+                record.id,
+              );
+            }}
+          >
+            <div className={styles.deciption}>
+              <Form.Item name="description" initialValue={record.description}>
+                <TextArea rows={4} />
+              </Form.Item>
+              <Button type="primary" htmlType="submit">
+                <EditOutlined />
+                Save change
+              </Button>
+            </div>
+          </Form>
+        );
+      },
+      width: 500,
+    },
+    {
+      title: 'active',
       dataIndex: 'name',
       render: (_, record: tableData) => (
         <div className={styles.edit}>
           <Switch
-            checkedChildren="active"
-            unCheckedChildren="active"
             checked={record.isActive}
             className={styles.switch}
             onChange={() => {
@@ -185,9 +232,16 @@ const ManagementPaymentMethod: React.FC = () => {
               );
             }}
           />
+        </div>
+      ),
+      width: 100,
+    },
+    {
+      title: 'display',
+      dataIndex: 'name',
+      render: (_, record: tableData) => (
+        <div className={styles.edit}>
           <Switch
-            checkedChildren="display"
-            unCheckedChildren="display"
             defaultChecked
             className={styles.switch}
             checked={record.display === 'ON'}
@@ -202,6 +256,15 @@ const ManagementPaymentMethod: React.FC = () => {
               );
             }}
           />
+        </div>
+      ),
+      width: 100,
+    },
+    {
+      title: 'delete',
+      dataIndex: 'name',
+      render: (_, record: tableData) => (
+        <div className={styles.edit}>
           <DeleteOutlined className={styles.delete} size={25} />
         </div>
       ),

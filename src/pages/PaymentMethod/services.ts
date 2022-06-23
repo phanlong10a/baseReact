@@ -9,6 +9,39 @@ const API_PAYMENT = {
   UPDATE: getPaymentMethodById,
   DELETE: deletePaymentMethod,
 };
+const API_FILE = {
+  FILE: '/file',
+  FILE_ID: (id: string): string => `/file/${id}`,
+};
+const createFile = (file: any) => {
+  return privateRequest(request.post, API_FILE.FILE, {
+    data: file,
+  })
+    .then((result) => {
+      return result;
+    })
+    .catch((er) => Promise.reject(er));
+};
+export { createFile };
+
+export interface IGetFile {
+  page?: number;
+  pageSize?: number;
+  sortBy?: 'id' | 'originalname' | 'mimetype' | 'createdAt' | 'updatedAt';
+  orderBy?: 'ASC' | 'DESC';
+  name?: string;
+}
+const getFile = (params?: IGetFile) => {
+  return privateRequest(request.get, API_FILE.FILE, {
+    params,
+  })
+    .then((result) => {
+      return result;
+    })
+    .catch((er) => Promise.reject(er));
+};
+export { getFile };
+
 export interface IMethod {
   imageId: number;
   method: string;
@@ -44,6 +77,16 @@ const editPayment = (method: IUpdateMethod, id: number) => {
     .catch((er) => Promise.reject(er));
 };
 export { editPayment };
+
+const deletePayment = (id: number) => {
+  const url = API_PAYMENT.UPDATE(String(id));
+  return privateRequest(request.delete, url, {})
+    .then((result) => {
+      return result;
+    })
+    .catch((er) => Promise.reject(er));
+};
+export { deletePayment };
 
 interface IGetAllPayment {
   page?: number;

@@ -22,3 +22,13 @@ export interface Image {
   createdAt: string;
   updatedAt: string;
 }
+export interface IImage {
+  id: number;
+  originalname: string;
+  mimetype: string;
+  size: number;
+  key: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+}
