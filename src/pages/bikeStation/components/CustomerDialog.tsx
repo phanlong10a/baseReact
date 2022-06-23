@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import { FormattedMessage, useIntl } from 'umi';
 import styles from '../index.less';
-import { addStation, getListBicycle } from '../service';
+import { getListBicycle } from '../service';
 import { useDebounceFn, useRequest } from 'ahooks';
 import dayjs from 'dayjs';
 import { privateRequest, request } from '@/utils/apis';
@@ -23,11 +23,14 @@ const { Option } = Select;
 interface PROPS {
   status: boolean;
   onCancel: () => void;
+  id: any;
 }
 
 const CustomerDialog = (props: PROPS): JSX.Element => {
-  const { status, onCancel } = props;
+  const { status, onCancel, id } = props;
   const [listBicycle, setListBicycle] = useState([]);
+  const [dataStation, setDataStation] = useState(undefined);
+
   const intl = useIntl();
   const [form] = Form.useForm();
 
@@ -52,20 +55,17 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
       return privateRequest(request.post, '/station', {
         data: params,
       });
-      // return addStation(params);
     },
     {
       manual: true,
-      onSuccess: (r) => {},
-      onError: (err) => {
+      onSuccess: (r) => {
+        message.success('Thêm mới trạm xe thành công');
+        form.resetFields();
+        onCancel();
+      },
+      onError: (err: any) => {
         console.log('err', err, err.response, err.data);
-
-        // if (err?.statusCode === 400) {
-        //   message.error(err.message);
-        // } else {
-        //   message.success('Thêm mới trạm xe thành công');
-        //   form.resetFields(['first_name', 'second_name', 'email']);
-        // }
+        message.error(err?.data?.message);
       },
     },
   );
@@ -90,7 +90,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
   const onFinish = async (values: any) => {
     const params = {
       ...values,
-      // openTime: values.openTime ? dayjs(values.openTime).format('HH:mm') : null,
+      openTime: values.openTime ? dayjs(values.openTime).format('HH:mm') : null,
       closeTime: values.closeTime
         ? dayjs(values.closeTime).format('HH:mm')
         : null,
@@ -100,24 +100,39 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
       bicyleIds: values?.bike_number?.map((e: any) => e.value),
     };
     reqAddStation.run(params);
-    // const req: any = await addStation(params);
-    // console.log(req);
-
-    // if (req?.statusCode === 400) {
-    //   message.error(req.message);
-    // } else {
-    //   message.success('Thêm mới trạm xe thành công');
-    //   form.resetFields(['first_name', 'second_name', 'email']);
-    // }
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
+  useEffect(() => {
+    if (!!id) {
+      getDetailStation.run(id);
+    }
+  }, [id]);
+
+  console.log(dataStation);
+
+  const getDetailStation = useRequest(
+    async (id) => {
+      return privateRequest(request.get, `/station/${id}`, {});
+    },
+    {
+      manual: true,
+      onSuccess: (r) => {
+        setDataStation(r);
+        // form.setFieldsValue({
+        //   openTime: dayjs(r.openTime),
+        // });
+      },
+      onError: (err: any) => {},
+    },
+  );
+
   return (
     <Modal
-      title="Thêm mới trạm xe"
+      title={!!id ? 'Sửa trạm xe' : 'Thêm mới trạm xe'}
       centered
       visible={status}
       width={720}
@@ -127,10 +142,11 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
       <Form
         layout="vertical"
         name="basic"
-        // initialValues={{ remember: true }}
+        initialValues={dataStation}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         form={form}
+        id="form"
       >
         <Form.Item
           label={<FormattedMessage id="in" defaultMessage="Tên trạm xe" />}
@@ -219,7 +235,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
             Hủy
           </Button>
           <Button type="primary" htmlType="submit">
-            Thêm mới
+            {!!id ? 'Cập nhật trạng thái' : 'Thêm mới'}
           </Button>
         </div>
       </Form>

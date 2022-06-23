@@ -5,10 +5,18 @@ import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
 import Dialog from './Dialog';
-import { STATUS_ACTIVE } from '@/utils/constant';
+import {
+  STATUS_ACTIVE,
+  KYC_PHOTO_TYPES,
+  STATUS_KYC,
+  KYC_TYPE,
+  STATUS_ACCOUNT,
+  OPTION_GENDER,
+} from '@/utils/constant';
 import styles from './index.less';
 import { getTableData } from './service';
 import { getLocale } from 'umi';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 
@@ -35,7 +43,7 @@ export default () => {
   );
   const [form] = Form.useForm();
 
-  const { tableProps, search, params } = useAntdTable(getTableData, {
+  const { tableProps, search, params, refresh } = useAntdTable(getTableData, {
     defaultPageSize: 5,
     form,
   });
@@ -55,39 +63,49 @@ export default () => {
       key: 'fullName',
     },
     {
-      title: 'const_column_phone_number',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: 'general_status_account',
+      dataIndex: 'status',
+      key: 'status',
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.phone ? '+' + record.phone : ''}
+            {formatMessage(
+              {
+                id: STATUS_KYC.find(() => {
+                  return record.status == record.status;
+                })?.name,
+              } || '',
+            )}
           </React.Fragment>
         );
       },
     },
     {
-      title: 'const_column_email',
-      dataIndex: 'email',
-      key: 'email',
+      title: 'general_kyc_type',
+      dataIndex: 'kycType',
+      key: 'kycType',
+      render: (value: any, record: any, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            {formatMessage(
+              {
+                id: STATUS_KYC.find(() => {
+                  return record.kycType == record.kycType;
+                })?.name,
+              } || '',
+            )}
+          </React.Fragment>
+        );
+      },
     },
     {
       title: 'const_column_date_of_birth',
       dataIndex: 'dateOfBirth',
       key: 'email',
-    },
-    {
-      title: 'const_column_status',
-      dataIndex: 'active',
-      key: 'active',
-      render: (value: any, record: any, index: number) => {
-        return (
-          <React.Fragment key={index}>
-            {record.isActive
-              ? formatMessage({ id: 'status_active' })
-              : formatMessage({ id: 'status_inactive' })}
-          </React.Fragment>
-        );
+      render: (_: any, record: any, index: number) => {
+        return record.dateOfBirth
+          ? dayjs(record.dateOfBirth).format('DD/MM/YYYY')
+          : '';
       },
     },
     {
@@ -159,7 +177,10 @@ export default () => {
       {openDialog && (
         <Dialog
           open={openDialog}
-          setOpen={(b) => setOpenDialog.set(b)}
+          setOpen={(b) => {
+            setOpenDialog.set(b);
+            refresh();
+          }}
           itemEdit={idSelected}
         />
       )}

@@ -66,7 +66,9 @@ export default () => {
       dataIndex: 'parking',
       key: 'parking',
       align: 'center',
-      // bicycles.length
+      render: (_: any, record: any, index: number) => {
+        return record?.bicycles?.length;
+      },
     },
     {
       title: intl.formatMessage({
@@ -96,11 +98,11 @@ export default () => {
         return (
           <>
             <Tooltip title="Xem thông tin">
-              <span>
+              <span onClick={() => setDiolog({ status: true, id: record.id })}>
                 <EyeOutlined />
               </span>
             </Tooltip>
-            <Tooltip title="Xem thông tin">
+            <Tooltip title="Xóa tram xe">
               <span>
                 <DeleteFilled />
               </span>
@@ -139,10 +141,13 @@ export default () => {
           {...tableProps}
         />
       </div>
-      <CustomerDialog
-        status={dialog.status}
-        onCancel={() => setDiolog({ status: false, id: null })}
-      />
+      {dialog.status && (
+        <CustomerDialog
+          status={dialog.status}
+          onCancel={() => setDiolog({ status: false, id: null })}
+          id={dialog.id}
+        />
+      )}
     </>
   );
 };

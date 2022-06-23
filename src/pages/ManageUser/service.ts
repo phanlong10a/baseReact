@@ -9,14 +9,14 @@ export const getTableData = (
   { current, pageSize }: { current: number; pageSize: number },
   formData: Object,
 ): Promise<Result> => {
-  let query = `page=${current}&pageSize=${pageSize}`;
+  let query = `page=${current}&pageSize=${pageSize}&status=PENDING`;
   Object.entries(formData).forEach(([key, value]) => {
     if (value) {
       query += `&${key}=${value}`;
     }
   });
 
-  return privateRequest(request.get, API_PATH.USER + '?' + query).then(
+  return privateRequest(request.get, API_PATH.KYC + '?' + query).then(
     (res: any) => {
       return {
         total: res?.total,
@@ -27,5 +27,20 @@ export const getTableData = (
 };
 
 export const getUserData = (id: any) => {
-  return privateRequest(request.get, API_PATH.USER + '/' + id);
+  return privateRequest(request.get, API_PATH.KYC + '/' + id);
+};
+
+export const verifyUser = (id: any) => {
+  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
+    data: {
+      status: 'VERIFIED',
+    },
+  });
+};
+export const cancelUser = (id: any) => {
+  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
+    data: {
+      status: 'CANCELED',
+    },
+  });
 };
