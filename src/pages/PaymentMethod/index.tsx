@@ -4,16 +4,7 @@ import {
   LoadingOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import {
-  Button,
-  Form,
-  FormInstance,
-  Input,
-  InputRef,
-  notification,
-  Switch,
-  Table,
-} from 'antd';
+import { Button, Form, Input, InputRef, message, Switch, Table } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
@@ -57,18 +48,6 @@ const ManagementPaymentMethod: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
-  type NotificationType = 'success' | 'info' | 'warning' | 'error';
-
-  const openNotificationWithIcon = (
-    type: NotificationType,
-    message: string,
-    description?: string,
-  ) => {
-    notification[type]({
-      message,
-      description,
-    });
-  };
   const { run: editMethod, loading: Editloading } = useRequest(
     async (method: IUpdateMethod, id: number) => {
       setLoading(true);
@@ -80,12 +59,12 @@ const ManagementPaymentMethod: React.FC = () => {
         setTimeout(() => {
           setLoading(false);
           refeshData();
-          openNotificationWithIcon('success', 'update method success');
+          message.success('update method success');
         }, 1000);
       },
       onError: () => {
         setLoading(false);
-        openNotificationWithIcon('error', 'update method failed');
+        message.error('update method failed');
       },
     },
   );
@@ -101,12 +80,12 @@ const ManagementPaymentMethod: React.FC = () => {
         setTimeout(() => {
           setLoading(false);
           refeshData();
-          openNotificationWithIcon('success', 'delete success');
+          message.success('delete success');
         }, 1000);
       },
       onError: () => {
         setLoading(false);
-        openNotificationWithIcon('error', 'delete method failed');
+        message.success('delete method failed');
       },
     },
   );

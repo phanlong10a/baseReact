@@ -18,6 +18,8 @@ import { IImage } from '../interface';
 import { getFile, IMethod } from '../services';
 import styles from './index.less';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import NewImage from './NewImage';
+import Search from 'antd/lib/transfer/search';
 
 interface INewMethod {
   handleSubmit?: (newMethod: IMethod) => typeof newMethod | void;
@@ -38,7 +40,7 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
     run: GetImages,
   } = useRequest(getFile, {
     onSuccess: (res) => {
-      setImagelist((imagelist) => imagelist.concat(res.data));
+      setImagelist((imagelist) => imagelist.concat(res?.data));
     },
   });
 
@@ -93,6 +95,10 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
             <Row gutter={16}>
               <Col span={12}>
                 <h3 className={styles.h3}>Hình ảnh</h3>
+                <header className={styles.header}>
+                  <Search placeholder="search text image" />
+                  <NewImage />
+                </header>
                 <div className={styles.imagelist} id="scrollableDiv">
                   <Form.Item name="imageId" label="Tên phương thức">
                     <Radio.Group>
