@@ -5,7 +5,7 @@ export interface Root2 {
   method: string;
   description: string;
   isActive: boolean;
-  display: string;
+  display: 'ON' | 'OFF';
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -13,6 +13,16 @@ export interface Root2 {
 }
 
 export interface Image {
+  id: number;
+  originalname: string;
+  mimetype: string;
+  size: number;
+  key: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface IImage {
   id: number;
   originalname: string;
   mimetype: string;
