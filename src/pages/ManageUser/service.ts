@@ -1,4 +1,5 @@
 import { API_PATH, privateRequest, request } from '@/utils/apis';
+import { StatusKyc } from '@/utils/enum';
 import { ENVIRONMENTS } from '@/utils/constant';
 
 interface Result {
@@ -33,14 +34,14 @@ export const getUserData = (id: any) => {
 export const verifyUser = (id: any) => {
   return privateRequest(request.post, API_PATH.KYC + '/' + id, {
     data: {
-      status: 'VERIFIED',
+      status: StatusKyc.VERIFIED,
     },
   });
 };
 export const cancelUser = (id: any) => {
   return privateRequest(request.post, API_PATH.KYC + '/' + id, {
     data: {
-      status: 'CANCELED',
+      status: StatusKyc.CANCELED,
     },
   });
 };

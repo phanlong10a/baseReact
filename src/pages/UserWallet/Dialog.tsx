@@ -13,17 +13,10 @@ import {
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
-import { getUserData, cancelUser, verifyUser } from './service';
+import { getUserData } from './service';
 const { Option } = Select;
 import styles from './index.less';
-import {
-  KYC_TYPE,
-  OPTION_GENDER,
-  OPTION_STATUS_ACTIVE,
-  STATUS_KYC,
-} from '@/utils/constant';
-import dayjs from 'dayjs';
-import { KycType } from '@/utils/enum';
+import { OPTION_GENDER, OPTION_STATUS_ACTIVE } from '@/utils/constant';
 
 interface Iprops {
   open: boolean;
@@ -46,10 +39,7 @@ interface IUser {
   points?: number;
   referralCode?: string;
   roles?: Array<any>;
-  frontPhoto?: any;
-  backPhoto?: any;
   status?: string;
-  kycType?: KycType;
   updatedAt?: string;
 }
 
@@ -78,32 +68,6 @@ const Dialog: React.FC<Iprops> = ({
       setLoading(false);
     },
   });
-
-  const requestVerifyUser = useRequest(verifyUser, {
-    manual: true,
-    onSuccess: (res: any) => {
-      message.success(formatMessage({ id: 'message_kyc_success' }));
-      setOpen(false);
-    },
-    onError: (rej) => {
-      message.error(formatMessage({ id: 'message_kyc_failure' }));
-    },
-    onFinally: () => {},
-  });
-  const requestCancelUser = useRequest(cancelUser, {
-    manual: true,
-    onSuccess: (result: any, params: any) => {
-      console.log(result);
-      message.success(formatMessage({ id: 'message_kyc_success' }));
-      setOpen(false);
-    },
-    onError: (rej) => {
-      debugger;
-      message.error(formatMessage({ id: 'message_kyc_failure' }));
-    },
-    onFinally: () => {},
-  });
-
   const getUser = () => {};
 
   React.useEffect(() => {
@@ -111,8 +75,8 @@ const Dialog: React.FC<Iprops> = ({
       requestUser.run(itemEdit);
     } else {
       setLoading(false);
-      // setUserInfo({})
-      // setEditable.set(true);
+      setUserInfo({});
+      setEditable.set(true);
     }
   }, [itemEdit]);
 
@@ -150,68 +114,37 @@ const Dialog: React.FC<Iprops> = ({
           <Skeleton active />
         ) : (
           <>
+            {userInfo.avatar && (
+              <div
+                style={{
+                  marginBottom: 24,
+                }}
+              >
+                <Image
+                  src={userInfo.avatar?.url}
+                  style={{ borderRadius: '100%' }}
+                  placeholder={formatMessage({ id: 'general_preview_image' })}
+                  preview={{
+                    mask: <>{formatMessage({ id: 'general_preview_image' })}</>,
+                    maskClassName: 'round-circle',
+                  }}
+                  width={100}
+                />
+              </div>
+            )}
             <Form
               layout="vertical"
               hideRequiredMark
               onFinish={onFinish}
               autoComplete="off"
+              initialValues={userInfo}
             >
-              <Row gutter={16}>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    label={formatMessage({
-                      id: 'general_kyc_photo_type_front',
-                    })}
-                  >
-                    {userInfo.frontPhoto?.url && (
-                      <Image
-                        src={userInfo.frontPhoto?.url}
-                        placeholder={formatMessage({
-                          id: 'general_preview_image',
-                        })}
-                        preview={{
-                          mask: (
-                            <>
-                              {formatMessage({ id: 'general_preview_image' })}
-                            </>
-                          ),
-                        }}
-                        width={'100%'}
-                        className={styles.kycImage}
-                      />
-                    )}
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    label={formatMessage({ id: 'general_kyc_photo_type_back' })}
-                  >
-                    {userInfo.backPhoto?.url && (
-                      <Image
-                        src={userInfo.backPhoto?.url}
-                        placeholder={formatMessage({
-                          id: 'general_preview_image',
-                        })}
-                        preview={{
-                          mask: (
-                            <>
-                              {formatMessage({ id: 'general_preview_image' })}
-                            </>
-                          ),
-                        }}
-                        width={'100%'}
-                        className={styles.kycImage}
-                      />
-                    )}
-                  </Form.Item>
-                </Col>
-              </Row>
               <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="fullName"
                     label={formatMessage({ id: 'fullname' })}
-                    initialValue={userInfo.fullName}
+                    // initialValue={userInfo.fullName}
                     rules={[
                       {
                         required: true,
@@ -232,30 +165,24 @@ const Dialog: React.FC<Iprops> = ({
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
-                    name="identificationCode"
-                    label={formatMessage({ id: 'identification_code' })}
-                    initialValue={userInfo.identificationCode}
+                    name="phone"
+                    label={formatMessage({ id: 'phone_number' })}
+                    // initialValue={userInfo.phone}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'phone_number' }),
+                          },
+                        ),
+                      },
+                    ]}
                   >
                     <Input
-                      placeholder={formatMessage({ id: 'identification_code' })}
+                      placeholder={formatMessage({ id: 'phone_number' })}
                       disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="dateOfBirth"
-                    label={formatMessage({ id: 'date_of_birth' })}
-                    initialValue={
-                      userInfo.dateOfBirth
-                        ? dayjs(userInfo.dateOfBirth).format('DD/MM/YYYY')
-                        : ''
-                    }
-                  >
-                    <Input
-                      placeholder={formatMessage({ id: 'date_of_birth' })}
-                      disabled={!editable}
-                      value={'editable'}
                     />
                   </Form.Item>
                 </Col>
@@ -263,25 +190,9 @@ const Dialog: React.FC<Iprops> = ({
                   <Form.Item
                     name="status"
                     label={formatMessage({ id: 'status' })}
-                    initialValue={userInfo.status}
                   >
                     <Select disabled={!editable}>
-                      {STATUS_KYC.map((status, index) => (
-                        <Option value={status.value} key={index}>
-                          {formatMessage({ id: status.name })}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="kycType"
-                    label={formatMessage({ id: 'kyc_type' })}
-                    initialValue={userInfo.kycType}
-                  >
-                    <Select disabled={!editable}>
-                      {KYC_TYPE.map((status, index) => (
+                      {OPTION_STATUS_ACTIVE.map((status, index) => (
                         <Option value={status.value} key={index}>
                           {formatMessage({ id: status.name })}
                         </Option>
@@ -321,6 +232,33 @@ const Dialog: React.FC<Iprops> = ({
                     </Select>
                   </Form.Item>
                 </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="email"
+                    label={formatMessage({ id: 'email' })}
+                    initialValue={userInfo.email}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'email' }),
+                          },
+                        ),
+                      },
+                      {
+                        type: 'email',
+                        message: formatMessage({ id: 'error.email' }),
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'email' })}
+                      disabled={!editable}
+                    />
+                  </Form.Item>
+                </Col>
               </Row>
               <div className={styles.addGroupButton}>
                 {/* <Button className={styles.addButton}>Thêm mới</Button> */}
@@ -330,24 +268,6 @@ const Dialog: React.FC<Iprops> = ({
                   className={styles.addButton}
                 >
                   {formatMessage({ id: 'general_cancel' })}
-                </Button>
-                <Button
-                  danger
-                  type="primary"
-                  className={styles.addButton}
-                  onClick={() => {
-                    requestCancelUser.run(userInfo.id);
-                  }}
-                >
-                  {formatMessage({ id: 'general_denied_verify' })}
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    requestVerifyUser.run(userInfo.id);
-                  }}
-                >
-                  {formatMessage({ id: 'general_verify' })}
                 </Button>
               </div>
             </Form>
