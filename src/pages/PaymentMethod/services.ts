@@ -1,4 +1,6 @@
+import { ENVIRONMENTS } from '@/utils/constant';
 import { privateRequest, request } from '@/utils/apis';
+import TokenManagement from '@/utils/apis/TokenManagement';
 const getPaymentMethodById = (id: string): string => `/payment/method/${id}`;
 const deletePaymentMethod = (id: string): string => `/payment/${id}`;
 const API_PAYMENT = {
@@ -13,9 +15,71 @@ const API_FILE = {
   FILE: '/file',
   FILE_ID: (id: string): string => `/file/${id}`,
 };
-const createFile = (file: any) => {
+const TokenManager = new TokenManagement({
+  isTokenValid: () => {
+    const localInfo = window?.localStorage.getItem(
+      ENVIRONMENTS.LOCAL_STORAGE_KEY as string,
+    );
+    let localInfoObject;
+
+    if (localInfo) {
+      localInfoObject = JSON.parse(localInfo);
+    }
+    return !!localInfoObject?.token;
+  },
+  getAccessToken: () => {
+    const localInfo = window?.localStorage.getItem(
+      ENVIRONMENTS.LOCAL_STORAGE_KEY as string,
+    );
+    let localInfoObject;
+
+    if (localInfo) {
+      localInfoObject = JSON.parse(localInfo);
+    }
+
+    return localInfoObject?.token || '';
+  },
+  onRefreshToken(done) {
+    const localInfo = window?.localStorage.getItem(
+      ENVIRONMENTS.LOCAL_STORAGE_KEY as string,
+    );
+    let localInfoObject;
+
+    if (localInfo) {
+      localInfoObject = JSON.parse(localInfo);
+    }
+
+    const refreshToken = localInfoObject?.refreshToken;
+    if (!refreshToken) {
+      return done(null);
+    }
+
+    request
+      .post('/auth/refreshToken', {
+        data: {
+          refreshToken,
+        },
+      })
+      .then((result) => {
+        if (result.refreshToken && result.accessToken) {
+          done(result.accessToken);
+          return;
+        }
+
+        done(null);
+      })
+      .catch((err) => {
+        console.error(err);
+        done(null);
+      });
+  },
+});
+
+const createFile = async (file: File) => {
+  const form = new FormData();
+  form.append('files', file);
   return privateRequest(request.post, API_FILE.FILE, {
-    data: file,
+    data: form,
   })
     .then((result) => {
       return result;

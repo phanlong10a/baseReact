@@ -1,19 +1,11 @@
+import openNotificationWithIcon from '@/components/Notification';
 import {
   DeleteOutlined,
   EditOutlined,
   LoadingOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import {
-  Button,
-  Form,
-  FormInstance,
-  Input,
-  InputRef,
-  notification,
-  Switch,
-  Table,
-} from 'antd';
+import { Button, Form, Input, InputRef, Switch, Table } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
@@ -57,18 +49,6 @@ const ManagementPaymentMethod: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
-  type NotificationType = 'success' | 'info' | 'warning' | 'error';
-
-  const openNotificationWithIcon = (
-    type: NotificationType,
-    message: string,
-    description?: string,
-  ) => {
-    notification[type]({
-      message,
-      description,
-    });
-  };
   const { run: editMethod, loading: Editloading } = useRequest(
     async (method: IUpdateMethod, id: number) => {
       setLoading(true);
