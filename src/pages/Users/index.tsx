@@ -5,6 +5,7 @@ import {
   Button,
   Form,
   Input,
+  message,
   Select,
   Switch,
   Table,
@@ -52,6 +53,14 @@ export default () => {
 
   const requestSwitchStatus = useRequest(switchStatusUser, {
     manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_add_user_success' }));
+      refresh();
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'message_add_user_failure' }));
+      refresh();
+    },
   });
 
   const { formatMessage } = useIntl();
@@ -191,7 +200,10 @@ export default () => {
       {openDialog && (
         <Dialog
           open={openDialog}
-          setOpen={(b) => setOpenDialog.set(b)}
+          setOpen={(b) => {
+            setOpenDialog.set(b);
+            refresh();
+          }}
           itemEdit={idSelected}
         />
       )}

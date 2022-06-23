@@ -35,7 +35,7 @@ export default () => {
   );
   const [form] = Form.useForm();
 
-  const { tableProps, search, params } = useAntdTable(getTableData, {
+  const { tableProps, search, params, refresh } = useAntdTable(getTableData, {
     defaultPageSize: 10,
     form,
   });
@@ -167,7 +167,10 @@ export default () => {
       {openDialog && (
         <Dialog
           open={openDialog}
-          setOpen={(b) => setOpenDialog.set(b)}
+          setOpen={(b) => {
+            setOpenDialog.set(b);
+            refresh();
+          }}
           itemEdit={idSelected}
         />
       )}

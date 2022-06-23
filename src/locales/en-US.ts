@@ -36,6 +36,8 @@ export default {
   status: 'Status',
   email: 'Email',
   kyc_type: 'Kyc type',
+  title: 'Title',
+  content: 'Content',
 
   // error
   'error.require': '{field} must be required.',
@@ -92,4 +94,6 @@ export default {
   const_column_date_of_birth: 'Date Of Birth',
   const_column_status: 'Status',
   const_column_action: 'Action',
+  const_column_title: 'Title',
+  const_column_content: 'Content',
 };

@@ -34,3 +34,8 @@ export const createUser = (payload: any) => {
     data: payload,
   });
 };
+export const editUser = (id: any, payload: any) => {
+  return privateRequest(request.put, API_PATH.USER + '/' + id, {
+    data: payload,
+  });
+};
