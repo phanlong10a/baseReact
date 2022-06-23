@@ -1,11 +1,10 @@
-import openNotificationWithIcon from '@/components/Notification';
 import {
   DeleteOutlined,
   EditOutlined,
   LoadingOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, Form, Input, InputRef, Switch, Table } from 'antd';
+import { Button, Form, Input, InputRef, message, Switch, Table } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
@@ -60,12 +59,12 @@ const ManagementPaymentMethod: React.FC = () => {
         setTimeout(() => {
           setLoading(false);
           refeshData();
-          openNotificationWithIcon('success', 'update method success');
+          message.success('update method success');
         }, 1000);
       },
       onError: () => {
         setLoading(false);
-        openNotificationWithIcon('error', 'update method failed');
+        message.error('update method failed');
       },
     },
   );
@@ -81,12 +80,12 @@ const ManagementPaymentMethod: React.FC = () => {
         setTimeout(() => {
           setLoading(false);
           refeshData();
-          openNotificationWithIcon('success', 'delete success');
+          message.success('delete success');
         }, 1000);
       },
       onError: () => {
         setLoading(false);
-        openNotificationWithIcon('error', 'delete method failed');
+        message.success('delete method failed');
       },
     },
   );
