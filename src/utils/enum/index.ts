@@ -4,6 +4,7 @@ export enum StatusKyc {
   VERIFIED = 'VERIFIED',
   CANCELED = 'CANCELED',
 }
+
 export enum StatusAccount {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',

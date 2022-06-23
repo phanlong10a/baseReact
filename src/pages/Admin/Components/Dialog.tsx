@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
-import { createUser, getUserData } from '../service';
+import { createUser, editUser, getUserData } from '../service';
 const { Option } = Select;
 import styles from '../index.less';
 import { OPTION_GENDER, OPTION_STATUS_ACTIVE } from '@/utils/constant';
@@ -34,7 +34,7 @@ interface IUser {
   email?: string;
   fullName?: string;
   gender?: string;
-  id?: string;
+  id?: string | number;
   identificationCode?: string;
   isActive?: true;
   phone?: string;
@@ -74,13 +74,26 @@ const Dialog: React.FC<Iprops> = ({
   const requestCreateUser = useRequest(createUser, {
     manual: true,
     onSuccess: (res: any) => {
-      debugger;
-      console.log(res);
+      message.success(formatMessage({ id: 'message_add_user_success' }));
       setUserInfo(res);
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(rej.data.message);
+      message.error(formatMessage({ id: 'message_add_user_failure' }));
+    },
+    onFinally: () => {
+      setLoading(false);
+    },
+  });
+  const requestEditUser = useRequest(editUser, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.error(formatMessage({ id: 'message_user_success' }));
+      setUserInfo(res);
+      setOpen(false);
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'message_user_failure' }));
     },
     onFinally: () => {
       setLoading(false);
@@ -104,6 +117,9 @@ const Dialog: React.FC<Iprops> = ({
   };
 
   const onFinish = (value: any) => {
+    if (itemEdit) {
+      requestEditUser.run(userInfo.id, value);
+    }
     requestCreateUser.run(value);
   };
 
