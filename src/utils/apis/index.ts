@@ -8,7 +8,7 @@ const request = extend({
     if (error.response?.status === 401) {
       // clean all token
     }
-    throw error;
+    throw error?.data || error?.response;
   },
 });
 
