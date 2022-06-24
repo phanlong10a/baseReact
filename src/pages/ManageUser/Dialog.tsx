@@ -17,11 +17,13 @@ import { getUserData, cancelUser, verifyUser } from './service';
 const { Option } = Select;
 import styles from './index.less';
 import {
+  KYC_TYPE,
   OPTION_GENDER,
   OPTION_STATUS_ACTIVE,
   STATUS_KYC,
 } from '@/utils/constant';
 import dayjs from 'dayjs';
+import { KycType } from '@/utils/enum';
 
 interface Iprops {
   open: boolean;
@@ -44,7 +46,10 @@ interface IUser {
   points?: number;
   referralCode?: string;
   roles?: Array<any>;
+  frontPhoto?: any;
+  backPhoto?: any;
   status?: string;
+  kycType?: KycType;
   updatedAt?: string;
 }
 
@@ -93,6 +98,7 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej) => {
+      debugger;
       message.error(formatMessage({ id: 'message_kyc_failure' }));
     },
     onFinally: () => {},
@@ -152,47 +158,57 @@ const Dialog: React.FC<Iprops> = ({
             >
               <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    label={formatMessage({
-                      id: 'general_kyc_photo_type_front',
-                    })}
-                  >
-                    <Image
-                      src={
-                        'https://luatvietphong.vn/wp-content/uploads/2021/08/lam-gia-chung-minh-thu-bang-photoshop.png'
-                      }
-                      placeholder={formatMessage({
-                        id: 'general_preview_image',
+                  {userInfo.frontPhoto?.url && (
+                    <Form.Item
+                      label={formatMessage({
+                        id: 'general_kyc_photo_type_front',
                       })}
-                      preview={{
-                        mask: (
-                          <>{formatMessage({ id: 'general_preview_image' })}</>
-                        ),
-                      }}
-                      width={'100%'}
-                    />
-                  </Form.Item>
+                    >
+                      <Image
+                        src={userInfo.frontPhoto?.url}
+                        placeholder={formatMessage({
+                          id: 'general_preview_image',
+                        })}
+                        preview={{
+                          mask: (
+                            <>
+                              {formatMessage({ id: 'general_preview_image' })}
+                            </>
+                          ),
+                        }}
+                        width={'100%'}
+                        className={styles.kycImage}
+                      />
+                    </Form.Item>
+                  )}
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    label={formatMessage({ id: 'general_kyc_photo_type_back' })}
-                  >
-                    <Image
-                      src={
-                        'https://luatvietphong.vn/wp-content/uploads/2021/08/lam-gia-chung-minh-thu-bang-photoshop.png'
-                      }
-                      placeholder={formatMessage({
-                        id: 'general_preview_image',
+                  {userInfo.backPhoto?.url && (
+                    <Form.Item
+                      label={formatMessage({
+                        id: 'general_kyc_photo_type_back',
                       })}
-                      preview={{
-                        mask: (
-                          <>{formatMessage({ id: 'general_preview_image' })}</>
-                        ),
-                      }}
-                      width={'100%'}
-                    />
-                  </Form.Item>
+                    >
+                      <Image
+                        src={userInfo.backPhoto?.url}
+                        placeholder={formatMessage({
+                          id: 'general_preview_image',
+                        })}
+                        preview={{
+                          mask: (
+                            <>
+                              {formatMessage({ id: 'general_preview_image' })}
+                            </>
+                          ),
+                        }}
+                        width={'100%'}
+                        className={styles.kycImage}
+                      />
+                    </Form.Item>
+                  )}
                 </Col>
+              </Row>
+              <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
                     name="fullName"
@@ -253,6 +269,21 @@ const Dialog: React.FC<Iprops> = ({
                   >
                     <Select disabled={!editable}>
                       {STATUS_KYC.map((status, index) => (
+                        <Option value={status.value} key={index}>
+                          {formatMessage({ id: status.name })}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="kycType"
+                    label={formatMessage({ id: 'kyc_type' })}
+                    initialValue={userInfo.kycType}
+                  >
+                    <Select disabled={!editable}>
+                      {KYC_TYPE.map((status, index) => (
                         <Option value={status.value} key={index}>
                           {formatMessage({ id: status.name })}
                         </Option>

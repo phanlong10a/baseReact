@@ -14,6 +14,7 @@ import styles from './index.less';
 import '/src/global/styles.less';
 import MainHeader from '../Header/main.header';
 import { useToggle } from 'ahooks';
+import 'react-quill/dist/quill.snow.css';
 
 const { Header, Content, Footer, Sider } = Layout;
 

@@ -1,25 +1,83 @@
-import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
-import { Input, InputRef, Table } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import { Button, Form, Input, InputRef, message, Switch, Table } from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
 import { FilterConfirmProps } from 'antd/lib/table/interface';
 import React, { useRef, useState } from 'react';
 import { useIntl, useRequest } from 'umi';
 import styles from './index.less';
 import { Image, tableData } from './interface';
-import { createPayment, getAllPayment } from './services';
+import NewMethod from './NewMethod';
+import {
+  createPayment,
+  deletePayment,
+  editPayment,
+  getAllPayment,
+  IUpdateMethod,
+} from './services';
 
 const ManagementPaymentMethod: React.FC = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
+  const {
+    data: tableData,
+    run: requestData,
+    refresh: refeshData,
+  } = useRequest(
+    async (lastResult: any, params: string) => {
+      return getAllPayment({
+        page: 1,
+        pageSize: 10,
+      });
+    },
+    {
+      onSuccess: () => {},
+    },
+  );
+
+  const [loading, setLoading] = useState(false);
+
+  const { run: editMethod, loading: Editloading } = useRequest(
+    async (method: IUpdateMethod, id: number) => {
+      setLoading(true);
+      return editPayment(method, id);
+    },
+    {
+      manual: true,
+      onSuccess: (res) => {
+        setLoading(false);
+        refeshData();
+        message.success('update method success');
+      },
+      onError: () => {
+        setLoading(false);
+        message.error('update method failed');
+      },
+    },
+  );
+
+  const { run: deleteMethod, loading: deleteLoading } = useRequest(
+    async (id: number) => {
+      setLoading(true);
+      return deletePayment(id);
+    },
+    {
+      manual: true,
+      onSuccess: (res) => {
+        setLoading(false);
+        refeshData();
+        message.success('delete success');
+      },
+      onError: () => {
+        setLoading(false);
+        message.success('delete method failed');
+      },
+    },
+  );
+
   type DataIndex = keyof tableData;
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
 
   const handleSearch = (
@@ -28,12 +86,6 @@ const ManagementPaymentMethod: React.FC = () => {
     dataIndex: DataIndex,
   ) => {
     confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-  const handleReset = (clearFilters: () => void) => {
-    clearFilters();
-    setSearchText('');
   };
 
   const getColumnSearchProps = (
@@ -80,71 +132,167 @@ const ManagementPaymentMethod: React.FC = () => {
     {
       title: 'PHƯƠNG THỨC THANH TOÁN',
       dataIndex: 'method',
-      filters: [
-        { text: 'Joe', value: 'Joe' },
-        { text: 'Jim', value: 'Jim' },
-      ],
       onFilter: (value, record) => record.method.includes(String(value)),
       ...getColumnSearchProps('method'),
+      width: 150,
     },
     {
-      title: 'hinh anh',
+      title: 'Hinh anh',
       dataIndex: 'image',
-      render: (image: Image) => {
-        return <img src={image.url} alt="" />;
+      render: (image: Image, record: tableData) => {
+        return (
+          <div className={styles.image}>
+            <img src={image.url} alt="" className={styles.image} />
+          </div>
+        );
       },
+      width: 500,
     },
     {
-      title: 'ten',
+      title: 'deciption',
+      dataIndex: 'image',
+      render: (image: Image, record: tableData) => {
+        return (
+          <Form
+            onFinish={(value) => {
+              editMethod(
+                {
+                  description: value.description,
+                  isActive: !record.isActive,
+                  display: record.display,
+                },
+                record.id,
+              );
+            }}
+          >
+            <div className={styles.deciption}>
+              <Form.Item name="description" initialValue={record.description}>
+                <TextArea rows={4} />
+              </Form.Item>
+              <Button type="primary" htmlType="submit">
+                <EditOutlined />
+                Save change
+              </Button>
+            </div>
+          </Form>
+        );
+      },
+      width: 500,
+    },
+    {
+      title: 'status',
       dataIndex: 'name',
-      render: () => <DeleteOutlined className="pointer" />,
+      filters: [
+        {
+          text: 'ACTIVE',
+          value: 'ACTIVE',
+        },
+        {
+          text: 'INACTIVE',
+          value: 'INACTIVE',
+        },
+      ],
+      render: (_, record: tableData) => (
+        <div className={styles.edit}>
+          <Switch
+            checked={record.isActive}
+            className={styles.switch}
+            onChange={() => {
+              editMethod(
+                {
+                  description: record.description,
+                  isActive: !record.isActive,
+                  display: record.display,
+                },
+                record.id,
+              );
+            }}
+          />
+        </div>
+      ),
+      width: 100,
+    },
+    {
+      title: 'display',
+      dataIndex: 'name',
+      filters: [
+        {
+          text: 'ON',
+          value: 'ON',
+        },
+        {
+          text: 'OFF',
+          value: 'OFF',
+        },
+      ],
+      render: (_, record: tableData) => (
+        <div className={styles.edit}>
+          <Switch
+            defaultChecked
+            className={styles.switch}
+            checked={record.display === 'ON'}
+            onChange={() => {
+              editMethod(
+                {
+                  description: record.description,
+                  isActive: record.isActive,
+                  display: record.display === 'ON' ? 'OFF' : 'ON',
+                },
+                record.id,
+              );
+            }}
+          />
+        </div>
+      ),
+      width: 100,
+    },
+    {
+      title: 'delete',
+      dataIndex: 'name',
+      render: (_, record: tableData) => (
+        <div className={styles.edit}>
+          <DeleteOutlined className={styles.delete} size={25} />
+        </div>
+      ),
+      width: 100,
     },
   ];
 
-  // const { loading, data, run } = useRequest(
-  //   createPayment({
-  //     imageId: 1,
-  //     method: 'VTCPAY',
-  //     description: 'This is descriptionasd',
-  //     isActive: true,
-  //     display: 'OFF',
-  //   }),
-  //   {
-  //     manual: true,
-  //   },
-  // );
-
-  const { data: tableData } = useRequest(
-    async (lastResult: any, params: string) => {
-      // skip take
-      // const result = privateRequest(axios.get | fetch | request.get, path, configs = { customHeaders, body, params});
-      // const results2 = request(get, configs);
-      // gop ket qua
-      // tra ve ket qua
-      return getAllPayment({
-        page: 1,
-        pageSize: 10,
-        // SortBy: 'id' | 'method' | 'createdAt' | 'updatedAt',
-        // orderby: 'ASC' | 'DESC',
-        // method: 'string',
-        // isActive: boolean,
-        // display: 'ON' | 'OFF',
-      });
+  const { run: newMethod } = useRequest(createPayment, {
+    manual: true,
+    onSuccess: (res) => {
+      console.log(res);
     },
-  );
+    onError: (res) => {
+      message.error('failed');
+    },
+  });
 
   return (
-    <section className={styles.Manage_payment_method}>
-      <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
-      {/* <button onClick={run}>run</button> */}
-      <Table
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={tableData}
-        className={styles.table_white}
-        rowKey={(record) => record.id}
-      />
-    </section>
+    <>
+      <section className={styles.Manage_payment_method}>
+        <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
+        <NewMethod
+          handleSubmit={(method) => {
+            newMethod(method);
+          }}
+        />
+        <Table
+          loading={loading}
+          columns={columns}
+          dataSource={tableData}
+          className={styles.table_white}
+          rowKey={(record) => JSON.stringify(record)}
+          pagination={{
+            pageSize: 2,
+            // pageSizeOptions: 2,
+          }}
+          onChange={(panigation, filters) => {
+            console.log(panigation, filters);
+          }}
+        />
+      </section>
+    </>
   );
 };
 export default ManagementPaymentMethod;

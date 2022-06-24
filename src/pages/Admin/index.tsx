@@ -9,6 +9,7 @@ import { STATUS_ACTIVE } from '@/utils/constant';
 import styles from './index.less';
 import { getTableData } from './service';
 import { getLocale } from 'umi';
+import { StatusAccount } from '@/utils/enum';
 
 const { Option } = Select;
 
@@ -35,8 +36,8 @@ export default () => {
   );
   const [form] = Form.useForm();
 
-  const { tableProps, search, params } = useAntdTable(getTableData, {
-    defaultPageSize: 5,
+  const { tableProps, search, params, refresh } = useAntdTable(getTableData, {
+    defaultPageSize: 10,
     form,
   });
   const { formatMessage } = useIntl();
@@ -83,7 +84,7 @@ export default () => {
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.isActive
+            {record.status === StatusAccount.ACTIVE
               ? formatMessage({ id: 'status_active' })
               : formatMessage({ id: 'status_inactive' })}
           </React.Fragment>
@@ -123,11 +124,7 @@ export default () => {
             onSearch={submit}
           />
         </Form.Item>
-        <Form.Item
-          name="isActive"
-          initialValue=""
-          className={styles.searchItem}
-        >
+        <Form.Item name="status" initialValue="" className={styles.searchItem}>
           <Select onChange={submit}>
             {STATUS_ACTIVE.map((item) => (
               <Option value={item.value}>
@@ -167,7 +164,10 @@ export default () => {
       {openDialog && (
         <Dialog
           open={openDialog}
-          setOpen={(b) => setOpenDialog.set(b)}
+          setOpen={(b) => {
+            setOpenDialog.set(b);
+            refresh();
+          }}
           itemEdit={idSelected}
         />
       )}

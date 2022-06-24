@@ -8,7 +8,7 @@ const request = extend({
     if (error.response?.status === 401) {
       // clean all token
     }
-    throw error;
+    throw error?.data || error?.response;
   },
 });
 
@@ -118,6 +118,7 @@ const API_PATH = {
   LOGOUT: '/auth/logout',
   USER: '/user',
   KYC: '/kyc',
+  ADMIN_USER: '/user/admin-user',
 };
 
 export { API_PATH, request, privateRequest };

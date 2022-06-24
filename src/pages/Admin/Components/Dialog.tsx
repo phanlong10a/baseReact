@@ -12,11 +12,14 @@ import {
   Button,
 } from 'antd';
 import React, { useState } from 'react';
+import { paternPhone } from '@/utils/patern';
 import { useIntl } from 'umi';
-import { getUserData } from '../service';
+import { createUser, editUser, getUserData } from '../service';
 const { Option } = Select;
 import styles from '../index.less';
 import { OPTION_GENDER, OPTION_STATUS_ACTIVE } from '@/utils/constant';
+import { StatusAccount } from '@/utils/enum';
+import { paternpassWord } from '@/utils/patern';
 
 interface Iprops {
   open: boolean;
@@ -32,7 +35,7 @@ interface IUser {
   email?: string;
   fullName?: string;
   gender?: string;
-  id?: string;
+  id?: string | number;
   identificationCode?: string;
   isActive?: true;
   phone?: string;
@@ -68,14 +71,44 @@ const Dialog: React.FC<Iprops> = ({
       setLoading(false);
     },
   });
+
+  const requestCreateUser = useRequest(createUser, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_add_user_success' }));
+      setUserInfo(res);
+      setOpen(false);
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'message_add_user_failure' }));
+    },
+    onFinally: () => {
+      setLoading(false);
+    },
+  });
+  const requestEditUser = useRequest(editUser, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.error(formatMessage({ id: 'message_user_success' }));
+      setUserInfo(res);
+      setOpen(false);
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'message_user_failure' }));
+    },
+    onFinally: () => {
+      setLoading(false);
+    },
+  });
+
   const getUser = () => {};
 
   React.useEffect(() => {
     if (itemEdit) {
       requestUser.run(itemEdit);
     } else {
-      setLoading(false);
       setUserInfo({});
+      setLoading(false);
       setEditable.set(true);
     }
   }, [itemEdit]);
@@ -85,16 +118,21 @@ const Dialog: React.FC<Iprops> = ({
   };
 
   const onFinish = (value: any) => {
-    console.log(value);
+    if (itemEdit) {
+      requestEditUser.run(userInfo.id, value);
+    }
+    requestCreateUser.run(value);
   };
 
   return (
     <>
       <Modal
         title={
-          editable
-            ? formatMessage({ id: 'general_edit_infomation' })
-            : formatMessage({ id: 'general_view_infomation' })
+          itemEdit
+            ? editable
+              ? formatMessage({ id: 'general_edit_infomation' })
+              : formatMessage({ id: 'general_view_infomation' })
+            : formatMessage({ id: 'general_add' })
         }
         centered
         width={720}
@@ -178,6 +216,15 @@ const Dialog: React.FC<Iprops> = ({
                           },
                         ),
                       },
+                      {
+                        pattern: paternPhone,
+                        message: formatMessage(
+                          { id: 'error.patern' },
+                          {
+                            field: formatMessage({ id: 'phone_number' }),
+                          },
+                        ),
+                      },
                     ]}
                   >
                     <Input
@@ -190,6 +237,7 @@ const Dialog: React.FC<Iprops> = ({
                   <Form.Item
                     name="status"
                     label={formatMessage({ id: 'status' })}
+                    initialValue={StatusAccount.ACTIVE}
                   >
                     <Select disabled={!editable}>
                       {OPTION_STATUS_ACTIVE.map((status, index) => (
@@ -236,7 +284,6 @@ const Dialog: React.FC<Iprops> = ({
                   <Form.Item
                     name="email"
                     label={formatMessage({ id: 'email' })}
-                    initialValue={userInfo.email}
                     rules={[
                       {
                         required: true,
@@ -255,6 +302,38 @@ const Dialog: React.FC<Iprops> = ({
                   >
                     <Input
                       placeholder={formatMessage({ id: 'email' })}
+                      disabled={!editable}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="password"
+                    label={formatMessage({ id: 'password' })}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'password' }),
+                          },
+                        ),
+                      },
+                      {
+                        pattern: paternpassWord,
+                        message: formatMessage(
+                          { id: 'error.patern' },
+                          {
+                            field: formatMessage({ id: 'password' }),
+                          },
+                        ),
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'password' })}
+                      type="password"
                       disabled={!editable}
                     />
                   </Form.Item>

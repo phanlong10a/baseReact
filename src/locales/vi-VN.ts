@@ -6,13 +6,17 @@ export default {
   // error
   'error.require': '{field} không được để trống.',
   'error.email': 'Email không đúng định dạng.',
+  'error.patern': '{field} không đúng định dạng.',
 
   //mesages
 
   message_success: 'Thành công',
   message_kyc_success: 'Cập nhật trạng thái xác thực thành công',
+  message_user_success: 'Cập nhật tài khoản thành công',
+  message_add_user_success: 'Thêm tài khoản thành công',
   message_failure: 'Thất bại',
   message_kyc_failure: 'Cập nhật trạng thái xác thực thất bại',
+  message_add_user_failure: 'Thêm tài khoản thất bại',
 
   // Form
   password: 'Mật khẩu',
@@ -24,6 +28,9 @@ export default {
   email: 'Email',
   identification_code: 'Mã định danh',
   date_of_birth: 'Ngày sinh',
+  kyc_type: 'Loại giấy tờ',
+  content: 'Nội dung',
+  title: 'Tiêu đề',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
@@ -109,6 +116,8 @@ export default {
   const_column_date_of_birth: 'Ngày sinh',
   const_column_status: 'Trạng thái',
   const_column_action: 'Hành động',
+  const_column_title: 'Tiêu đề',
+  const_column_content: 'Nội dung',
 
   manager_bike_stattion: 'Quản lý trạm xe',
   manager_bike_stattion_table_name: 'Tên trạm xe',

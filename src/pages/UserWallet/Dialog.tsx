@@ -58,6 +58,7 @@ const Dialog: React.FC<Iprops> = ({
   const requestUser = useRequest(getUserData, {
     manual: true,
     onSuccess: (res: any) => {
+      console.log(res);
       setUserInfo(res);
     },
     onError: (rej) => {

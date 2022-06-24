@@ -1,6 +1,5 @@
 import { privateRequest, request, API_PATH } from '@/utils/apis';
 import { ENVIRONMENTS } from '@/utils/constant';
-import { StatusAccount } from '@/utils/enum';
 
 interface Result {
   total: number;
@@ -31,11 +30,11 @@ export const getUserData = (id: any) => {
   return privateRequest(request.get, API_PATH.USER + '/' + id);
 };
 
-export const switchStatusUser = (user: any, payload: StatusAccount) => {
+export const switchStatusUser = (user: any, payload: boolean) => {
   return privateRequest(request.put, API_PATH.USER + '/' + user.id, {
     data: {
       ...user,
-      status: payload,
+      isActive: payload,
     },
   });
 };

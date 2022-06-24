@@ -16,7 +16,7 @@ export const getTableData = (
     }
   });
 
-  return privateRequest(request.get, API_PATH.USER + '?' + query).then(
+  return privateRequest(request.get, API_PATH.ADMIN_USER + '?' + query).then(
     (res: any) => {
       return {
         total: res?.total,
@@ -28,4 +28,14 @@ export const getTableData = (
 
 export const getUserData = (id: any) => {
   return privateRequest(request.get, API_PATH.USER + '/' + id);
+};
+export const createUser = (payload: any) => {
+  return privateRequest(request.post, API_PATH.USER, {
+    data: payload,
+  });
+};
+export const editUser = (id: any, payload: any) => {
+  return privateRequest(request.put, API_PATH.USER + '/' + id, {
+    data: payload,
+  });
 };

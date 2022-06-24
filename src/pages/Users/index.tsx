@@ -1,14 +1,25 @@
 import { EyeOutlined } from '@ant-design/icons';
-import { useAntdTable, useToggle } from 'ahooks';
-import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
+import { useAntdTable, useToggle, useRequest } from 'ahooks';
+import {
+  Breadcrumb,
+  Button,
+  Form,
+  Input,
+  message,
+  Select,
+  Switch,
+  Table,
+  Tooltip,
+} from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
 import Dialog from './Dialog';
 import styles from './index.less';
-import { getTableData } from './service';
+import { getTableData, switchStatusUser } from './service';
 import { getLocale } from 'umi';
 import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
+import { StatusAccount } from '@/utils/enum';
 
 const { Option } = Select;
 
@@ -30,15 +41,29 @@ interface DataType {
 
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
+
   const [idSelected, setIdSelected] = React.useState<number | string | null>(
     null,
   );
   const [form] = Form.useForm();
 
-  const { tableProps, search, params } = useAntdTable(getTableData, {
-    defaultPageSize: 5,
+  const { tableProps, search, params, refresh } = useAntdTable(getTableData, {
+    defaultPageSize: 10,
     form,
   });
+
+  const requestSwitchStatus = useRequest(switchStatusUser, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_add_user_success' }));
+      refresh();
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'message_add_user_failure' }));
+      refresh();
+    },
+  });
+
   const { formatMessage } = useIntl();
 
   const { type, changeType, submit, reset } = search;
@@ -79,13 +104,27 @@ export default () => {
     {
       title: 'const_column_status',
       dataIndex: 'active',
+      align: 'center',
       key: 'active',
+      width: 250,
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.isActive
-              ? formatMessage({ id: 'status_active' })
-              : formatMessage({ id: 'status_inactive' })}
+            <Switch
+              style={{ width: 150 }}
+              checkedChildren={formatMessage({ id: 'status_active' })}
+              unCheckedChildren={formatMessage({ id: 'status_inactive' })}
+              defaultChecked={record.status === StatusAccount.ACTIVE}
+              onChange={(checked: boolean, event: MouseEvent) => {
+                switch (record.status) {
+                  case StatusAccount.ACTIVE:
+                    requestSwitchStatus.run(record, StatusAccount.INACTIVE);
+                    break;
+                  case StatusAccount.INACTIVE:
+                    requestSwitchStatus.run(record, StatusAccount.ACTIVE);
+                }
+              }}
+            />
           </React.Fragment>
         );
       },
@@ -132,11 +171,7 @@ export default () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item
-          name="isActive"
-          initialValue=""
-          className={styles.searchItem}
-        >
+        <Form.Item name="status" initialValue="" className={styles.searchItem}>
           <Select onChange={submit}>
             {STATUS_ACTIVE.map((item) => (
               <Option value={item.value}>
@@ -168,7 +203,10 @@ export default () => {
       {openDialog && (
         <Dialog
           open={openDialog}
-          setOpen={(b) => setOpenDialog.set(b)}
+          setOpen={(b) => {
+            setOpenDialog.set(b);
+            refresh();
+          }}
           itemEdit={idSelected}
         />
       )}

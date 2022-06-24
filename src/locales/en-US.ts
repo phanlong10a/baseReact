@@ -20,6 +20,16 @@ export default {
   navigation_user: 'User Management',
   navigation_user_kyc: 'Verify User Management',
   navigation_admin_manage: 'Admin User Management',
+  navigation_vihicle: 'Vehicle Management',
+  navigation_lock: 'Bike Lock Management',
+  navigation_travel: 'Travel Management',
+  navigation_user_wallet: 'User Wallet Management',
+  navigation_ticket: 'Ticket Management',
+  navigation_method: 'Method Management',
+  navigation_promotion: 'Promotion Management',
+  navigation_tutorial: 'Tutorial Management',
+  navigation_news: 'News Management',
+  navigation_rate: 'Rate Management',
 
   //breadcrumb
   user_management: 'User management',
@@ -35,10 +45,15 @@ export default {
   fullname: 'Full Name',
   status: 'Status',
   email: 'Email',
+  kyc_type: 'Kyc type',
+  title: 'Title',
+  content: 'Content',
 
   // error
   'error.require': '{field} must be required.',
   'error.email': 'Email invalid.',
+  'error.patern': '{field} invalid.',
+
   //general
 
   general_view_infomation: 'View infomation',
@@ -89,4 +104,6 @@ export default {
   const_column_date_of_birth: 'Date Of Birth',
   const_column_status: 'Status',
   const_column_action: 'Action',
+  const_column_title: 'Title',
+  const_column_content: 'Content',
 };
