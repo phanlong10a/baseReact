@@ -3,14 +3,23 @@ import {
   EditOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, Form, Input, InputRef, message, Switch, Table } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  InputRef,
+  message,
+  Radio,
+  Switch,
+  Table,
+} from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import type { ColumnsType, ColumnType } from 'antd/lib/table';
-import { FilterConfirmProps } from 'antd/lib/table/interface';
 import React, { useRef, useState } from 'react';
-import { useIntl, useRequest } from 'umi';
+import { Location, useIntl, useRequest } from 'umi';
 import styles from './index.less';
-import { Image, tableData } from './interface';
+import { Image, IQueryPayment, tableData } from './interface';
 import NewMethod from './NewMethod';
 import {
   createPayment,
@@ -19,23 +28,17 @@ import {
   getAllPayment,
   IUpdateMethod,
 } from './services';
+import { ParsedQuery } from 'history-with-query/node_modules/query-string';
+import { useLocation, history } from 'umi';
 
 const ManagementPaymentMethod: React.FC = () => {
   const {
     data: tableData,
     run: requestData,
     refresh: refeshData,
-  } = useRequest(
-    async (lastResult: any, params: string) => {
-      return getAllPayment({
-        page: 1,
-        pageSize: 10,
-      });
-    },
-    {
-      onSuccess: () => {},
-    },
-  );
+  } = useRequest(getAllPayment, {
+    onSuccess: () => {},
+  });
 
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +61,7 @@ const ManagementPaymentMethod: React.FC = () => {
     },
   );
 
-  const { run: deleteMethod, loading: deleteLoading } = useRequest(
+  const { run: deleteMethod } = useRequest(
     async (id: number) => {
       setLoading(true);
       return deletePayment(id);
@@ -72,7 +75,7 @@ const ManagementPaymentMethod: React.FC = () => {
       },
       onError: () => {
         setLoading(false);
-        message.success('delete method failed');
+        message.error('delete method failed');
       },
     },
   );
@@ -80,59 +83,33 @@ const ManagementPaymentMethod: React.FC = () => {
   type DataIndex = keyof tableData;
   const searchInput = useRef<InputRef>(null);
 
-  const handleSearch = (
-    selectedKeys: string[],
-    confirm: (param?: FilterConfirmProps) => void,
-    dataIndex: DataIndex,
-  ) => {
-    confirm();
-  };
-
   const getColumnSearchProps = (
     dataIndex: DataIndex,
   ): ColumnType<tableData> => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            handleSearch(selectedKeys as string[], confirm, dataIndex)
-          }
           style={{ marginBottom: 8, display: 'block' }}
+          onChange={(e) => {
+            setSelectedKeys(e.target.value ? [e.target.value] : []);
+          }}
+          onPressEnter={() => confirm()}
         />
       </div>
     ),
     filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
     render: (text) => text,
   });
 
   const columns: ColumnsType<tableData> = [
     {
-      title: 'PHƯƠNG THỨC THANH TOÁN',
+      title: 'PHƯƠNG THỨC',
       dataIndex: 'method',
-      onFilter: (value, record) => record.method.includes(String(value)),
       ...getColumnSearchProps('method'),
       width: 150,
     },
@@ -158,7 +135,7 @@ const ManagementPaymentMethod: React.FC = () => {
               editMethod(
                 {
                   description: value.description,
-                  isActive: !record.isActive,
+                  status: record.status,
                   display: record.display,
                 },
                 record.id,
@@ -181,7 +158,7 @@ const ManagementPaymentMethod: React.FC = () => {
     },
     {
       title: 'status',
-      dataIndex: 'name',
+      dataIndex: 'status',
       filters: [
         {
           text: 'ACTIVE',
@@ -195,13 +172,13 @@ const ManagementPaymentMethod: React.FC = () => {
       render: (_, record: tableData) => (
         <div className={styles.edit}>
           <Switch
-            checked={record.isActive}
+            checked={record.status === 'ACTIVE'}
             className={styles.switch}
             onChange={() => {
               editMethod(
                 {
                   description: record.description,
-                  isActive: !record.isActive,
+                  status: record.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE',
                   display: record.display,
                 },
                 record.id,
@@ -214,7 +191,7 @@ const ManagementPaymentMethod: React.FC = () => {
     },
     {
       title: 'display',
-      dataIndex: 'name',
+      dataIndex: 'display',
       filters: [
         {
           text: 'ON',
@@ -235,7 +212,7 @@ const ManagementPaymentMethod: React.FC = () => {
               editMethod(
                 {
                   description: record.description,
-                  isActive: record.isActive,
+                  status: record.status,
                   display: record.display === 'ON' ? 'OFF' : 'ON',
                 },
                 record.id,
@@ -251,7 +228,13 @@ const ManagementPaymentMethod: React.FC = () => {
       dataIndex: 'name',
       render: (_, record: tableData) => (
         <div className={styles.edit}>
-          <DeleteOutlined className={styles.delete} size={25} />
+          <DeleteOutlined
+            className={styles.delete}
+            size={25}
+            onClick={() => {
+              deleteMethod(record.id);
+            }}
+          />
         </div>
       ),
       width: 100,
@@ -267,7 +250,12 @@ const ManagementPaymentMethod: React.FC = () => {
       message.error('failed');
     },
   });
+  const location: Location = useLocation();
 
+  const handelFilter = (query: any) => {
+    history.push({ query: query });
+    requestData(query);
+  };
   return (
     <>
       <section className={styles.Manage_payment_method}>
@@ -284,12 +272,88 @@ const ManagementPaymentMethod: React.FC = () => {
           className={styles.table_white}
           rowKey={(record) => JSON.stringify(record)}
           pagination={{
-            pageSize: 2,
-            // pageSizeOptions: 2,
+            pageSize: 10,
           }}
           onChange={(panigation, filters) => {
-            console.log(panigation, filters);
+            const query: IQueryPayment = {
+              ...location.query,
+              page: panigation?.current ? panigation?.current : 1,
+              pageSize: panigation?.pageSize ? panigation.pageSize : 10,
+              method: filters?.method ? String(filters?.method[0]) : '--',
+              status:
+                filters?.status?.length === 1
+                  ? String(filters?.status[0])
+                  : '--',
+              display:
+                filters?.display?.length === 1
+                  ? String(filters?.display[0])
+                  : '--',
+            };
+            if (query.method === '--') {
+              delete query.method;
+            }
+            if (query.status === '--') {
+              delete query.status;
+            }
+            if (query.display === '--') {
+              delete query.display;
+            }
+            handelFilter(query);
           }}
+          title={() => (
+            <div className={styles.tableheader}>
+              <label>
+                <p>sortBy</p>
+                <Radio.Group
+                  name="sortBy"
+                  value={
+                    location?.query?.sortBy ? location?.query?.sortBy : '--'
+                  }
+                  onChange={(e) => {
+                    const query = {
+                      ...location.query,
+                      sortBy: e.target.value,
+                    };
+                    if (e.target.value !== '--') {
+                      handelFilter(query);
+                    } else {
+                      delete query.sortBy;
+                      handelFilter(query);
+                    }
+                  }}
+                >
+                  <Radio value={'--'}>none</Radio>
+                  <Radio value={'id'}>id</Radio>
+                  <Radio value={'method'}>method</Radio>
+                  <Radio value={'createdAt'}>createAt</Radio>
+                  <Radio value={'updatedAt'}>update AT</Radio>
+                </Radio.Group>
+              </label>
+              <label>
+                <p>orderBy</p>
+                <Radio.Group
+                  value={
+                    location?.query?.orderBy ? location?.query?.orderBy : 'ASC'
+                  }
+                  onChange={(e) => {
+                    const query = {
+                      ...location.query,
+                      orderBy: e.target.value,
+                    };
+                    if (e.target.value) {
+                      handelFilter(query);
+                    } else {
+                      delete query.orderBy;
+                      handelFilter(query);
+                    }
+                  }}
+                >
+                  <Radio value={'ASC'}>ASC</Radio>
+                  <Radio value={'DESC'}>DESC</Radio>
+                </Radio.Group>
+              </label>
+            </div>
+          )}
         />
       </section>
     </>
