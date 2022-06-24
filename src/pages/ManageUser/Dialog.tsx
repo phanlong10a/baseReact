@@ -158,12 +158,12 @@ const Dialog: React.FC<Iprops> = ({
             >
               <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    label={formatMessage({
-                      id: 'general_kyc_photo_type_front',
-                    })}
-                  >
-                    {userInfo.frontPhoto?.url && (
+                  {userInfo.frontPhoto?.url && (
+                    <Form.Item
+                      label={formatMessage({
+                        id: 'general_kyc_photo_type_front',
+                      })}
+                    >
                       <Image
                         src={userInfo.frontPhoto?.url}
                         placeholder={formatMessage({
@@ -179,14 +179,16 @@ const Dialog: React.FC<Iprops> = ({
                         width={'100%'}
                         className={styles.kycImage}
                       />
-                    )}
-                  </Form.Item>
+                    </Form.Item>
+                  )}
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    label={formatMessage({ id: 'general_kyc_photo_type_back' })}
-                  >
-                    {userInfo.backPhoto?.url && (
+                  {userInfo.backPhoto?.url && (
+                    <Form.Item
+                      label={formatMessage({
+                        id: 'general_kyc_photo_type_back',
+                      })}
+                    >
                       <Image
                         src={userInfo.backPhoto?.url}
                         placeholder={formatMessage({
@@ -202,8 +204,8 @@ const Dialog: React.FC<Iprops> = ({
                         width={'100%'}
                         className={styles.kycImage}
                       />
-                    )}
-                  </Form.Item>
+                    </Form.Item>
+                  )}
                 </Col>
               </Row>
               <Row gutter={16}>

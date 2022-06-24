@@ -4,8 +4,8 @@ interface IObjectProperty {
 }
 export const STATUS_ACTIVE: IObjectProperty[] = [
   { name: 'general_status_active', value: '' },
-  { name: 'general_active', value: 'true' },
-  { name: 'general_inactive', value: 'false' },
+  { name: 'general_active', value: 'ACTIVE' },
+  { name: 'general_inactive', value: 'INACTIVE' },
 ];
 
 export const OPTION_STATUS_ACTIVE: IObjectProperty[] = [

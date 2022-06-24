@@ -12,6 +12,7 @@ import {
   Button,
 } from 'antd';
 import React, { useState } from 'react';
+import { paternPhone } from '@/utils/patern';
 import { useIntl } from 'umi';
 import { createUser, editUser, getUserData } from '../service';
 const { Option } = Select;
@@ -210,6 +211,15 @@ const Dialog: React.FC<Iprops> = ({
                         required: true,
                         message: formatMessage(
                           { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'phone_number' }),
+                          },
+                        ),
+                      },
+                      {
+                        pattern: paternPhone,
+                        message: formatMessage(
+                          { id: 'error.patern' },
                           {
                             field: formatMessage({ id: 'phone_number' }),
                           },
