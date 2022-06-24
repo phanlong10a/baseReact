@@ -10,14 +10,14 @@ export const getTableData = (
   { current, pageSize }: { current: number; pageSize: number },
   formData: Object,
 ): Promise<Result> => {
-  let query = `page=${current}&pageSize=${pageSize}&status=PENDING`;
+  let query = `page=${current}&pageSize=${pageSize}`;
   Object.entries(formData).forEach(([key, value]) => {
     if (value) {
       query += `&${key}=${value}`;
     }
   });
 
-  return privateRequest(request.get, API_PATH.KYC + '?' + query).then(
+  return privateRequest(request.get, API_PATH.NEWS + '?' + query).then(
     (res: any) => {
       return {
         total: res?.total,
@@ -27,21 +27,16 @@ export const getTableData = (
   );
 };
 
-export const getUserData = (id: any) => {
-  return privateRequest(request.get, API_PATH.KYC + '/' + id);
+export const getNewsData = (id: any) => {
+  return privateRequest(request.get, API_PATH.NEWS + '/' + id);
 };
-
-export const verifyUser = (id: any) => {
-  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
-    data: {
-      status: StatusKyc.VERIFIED,
-    },
+export const createNewsData = (payload: any) => {
+  return privateRequest(request.post, API_PATH.NEWS, {
+    data: payload,
   });
 };
-export const cancelUser = (id: any) => {
-  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
-    data: {
-      status: StatusKyc.CANCELED,
-    },
+export const editNewsData = (id: any, payload: any) => {
+  return privateRequest(request.put, API_PATH.NEWS + '/' + id, {
+    data: payload,
   });
 };
