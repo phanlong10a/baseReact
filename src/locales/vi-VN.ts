@@ -128,4 +128,25 @@ export default {
   manager_bike_stattion_table_parking: 'Số lượng chỗ đỗ xe',
   manager_bike_stattion_table_actionr: 'Thao tác',
   manager_bike_stattion_table_status: 'Trạng thái',
+
+  // bicycle
+  manager_title_bicycle: 'Quản lý xe',
+  // column table bicycle
+  manager_bicycle_table_name: 'Tên xe',
+  manager_bicycle_table_licensePlate: 'Biển số xe',
+  manager_bicycle_table_code: 'Mã khóa xe',
+  manager_bicycle_table_battery: 'Pin khóa xe',
+  manager_bicycle_table_status: 'Trạng thái xe',
+  manager_bicycle_table_isActive: 'Trạng thái kích hoạt',
+  manager_bicycle_table_actionr: 'Thao tác',
+  // search table bicycle
+  bicycle_search_form_name: 'Nhập tên xe',
+  bicycle_search_form_licensePlate: 'Nhập tên xe',
+  bicycle_search_form_code: 'Nhập mã khóa xe',
+  bicycle_search_form_status: 'Nhập trạng thái',
+  bicycle_search_form_isActive: 'Nhập trạng thái kích hoạt',
+  // status bicycle
+  biclycle_locked: 'Khóa',
+  biclycle_rental: 'Đang thuê',
+  biclycle_temporary: 'Khóa tạm thời',
 };

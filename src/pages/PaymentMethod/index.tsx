@@ -1,7 +1,6 @@
 import {
   DeleteOutlined,
   EditOutlined,
-  LoadingOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
 import { Button, Form, Input, InputRef, message, Switch, Table } from 'antd';
@@ -18,12 +17,10 @@ import {
   deletePayment,
   editPayment,
   getAllPayment,
-  IMethod,
   IUpdateMethod,
 } from './services';
 
 const ManagementPaymentMethod: React.FC = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const {
     data: tableData,
     run: requestData,
@@ -36,13 +33,7 @@ const ManagementPaymentMethod: React.FC = () => {
       });
     },
     {
-      onSuccess: () => {
-        setSelectedRowKeys(
-          tableData
-            ?.filter((method: tableData) => method.isActive)
-            .map((method: tableData) => method.id),
-        );
-      },
+      onSuccess: () => {},
     },
   );
 
@@ -56,11 +47,9 @@ const ManagementPaymentMethod: React.FC = () => {
     {
       manual: true,
       onSuccess: (res) => {
-        setTimeout(() => {
-          setLoading(false);
-          refeshData();
-          message.success('update method success');
-        }, 1000);
+        setLoading(false);
+        refeshData();
+        message.success('update method success');
       },
       onError: () => {
         setLoading(false);
@@ -77,11 +66,9 @@ const ManagementPaymentMethod: React.FC = () => {
     {
       manual: true,
       onSuccess: (res) => {
-        setTimeout(() => {
-          setLoading(false);
-          refeshData();
-          message.success('delete success');
-        }, 1000);
+        setLoading(false);
+        refeshData();
+        message.success('delete success');
       },
       onError: () => {
         setLoading(false);
@@ -193,8 +180,18 @@ const ManagementPaymentMethod: React.FC = () => {
       width: 500,
     },
     {
-      title: 'active',
+      title: 'status',
       dataIndex: 'name',
+      filters: [
+        {
+          text: 'ACTIVE',
+          value: 'ACTIVE',
+        },
+        {
+          text: 'INACTIVE',
+          value: 'INACTIVE',
+        },
+      ],
       render: (_, record: tableData) => (
         <div className={styles.edit}>
           <Switch
@@ -218,6 +215,16 @@ const ManagementPaymentMethod: React.FC = () => {
     {
       title: 'display',
       dataIndex: 'name',
+      filters: [
+        {
+          text: 'ON',
+          value: 'ON',
+        },
+        {
+          text: 'OFF',
+          value: 'OFF',
+        },
+      ],
       render: (_, record: tableData) => (
         <div className={styles.edit}>
           <Switch
@@ -263,13 +270,6 @@ const ManagementPaymentMethod: React.FC = () => {
 
   return (
     <>
-      {loading && (
-        <div className={styles.loading}>
-          <div>
-            <LoadingOutlined />
-          </div>
-        </div>
-      )}
       <section className={styles.Manage_payment_method}>
         <h1>QUẢN LÝ PHƯƠNG THỨC THANH TOÁN</h1>
         <NewMethod
@@ -278,10 +278,18 @@ const ManagementPaymentMethod: React.FC = () => {
           }}
         />
         <Table
+          loading={loading}
           columns={columns}
           dataSource={tableData}
           className={styles.table_white}
           rowKey={(record) => JSON.stringify(record)}
+          pagination={{
+            pageSize: 2,
+            // pageSizeOptions: 2,
+          }}
+          onChange={(panigation, filters) => {
+            console.log(panigation, filters);
+          }}
         />
       </section>
     </>
