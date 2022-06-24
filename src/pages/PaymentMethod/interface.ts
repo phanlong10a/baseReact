@@ -4,11 +4,11 @@ export interface Root2 {
   id: number;
   method: string;
   description: string;
-  isActive: boolean;
   display: 'ON' | 'OFF';
-  status: string;
+  status?: 'ACTIVE' | 'INACTIVE';
   createdAt: string;
   updatedAt: string;
+  deletedAt: any;
   image: Image;
 }
 
@@ -21,7 +21,9 @@ export interface Image {
   url: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt: any;
 }
+
 export interface IImage {
   id: number;
   originalname: string;
@@ -141,4 +143,13 @@ export interface Kyc {
   frontPhoto: any;
 
   backPhoto: any;
+}
+export interface IQueryPayment {
+  page?: number | 1;
+  pageSize?: Number | 10;
+  sortBy?: string | 'id' | 'method' | 'createdAt' | 'updatedAt';
+  orderBy?: string | 'ACS' | 'DESC';
+  method?: string;
+  status?: 'ACTIVE' | 'INACTIVE' | string;
+  display?: string | 'ON' | 'OFF';
 }
