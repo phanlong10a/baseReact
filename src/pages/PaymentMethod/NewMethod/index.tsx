@@ -134,7 +134,10 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
                       if (!!Number(e.target.value)) {
                         // @ts-ignore
                         GetImagesByID(Number(e.target.value));
-                      } else GetImages;
+                      } else {
+                        setImagelist([]);
+                        GetImages();
+                      }
                     }}
                   />
                   <NewImage
