@@ -6,7 +6,7 @@ const deletePaymentMethod = (id: string): string => `/payment/${id}`;
 export const API_PAYMENT = {
   CREATE: '/payment/method',
   GET_ACTIVE: '/payment/method',
-  GET_ALL: '/payment/method/all',
+  GET_ALL: '/payment/method',
   GET_ID: getPaymentMethodById,
   UPDATE: getPaymentMethodById,
   DELETE: deletePaymentMethod,
