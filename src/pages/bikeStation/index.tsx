@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
-import { Breadcrumb, Table, Tooltip, Form } from 'antd';
+import { Breadcrumb, Table, Tooltip, Form, message } from 'antd';
 import { EyeOutlined, DeleteFilled } from '@ant-design/icons';
 import Search from './Search';
 import CustomerDialog from './components/CustomerDialog';
+import ModalDialog from './components/ModalDelete';
 import { getTableData } from './service';
-import { useAntdTable, useToggle, useSetState } from 'ahooks';
+import { useAntdTable, useToggle, useSetState, useRequest } from 'ahooks';
+import { privateRequest, request } from '@/utils/apis';
 
 export default () => {
   const [dialog, setDiolog] = useState({
+    status: false,
+    id: null,
+  });
+  const [modalDelete, setModalDelete] = useState({
     status: false,
     id: null,
   });
@@ -103,7 +109,9 @@ export default () => {
               </span>
             </Tooltip>
             <Tooltip title="Xóa tram xe">
-              <span>
+              <span
+                onClick={() => setModalDelete({ status: true, id: record.id })}
+              >
                 <DeleteFilled />
               </span>
             </Tooltip>
@@ -118,6 +126,28 @@ export default () => {
       status: true,
       id: null,
     });
+  };
+
+  const deleteStation = useRequest(
+    async (id) => {
+      const url: string = `/station/${id}`;
+      return privateRequest(request.delete, url, {});
+    },
+    {
+      manual: true,
+      onSuccess: (r) => {
+        message.success('Xóa thành công');
+        setModalDelete({ status: false, id: null });
+      },
+      onError: (err: any) => {
+        // console.log('err', err, err.response, err.data);
+        message.error(err?.data?.message);
+      },
+    },
+  );
+
+  const handDelete = (id: any) => {
+    deleteStation.run(id);
   };
 
   return (
@@ -146,6 +176,14 @@ export default () => {
           status={dialog.status}
           onCancel={() => setDiolog({ status: false, id: null })}
           id={dialog.id}
+        />
+      )}
+      {modalDelete.status && (
+        <ModalDialog
+          status={modalDelete.status}
+          onCancel={() => setModalDelete({ status: false, id: null })}
+          onOk={(id) => handDelete(id)}
+          id={modalDelete.id}
         />
       )}
     </>

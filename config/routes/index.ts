@@ -60,7 +60,6 @@ export default [
         path: '/bike-station',
         component: '@/pages/bikeStation/index',
         title: 'navbar.Profile',
-        routes: [],
         wrappers: ['@/layouts/Wrapper'],
       },
       {
