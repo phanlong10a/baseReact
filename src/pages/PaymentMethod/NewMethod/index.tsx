@@ -44,18 +44,18 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
       } else setImagelist([]);
     },
   });
+  const [deleteId, setDeleteID] = useState<number>();
 
   const { run: deleteImagesByID } = useRequest(deleteFileId, {
     manual: true,
-    onSuccess: (res) => {
-      console.log(res);
+    onSuccess: () => {
       message.success('delete success');
-      GetImages;
+      setImagelist((imagelist) =>
+        imagelist.filter((image) => image.id !== deleteId),
+      );
     },
-    onError: (res) => {
-      console.log('error', res);
+    onError: () => {
       message.error('delete error');
-      GetImages;
     },
   });
 
@@ -134,7 +134,10 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
                       if (!!Number(e.target.value)) {
                         // @ts-ignore
                         GetImagesByID(Number(e.target.value));
-                      } else GetImages;
+                      } else {
+                        setImagelist([]);
+                        GetImages();
+                      }
                     }}
                   />
                   <NewImage
@@ -168,9 +171,11 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
                               >
                                 <Radio value={item.id} />
                                 <img src={item.url} />
-                                <p>{item.id}</p>
+                                <p>id image: {item.id}</p>
                                 <DeleteOutlined
+                                  className={styles.ml_auto}
                                   onClick={() => {
+                                    setDeleteID(item.id);
                                     deleteImagesByID(item.id);
                                   }}
                                 />
