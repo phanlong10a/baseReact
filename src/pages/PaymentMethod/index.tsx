@@ -256,6 +256,9 @@ const ManagementPaymentMethod: React.FC = () => {
     onSuccess: (res) => {
       console.log(res);
     },
+    onError: (res) => {
+      message.error('failed');
+    },
   });
 
   return (

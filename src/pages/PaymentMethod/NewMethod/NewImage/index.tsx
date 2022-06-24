@@ -5,18 +5,21 @@ import { Button, Form, message, Upload } from 'antd';
 import { UploadProps } from 'antd/es/upload/interface';
 import { UploadFile } from 'antd/lib/upload/interface';
 import * as React from 'react';
-import { API_FILE, createFile } from '../../services';
+import { IUploadImage } from '../../interface';
+import { createFile } from '../../services';
 interface NewImageProps {
-  onUpload?: () => void;
+  onUpload?: (image: IUploadImage) => typeof image | void;
 }
 
-const NewImage: React.FunctionComponent<NewImageProps> = () => {
+const NewImage: React.FunctionComponent<NewImageProps> = ({
+  onUpload = () => {},
+}) => {
   const [file, setFile] = React.useState<UploadFile[]>([]);
   const { run: newIage } = useRequest(createFile, {
     manual: true,
-    onSuccess: (res) => {
+    onSuccess: (res: IUploadImage[]) => {
       message.success('upload image success');
-      console.log(res[0]);
+      onUpload(res[0]);
     },
     onError: () => {
       message.error('upload image failed');
