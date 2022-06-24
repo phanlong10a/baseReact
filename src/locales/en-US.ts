@@ -3,6 +3,7 @@ export default {
   'index.hello': 'en - {name}',
   'index.title': 'English Title',
   'about.title': 'About-Title',
+  error: 'Something went wrong',
 
   auth_login: 'CMS V-Bike',
   auth_phone: 'Phone',
@@ -53,6 +54,17 @@ export default {
   'error.require': '{field} must be required.',
   'error.email': 'Email invalid.',
   'error.patern': '{field} invalid.',
+
+  //mesages
+
+  message_success: 'Success',
+  message_kyc_success: 'Update status kyc user success',
+  message_user_success: 'Update user success',
+  message_add_user_success: 'Add user success',
+  message_failure: 'Failed',
+  message_kyc_failure: 'Update status kyc user failed',
+  message_user_failure: 'Update user failed',
+  message_add_user_failure: 'Add user failed',
 
   //general
 
