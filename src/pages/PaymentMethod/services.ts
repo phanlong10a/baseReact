@@ -130,7 +130,7 @@ export interface IMethod {
   imageId: number;
   method: string;
   description: string;
-  isActive: boolean;
+  status: 'ACTIVE' | 'INACTIVE';
   display: 'ON' | 'OFF';
 }
 const createPayment = (method: IMethod) => {
