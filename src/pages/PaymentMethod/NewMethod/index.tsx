@@ -4,6 +4,7 @@ import { useRequest } from 'ahooks';
 import {
   Avatar,
   Button,
+  Checkbox,
   Col,
   Divider,
   Form,
@@ -114,11 +115,12 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
             hideRequiredMark
             form={form}
             initialValues={initialValue}
+            onChange={() => console.log(form.getFieldsValue())}
             onFinish={(values) => {
               const newMethod = {
                 ...values,
-                isActive: true,
-                display: 'ON',
+                status: values.status ? 'ACTIVE' : 'INACTIVE',
+                display: values.display ? 'ON' : 'OFF',
               };
               handleSubmit(newMethod);
             }}
@@ -146,54 +148,81 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
                     }}
                   />
                 </header>
-                <div className={styles.imagelist} id="scrollableDiv">
-                  <Form.Item name="imageId" className={styles.w_100}>
-                    <Radio.Group className={styles.w_100}>
-                      <InfiniteScroll
-                        dataLength={imagelist.length}
-                        next={loadMoreData}
-                        hasMore={hasMore()}
-                        loader={
-                          <Skeleton avatar paragraph={{ rows: 1 }} active />
-                        }
-                        endMessage={
-                          <Divider plain>It is all, nothing more 🤐</Divider>
-                        }
-                        scrollableTarget="scrollableDiv"
-                      >
-                        <List
-                          dataSource={imagelist}
-                          renderItem={(item) => (
-                            <label>
-                              <List.Item
-                                key={item.id}
-                                className={styles.images}
-                              >
-                                <Radio value={item.id} />
-                                <img src={item.url} />
-                                <p>id image: {item.id}</p>
-                                <DeleteOutlined
-                                  className={styles.ml_auto}
-                                  onClick={() => {
-                                    setDeleteID(item.id);
-                                    deleteImagesByID(item.id);
-                                  }}
-                                />
-                              </List.Item>
-                            </label>
-                          )}
-                        />
-                      </InfiniteScroll>
-                    </Radio.Group>
-                  </Form.Item>
-                </div>
+                <Form.Item
+                  name="imageId"
+                  className={styles.w_100}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'image id required',
+                    },
+                  ]}
+                >
+                  <Radio.Group className={styles.imagelist} id="scrollableDiv">
+                    <InfiniteScroll
+                      dataLength={imagelist.length}
+                      next={loadMoreData}
+                      hasMore={hasMore()}
+                      loader={
+                        <Skeleton avatar paragraph={{ rows: 1 }} active />
+                      }
+                      endMessage={
+                        <Divider plain>It is all, nothing more 🤐</Divider>
+                      }
+                      scrollableTarget="scrollableDiv"
+                    >
+                      <List
+                        dataSource={imagelist}
+                        renderItem={(item) => (
+                          <label>
+                            <List.Item key={item.id} className={styles.images}>
+                              <Radio value={item.id} />
+                              <img src={item.url} />
+                              <p>id image: {item.id}</p>
+                              <DeleteOutlined
+                                className={styles.ml_auto}
+                                onClick={() => {
+                                  setDeleteID(item.id);
+                                  deleteImagesByID(item.id);
+                                }}
+                              />
+                            </List.Item>
+                          </label>
+                        )}
+                      />
+                    </InfiniteScroll>
+                  </Radio.Group>
+                </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item name="method" label="Tên phương thức">
-                  <Input placeholder="Tên" />
+                <Form.Item
+                  name="method"
+                  label="Tên phương thức"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'can nhap ten phuong thuc',
+                    },
+                  ]}
+                >
+                  <Input placeholder="Ten phuong thuc" />
                 </Form.Item>
-                <Form.Item name="description" label="Trạng thái hoạt động">
-                  <Input placeholder="Tên" />
+                <Form.Item name="description" label="Mo ta">
+                  <Input placeholder="Mo ta" />
+                </Form.Item>
+                <Form.Item
+                  name="status"
+                  valuePropName="checked"
+                  initialValue={true}
+                >
+                  <Checkbox>Status</Checkbox>
+                </Form.Item>
+                <Form.Item
+                  name="display"
+                  valuePropName="checked"
+                  initialValue={true}
+                >
+                  <Checkbox checked={true}>Display</Checkbox>
                 </Form.Item>
               </Col>
             </Row>
