@@ -27,6 +27,7 @@ export default {
   register: 'Đăng ký',
   fullname: 'Họ và tên',
   status: 'Trạng thái',
+  status_verify: 'Trạng thái xác thực',
   email: 'Email',
   identification_code: 'Mã định danh',
   date_of_birth: 'Ngày sinh',
