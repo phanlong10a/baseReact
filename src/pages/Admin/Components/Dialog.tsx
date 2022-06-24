@@ -120,8 +120,10 @@ const Dialog: React.FC<Iprops> = ({
   const onFinish = (value: any) => {
     if (itemEdit) {
       requestEditUser.run(userInfo.id, value);
+      return;
     }
     requestCreateUser.run(value);
+    return;
   };
 
   return (
