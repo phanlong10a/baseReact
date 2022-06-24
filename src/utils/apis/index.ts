@@ -119,6 +119,7 @@ const API_PATH = {
   USER: '/user',
   KYC: '/kyc',
   ADMIN_USER: '/user/admin',
+  NEWS: '/news',
 };
 
 export { API_PATH, request, privateRequest };

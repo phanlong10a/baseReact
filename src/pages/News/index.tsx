@@ -18,6 +18,7 @@ import { getTableData } from './service';
 import { getLocale } from 'umi';
 import { mockupData } from './constant';
 import dayjs from 'dayjs';
+import { StatusAccount } from '@/utils/enum';
 
 const { Option } = Select;
 
@@ -51,7 +52,7 @@ export default () => {
 
   const { type, changeType, submit, reset } = search;
 
-  const handleViewUser = (idUser: number | string) => {
+  const handleViewNews = (idUser: number | string) => {
     setIdSelected(idUser);
     setOpenDialog.set(true);
   };
@@ -69,7 +70,7 @@ export default () => {
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.isActive
+            {record.status === StatusAccount.ACTIVE
               ? formatMessage({ id: 'status_active' })
               : formatMessage({ id: 'status_inactive' })}
           </React.Fragment>
@@ -106,7 +107,7 @@ export default () => {
           >
             <div
               style={{ cursor: 'pointer' }}
-              onClick={() => handleViewUser(record.id)}
+              onClick={() => handleViewNews(record.id)}
             >
               <EyeOutlined />
             </div>
@@ -121,7 +122,7 @@ export default () => {
   const searchForm = (
     <div className={styles.searchContainer}>
       <Form form={form} className={styles.searchForm}>
-        <Form.Item name="fullName" className={styles.searchItem}>
+        <Form.Item name="title" className={styles.searchItem}>
           <Input.Search
             placeholder={formatMessage({ id: 'form_search_text' })}
             allowClear
@@ -153,8 +154,8 @@ export default () => {
           columns={columns}
           locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
           scroll={{ x: 1000 }}
-          dataSource={mockupData}
-          // {...tableProps}
+          // dataSource={mockupData}
+          {...tableProps}
         />
       </div>
       {openDialog && (
