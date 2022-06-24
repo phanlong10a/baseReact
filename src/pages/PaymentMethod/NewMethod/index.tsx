@@ -1,5 +1,5 @@
 import Dialog from '@/components/Dialog';
-import { PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import {
   Avatar,
@@ -9,13 +9,14 @@ import {
   Form,
   Input,
   List,
+  message,
   Radio,
   Row,
   Skeleton,
 } from 'antd';
 import React, { useState } from 'react';
 import { IImage } from '../interface';
-import { getFile, IMethod } from '../services';
+import { deleteFileId, getFile, getFileId, IMethod } from '../services';
 import styles from './index.less';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import NewImage from './NewImage';
@@ -27,12 +28,36 @@ interface INewMethod {
 const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
+
   const initialValue = {
     imageId: '',
     method: '',
     description: '',
   };
   const [imagelist, setImagelist] = useState<IImage[]>([]);
+
+  const { data: imageByID, run: GetImagesByID } = useRequest(getFileId, {
+    manual: true,
+    onSuccess: (res) => {
+      if (res) {
+        setImagelist([res]);
+      } else setImagelist([]);
+    },
+  });
+
+  const { run: deleteImagesByID } = useRequest(deleteFileId, {
+    manual: true,
+    onSuccess: (res) => {
+      console.log(res);
+      message.success('delete success');
+      GetImages;
+    },
+    onError: (res) => {
+      console.log('error', res);
+      message.error('delete error');
+      GetImages;
+    },
+  });
 
   const {
     data: images,
@@ -52,6 +77,15 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
       page: Math.floor(imagelist.length / 10) + 1,
       pageSize: 10,
     });
+  };
+
+  const hasMore = () => {
+    if (imagelist) {
+      if (!imageByID) {
+        return imagelist?.length < images?.total;
+      }
+    }
+    return false;
   };
   return (
     <div>
@@ -88,24 +122,34 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
               };
               handleSubmit(newMethod);
             }}
-            onValuesChange={(value) => {
-              console.log(value);
-            }}
           >
             <Row gutter={16}>
               <Col span={12}>
                 <h3 className={styles.h3}>Hình ảnh</h3>
                 <header className={styles.header}>
-                  <Search placeholder="search text image" />
-                  <NewImage />
+                  <Search
+                    placeholder="search by id image"
+                    onChange={(e) => {
+                      // @ts-ignore
+                      if (!!Number(e.target.value)) {
+                        // @ts-ignore
+                        GetImagesByID(Number(e.target.value));
+                      } else GetImages;
+                    }}
+                  />
+                  <NewImage
+                    onUpload={(image) => {
+                      GetImagesByID(image.id);
+                    }}
+                  />
                 </header>
                 <div className={styles.imagelist} id="scrollableDiv">
-                  <Form.Item name="imageId" label="Tên phương thức">
-                    <Radio.Group>
+                  <Form.Item name="imageId" className={styles.w_100}>
+                    <Radio.Group className={styles.w_100}>
                       <InfiniteScroll
                         dataLength={imagelist.length}
                         next={loadMoreData}
-                        hasMore={imagelist.length < images.total}
+                        hasMore={hasMore()}
                         loader={
                           <Skeleton avatar paragraph={{ rows: 1 }} active />
                         }
@@ -124,7 +168,12 @@ const NewMethod: React.FC<INewMethod> = ({ handleSubmit = () => {} }) => {
                               >
                                 <Radio value={item.id} />
                                 <img src={item.url} />
-                                <p>{item.originalname}</p>
+                                <p>{item.id}</p>
+                                <DeleteOutlined
+                                  onClick={() => {
+                                    deleteImagesByID(item.id);
+                                  }}
+                                />
                               </List.Item>
                             </label>
                           )}
