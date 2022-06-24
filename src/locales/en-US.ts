@@ -20,6 +20,16 @@ export default {
   navigation_user: 'User Management',
   navigation_user_kyc: 'Verify User Management',
   navigation_admin_manage: 'Admin User Management',
+  navigation_vihicle: 'Vehicle Management',
+  navigation_lock: 'Bike Lock Management',
+  navigation_travel: 'Travel Management',
+  navigation_user_wallet: 'User Wallet Management',
+  navigation_ticket: 'Ticket Management',
+  navigation_method: 'Method Management',
+  navigation_promotion: 'Promotion Management',
+  navigation_tutorial: 'Tutorial Management',
+  navigation_news: 'News Management',
+  navigation_rate: 'Rate Management',
 
   //breadcrumb
   user_management: 'User management',

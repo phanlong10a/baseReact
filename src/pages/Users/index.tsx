@@ -19,6 +19,7 @@ import styles from './index.less';
 import { getTableData, switchStatusUser } from './service';
 import { getLocale } from 'umi';
 import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
+import { StatusAccount } from '@/utils/enum';
 
 const { Option } = Select;
 
@@ -113,9 +114,15 @@ export default () => {
               style={{ width: 150 }}
               checkedChildren={formatMessage({ id: 'status_active' })}
               unCheckedChildren={formatMessage({ id: 'status_inactive' })}
-              defaultChecked={record.isActive}
+              defaultChecked={record.status === StatusAccount.ACTIVE}
               onChange={(checked: boolean, event: MouseEvent) => {
-                requestSwitchStatus.run(record, checked);
+                switch (record.status) {
+                  case StatusAccount.ACTIVE:
+                    requestSwitchStatus.run(record, StatusAccount.INACTIVE);
+                    break;
+                  case StatusAccount.INACTIVE:
+                    requestSwitchStatus.run(record, StatusAccount.ACTIVE);
+                }
               }}
             />
           </React.Fragment>
@@ -164,11 +171,7 @@ export default () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item
-          name="isActive"
-          initialValue=""
-          className={styles.searchItem}
-        >
+        <Form.Item name="status" initialValue="" className={styles.searchItem}>
           <Select onChange={submit}>
             {STATUS_ACTIVE.map((item) => (
               <Option value={item.value}>
