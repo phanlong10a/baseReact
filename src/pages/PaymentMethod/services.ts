@@ -13,7 +13,7 @@ export const API_PAYMENT = {
 };
 export const API_FILE = {
   FILE: '/file',
-  FILE_ID: (id: string): string => `/file/${id}`,
+  FILE_ID: (id: number): string => `/file/${id}`,
 };
 const TokenManager = new TokenManagement({
   isTokenValid: () => {
@@ -106,11 +106,31 @@ const getFile = (params?: IGetFile) => {
 };
 export { getFile };
 
+const getFileId = (id: number) => {
+  return privateRequest(request.get, API_FILE.FILE_ID(id))
+    .then((result) => {
+      return result;
+    })
+    .catch((er) => Promise.reject(er));
+};
+export { getFileId };
+
+const deleteFileId = async (id: number) => {
+  return privateRequest(request.delete, API_FILE.FILE_ID(id))
+    .catch((er) => {
+      console.log(er);
+      return Promise.reject(er);
+    })
+    .then((result) => {
+      return result;
+    });
+};
+export { deleteFileId };
 export interface IMethod {
   imageId: number;
   method: string;
   description: string;
-  isActive: boolean;
+  status: 'ACTIVE' | 'INACTIVE';
   display: 'ON' | 'OFF';
 }
 const createPayment = (method: IMethod) => {

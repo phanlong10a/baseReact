@@ -18,8 +18,11 @@
   height: 200px;
   overflow: auto;
   border: 1px solid rgba(140, 140, 140, 0.35);
+  width: 100%;
   img {
     height: 50px;
+    width: 50px;
+    object-fit: contain;
   }
 }
 .images {
@@ -27,7 +30,7 @@
   justify-content: start;
   gap: 10px;
   padding: 10px;
-  cursor: pointer;
+  // cursor: pointer;
   &:hover {
     background-color: whitesmoke;
   }
@@ -45,4 +48,10 @@
   align-items: flex-start;
   margin-bottom: 1em;
   gap: 1em;
+}
+.w_100 {
+  width: 100%;
+}
+.ml_auto {
+  margin-left: auto;
 }
