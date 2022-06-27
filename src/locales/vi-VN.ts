@@ -8,7 +8,7 @@ export default {
   'error.require': '{field} không được để trống.',
   'error.email': 'Email không đúng định dạng.',
   'error.patern': '{field} không đúng định dạng.',
-
+  image_empty: 'Bắt buộc đính kèm ảnh',
   //mesages
 
   message_success: 'Thành công',
@@ -50,6 +50,7 @@ export default {
 
   //navigation
   // navitation_home: 'Trang chủ',
+  navigation_profile: 'Tài khoản của tôi',
   navigation_bike_station: 'Trạm xe',
   navigation_user: 'Người dùng',
   navigation_user_kyc: 'Xác thực người dùng',

@@ -1,8 +1,11 @@
 export default {
+  //navigation',
+
   // page.component.translation
   'index.hello': 'en - {name}',
   'index.title': 'English Title',
   'about.title': 'About-Title',
+  image_empty: 'Must be upload image',
   error: 'Something went wrong',
 
   auth_login: 'CMS V-Bike',
@@ -17,6 +20,7 @@ export default {
 
   //navigation
   navitation_home: 'Home',
+  navigation_profile: 'Profile Management',
   navigation_bike_station: 'Bike Station Management',
   navigation_user: 'User Management',
   navigation_user_kyc: 'Verify User Management',
