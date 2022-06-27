@@ -118,13 +118,13 @@ export default () => {
                 <EyeOutlined />
               </span>
             </Tooltip>
-            <Tooltip title="Xóa tram xe">
+            {/* <Tooltip title="Xóa tram xe">
               <span
                 onClick={() => setModalDelete({ status: true, id: record.id })}
               >
                 <DeleteFilled />
               </span>
-            </Tooltip>
+            </Tooltip> */}
           </>
         );
       },
