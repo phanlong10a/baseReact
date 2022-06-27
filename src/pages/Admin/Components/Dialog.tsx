@@ -89,7 +89,7 @@ const Dialog: React.FC<Iprops> = ({
   const requestEditUser = useRequest(editUser, {
     manual: true,
     onSuccess: (res: any) => {
-      message.error(formatMessage({ id: 'message_user_success' }));
+      message.success(formatMessage({ id: 'message_user_success' }));
       setUserInfo(res);
       setOpen(false);
     },

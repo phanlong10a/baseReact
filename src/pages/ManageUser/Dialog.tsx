@@ -23,7 +23,7 @@ import {
   STATUS_KYC,
 } from '@/utils/constant';
 import dayjs from 'dayjs';
-import { KycType } from '@/utils/enum';
+import { KycType, StatusKyc } from '@/utils/enum';
 
 interface Iprops {
   open: boolean;
@@ -51,6 +51,7 @@ interface IUser {
   status?: string;
   kycType?: KycType;
   updatedAt?: string;
+  user?: any;
 }
 
 const Dialog: React.FC<Iprops> = ({
@@ -158,7 +159,7 @@ const Dialog: React.FC<Iprops> = ({
             >
               <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
-                  {userInfo.frontPhoto?.url && (
+                  {userInfo.frontPhoto?.url ? (
                     <Form.Item
                       label={formatMessage({
                         id: 'general_kyc_photo_type_front',
@@ -180,10 +181,18 @@ const Dialog: React.FC<Iprops> = ({
                         className={styles.kycImage}
                       />
                     </Form.Item>
+                  ) : (
+                    <Form.Item
+                      label={formatMessage({
+                        id: 'general_kyc_photo_type_front',
+                      })}
+                    >
+                      <div className={styles.kycImagePlaceholder}></div>
+                    </Form.Item>
                   )}
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
-                  {userInfo.backPhoto?.url && (
+                  {userInfo.backPhoto?.url ? (
                     <Form.Item
                       label={formatMessage({
                         id: 'general_kyc_photo_type_back',
@@ -204,6 +213,14 @@ const Dialog: React.FC<Iprops> = ({
                         width={'100%'}
                         className={styles.kycImage}
                       />
+                    </Form.Item>
+                  ) : (
+                    <Form.Item
+                      label={formatMessage({
+                        id: 'general_kyc_photo_type_back',
+                      })}
+                    >
+                      <div className={styles.kycImagePlaceholder}></div>
                     </Form.Item>
                   )}
                 </Col>
@@ -234,12 +251,46 @@ const Dialog: React.FC<Iprops> = ({
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
-                    name="identificationCode"
-                    label={formatMessage({ id: 'identification_code' })}
-                    initialValue={userInfo.identificationCode}
+                    name="phone"
+                    label={formatMessage({ id: 'phone_number' })}
+                    initialValue={userInfo.user?.phone}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'phone_number' }),
+                          },
+                        ),
+                      },
+                    ]}
                   >
                     <Input
-                      placeholder={formatMessage({ id: 'identification_code' })}
+                      placeholder={formatMessage({ id: 'phone_number' })}
+                      disabled={!editable}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="address"
+                    label={formatMessage({ id: 'address' })}
+                    initialValue={userInfo.user?.phone}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'address' }),
+                          },
+                        ),
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'address' })}
                       disabled={!editable}
                     />
                   </Form.Item>
@@ -249,15 +300,28 @@ const Dialog: React.FC<Iprops> = ({
                     name="dateOfBirth"
                     label={formatMessage({ id: 'date_of_birth' })}
                     initialValue={
-                      userInfo.dateOfBirth
-                        ? dayjs(userInfo.dateOfBirth).format('DD/MM/YYYY')
-                        : ''
+                      userInfo.dateOfBirth ? userInfo.dateOfBirth : ''
                     }
                   >
                     <Input
                       placeholder={formatMessage({ id: 'date_of_birth' })}
                       disabled={!editable}
-                      value={'editable'}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="identificationCode"
+                    label={formatMessage({ id: 'identification_code' })}
+                    initialValue={
+                      userInfo.identificationCode
+                        ? userInfo.identificationCode
+                        : ''
+                    }
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'identification_code' })}
+                      disabled={!editable}
                     />
                   </Form.Item>
                 </Col>
@@ -265,7 +329,24 @@ const Dialog: React.FC<Iprops> = ({
                   <Form.Item
                     name="status"
                     label={formatMessage({ id: 'status' })}
-                    initialValue={userInfo.status}
+                    initialValue={userInfo.user?.status}
+                  >
+                    <Select disabled={!editable}>
+                      {OPTION_STATUS_ACTIVE.map((status, index) => (
+                        <Option value={status.value} key={index}>
+                          {formatMessage({ id: status.name })}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="kycStatus"
+                    label={formatMessage({ id: 'status_verify' })}
+                    initialValue={
+                      userInfo.status ? userInfo.status : StatusKyc.NOT_VERIFIED
+                    }
                   >
                     <Select disabled={!editable}>
                       {STATUS_KYC.map((status, index) => (
@@ -278,28 +359,11 @@ const Dialog: React.FC<Iprops> = ({
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
-                    name="kycType"
-                    label={formatMessage({ id: 'kyc_type' })}
-                    initialValue={userInfo.kycType}
-                  >
-                    <Select disabled={!editable}>
-                      {KYC_TYPE.map((status, index) => (
-                        <Option value={status.value} key={index}>
-                          {formatMessage({ id: status.name })}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
                     name="gender"
                     label={formatMessage({ id: 'general_gender' })}
                     initialValue={
-                      userInfo.gender
-                        ? OPTION_GENDER.find(
-                            (item) => item.value === userInfo.gender,
-                          )
+                      userInfo.user?.gender
+                        ? userInfo.user.gender
                         : OPTION_GENDER[0].value
                     }
                     rules={[
@@ -321,6 +385,33 @@ const Dialog: React.FC<Iprops> = ({
                         </Option>
                       ))}
                     </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="email"
+                    label={formatMessage({ id: 'email' })}
+                    initialValue={userInfo.user?.email}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'email' }),
+                          },
+                        ),
+                      },
+                      {
+                        type: 'email',
+                        message: formatMessage({ id: 'error.email' }),
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'email' })}
+                      disabled={!editable}
+                    />
                   </Form.Item>
                 </Col>
               </Row>

@@ -117,19 +117,23 @@ const Dialog: React.FC<Iprops> = ({
   }, [itemEdit]);
 
   const onFinish = (value: any) => {
-    const { content, status, title } = value;
-    let submitObj = {
-      content,
-      status,
-      title,
-      thumbnailId: fileID,
-    };
-    if (itemEdit) {
-      requestEditGuide.run(itemEdit, submitObj);
+    if (fileID) {
+      const { content, status, title } = value;
+      let submitObj = {
+        content,
+        status,
+        title,
+        thumbnailId: fileID,
+      };
+      if (itemEdit) {
+        requestEditGuide.run(itemEdit, submitObj);
+        return;
+      }
+      requestCreateGuide.run(submitObj);
       return;
+    } else {
+      message.error(formatMessage({ id: 'image_empty' }));
     }
-    requestCreateGuide.run(submitObj);
-    return;
   };
 
   const handleChange: UploadProps['onChange'] = (
