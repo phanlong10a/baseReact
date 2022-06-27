@@ -22,6 +22,7 @@ export default {
 
   // Form
   password: 'Mật khẩu',
+  user_or_phone_number: 'Tài khoản hoặc số điện thoại',
   phone_number: 'Số điện thoại',
   login: 'Đăng nhập',
   register: 'Đăng ký',

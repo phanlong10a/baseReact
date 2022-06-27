@@ -44,6 +44,7 @@ export default {
 
   // Form
   password: 'Password',
+  user_or_phone_number: 'Account or Phone Number',
   phone_number: 'Phone Number',
   login: 'Login',
   register: 'Register',
