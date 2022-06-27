@@ -54,9 +54,12 @@ export default () => {
     {
       title: t('manager_bicycle_table_code'),
       width: 100,
-      dataIndex: 'code',
-      key: 'code',
+      dataIndex: 'locks',
+      key: 'locks',
       align: 'center',
+      render: (_: any, record: any, index: number) => {
+        return record?.locks[0]?.code;
+      },
     },
     {
       title: t('manager_bicycle_table_battery'),
@@ -137,13 +140,14 @@ export default () => {
 
   const deleteStation = useRequest(
     async (id) => {
-      const url: string = `/station/${id}`;
+      const url: string = `/bicycle/${id}`;
       return privateRequest(request.delete, url, {});
     },
     {
       manual: true,
       onSuccess: (r) => {
-        message.success('Xóa thành công');
+        message.success(t('message_delete_item_success'));
+        reset();
         setModalDelete({ status: false, id: null });
       },
       onError: (err: any) => {
@@ -178,6 +182,7 @@ export default () => {
           status={dialog.status}
           onCancel={() => setDiolog({ status: false, id: null })}
           id={dialog.id}
+          onReset={() => reset()}
         />
       )}
       {modalDelete.status && (

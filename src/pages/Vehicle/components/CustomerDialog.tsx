@@ -12,11 +12,12 @@ import {
 } from 'antd';
 import { FormattedMessage, useIntl } from 'umi';
 import styles from '../index.less';
-import { getListBicycle } from '../service';
+import { getListStation, getListLock } from '../service';
 import { useDebounceFn, useRequest } from 'ahooks';
 import dayjs from 'dayjs';
 import { privateRequest, request } from '@/utils/apis';
 import TimePicker from '../../../components/CustomPicker/TimePicker';
+import { useTranslate } from '@/utils/hooks/useTranslate';
 
 const { Option } = Select;
 
@@ -24,30 +25,38 @@ interface PROPS {
   status: boolean;
   onCancel: () => void;
   id: any;
+  onReset: () => void;
 }
 
 type Station = {
-  id: number;
   name: string;
-  address: string;
-  bicycles: any[];
-  parking: number;
-  openTime: string;
-  closeTime: string;
   isActive: boolean;
+  licensePlate: any;
+  lockId: any;
+  stationId: any;
+  id: any;
 };
 
 const CustomerDialog = (props: PROPS): JSX.Element => {
-  const { status, onCancel, id } = props;
+  const { t } = useTranslate();
+  const { status, onCancel, id, onReset } = props;
   const [listBicycle, setListBicycle] = useState([]);
-  const [dataStation, setDataStation] = useState<Station>();
+  const [listLock, setListLock] = useState([]);
+  const [dataStation, setDataStation] = useState<Station>({
+    id: null,
+    isActive: false,
+    name: '',
+    licensePlate: null,
+    lockId: null,
+    stationId: null,
+  });
 
   const intl = useIntl();
   const [form] = Form.useForm();
 
   const requestGetListBicycle = useRequest(
     async (values: string) => {
-      return getListBicycle(values);
+      return getListStation(values);
     },
     {
       manual: true,
@@ -61,9 +70,30 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
     },
   );
 
+  const requestGetListLock = useRequest(
+    async (values: string) => {
+      return getListLock(values);
+    },
+    {
+      manual: true,
+      onSuccess: (r) => {
+        const data = r?.list?.map((e: any) => ({
+          label: e?.code,
+          value: e?.id,
+          bicycle: e?.bicycle?.name,
+        }));
+
+        setListLock(data);
+      },
+      onError: (err) => {
+        console.log('err', err);
+      },
+    },
+  );
+
   const reqAddStation = useRequest(
     async (params) => {
-      let url: string = '/station';
+      let url: string = '/bicycle';
       if (!!params?.id) {
         url = `${url}/${params.id}`;
       }
@@ -74,8 +104,13 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
     {
       manual: true,
       onSuccess: (r) => {
-        message.success('Thêm mới trạm xe thành công');
+        message.success(
+          !!id
+            ? t('manager_bike_stattion_message_edit')
+            : t('manager_bike_stattion_message_add'),
+        );
         // form.resetFields();
+        onReset();
         onCancel();
       },
       onError: (err: any) => {
@@ -87,6 +122,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
 
   useEffect(() => {
     requestGetListBicycle.run('');
+    requestGetListLock.run('');
   }, []);
 
   const onFiltersChangeDebounce = useDebounceFn(
@@ -98,27 +134,34 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
     },
   );
 
+  const onFiltersLockChangeDebounce = useDebounceFn(
+    async (values: string) => {
+      requestGetListLock.run(values);
+    },
+    {
+      wait: 500,
+    },
+  );
+
   const onSearch = useCallback((values: string) => {
     onFiltersChangeDebounce.run(values);
+  }, []);
+
+  const onSearchLock = useCallback((values: string) => {
+    onFiltersLockChangeDebounce.run(values);
   }, []);
 
   const onFinish = async (values: any) => {
     const params = {
       ...values,
-      openTime: values.openTime ? dayjs(values.openTime).format('HH:mm') : null,
-      closeTime: values.closeTime
-        ? dayjs(values.closeTime).format('HH:mm')
-        : null,
-
-      lat: 21.00214,
-      long: 105.80842,
-      bicyleIds: values?.bike_number?.map((e: any) => e.value),
+      lockId: values?.lockId?.value ? values?.lockId?.value : values?.lockId,
+      stationId: values?.stationId?.value
+        ? values?.stationId?.value
+        : values?.stationId,
     };
     if (!!id) {
       params.id = id;
     }
-    // console.log(params);
-    // return;
     reqAddStation.run(params);
   };
 
@@ -134,21 +177,15 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
 
   const getDetailStation = useRequest(
     async (id) => {
-      return privateRequest(request.get, `/station/${id}`, {});
+      return privateRequest(request.get, `/bicycle/${id}`, {});
     },
     {
       manual: true,
       onSuccess: (r) => {
-        setDataStation(r);
-        const nowFormat = dayjs().format('MM/DD/YYYY');
         form.setFieldsValue({
           ...r,
-          bike_number: r?.bicycles?.map((e: any) => ({
-            label: e.name,
-            value: e.id,
-          })),
-          openTime: dayjs(`${nowFormat} ,${r?.openTime}`),
-          closeTime: dayjs(`${nowFormat} ,${r?.closeTime}`),
+          stationId: r?.station?.id,
+          lockId: r?.locks[0]?.id,
         });
       },
       onError: (err: any) => {},
@@ -157,7 +194,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
 
   return (
     <Modal
-      title={!!id ? 'Sửa trạm xe' : 'Thêm mới trạm xe'}
+      title={!!id ? 'Sửa xe' : 'Thêm mới xe'}
       centered
       visible={status}
       width={720}
@@ -174,30 +211,30 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
         id="form"
       >
         <Form.Item
-          label={<FormattedMessage id="in" defaultMessage="Tên trạm xe" />}
+          label={<FormattedMessage id="in" defaultMessage="Tên xe" />}
           name="name"
           rules={[
             {
               required: true,
               message: intl.formatMessage({
-                id: 'i',
+                id: 'error_require_message',
                 defaultMessage: 'Không được để trống trường này',
               }),
             },
           ]}
-          normalize={(value) => value.trim()}
+          // normalize={(value) => value.trim()}
           className={styles.formItem}
         >
           <Input allowClear />
         </Form.Item>
         <Form.Item
-          label={<FormattedMessage id="in" defaultMessage="Vị trí" />}
-          name="address"
+          label={<FormattedMessage id="in" defaultMessage="Biển số xe" />}
+          name="licensePlate"
           rules={[
             {
               required: true,
               message: intl.formatMessage({
-                id: 'i',
+                id: 'error_require_message',
                 defaultMessage: 'Không được để trống trường này',
               }),
             },
@@ -208,20 +245,18 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
           <Input allowClear />
         </Form.Item>
         <Form.Item
-          label={
-            <FormattedMessage id="in" defaultMessage="Số xe có trong trạm" />
-          }
-          name="bike_number"
+          label={<FormattedMessage id="in" defaultMessage="Trạm xe" />}
+          name="stationId"
           className={styles.formItem}
         >
           <Select
-            mode="multiple"
+            showSearch
             allowClear
             onSearch={onSearch}
             options={listBicycle}
             labelInValue
             filterOption={false}
-            // optionLabelProp="label"
+            optionLabelProp="label"
             notFoundContent={
               requestGetListBicycle.loading ? <Spin size="small" /> : null
             }
@@ -229,32 +264,45 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
         </Form.Item>
 
         <Form.Item
-          label={
-            <FormattedMessage id="in" defaultMessage="Số lượng chỗ đỗ xe" />
-          }
-          name="parking"
+          label={<FormattedMessage id="in" defaultMessage="Mã khóa xe" />}
+          name="lockId"
           className={styles.formItem}
         >
-          <InputNumber style={{ width: '100%' }} />
-        </Form.Item>
-        <Form.Item label="Giờ mở cửa - Giờ đóng cửa">
-          <div style={{ display: 'flex' }}>
-            <Form.Item name="openTime" className={styles.button}>
-              <TimePicker format={'HH:mm'} />
-            </Form.Item>
-            <Form.Item name="closeTime">
-              <TimePicker format={'HH:mm'} />
-            </Form.Item>
-          </div>
+          <Select
+            // mode="multiple"
+            showSearch
+            allowClear
+            onSearch={onSearchLock}
+            // options={listLock}
+            labelInValue
+            filterOption={false}
+            // optionLabelProp="label"
+            notFoundContent={
+              requestGetListLock.loading ? <Spin size="small" /> : null
+            }
+          >
+            {listLock.map((it: any) => {
+              return (
+                <Select.Option key={it.value} value={it.value}>
+                  {`${it?.label} ${
+                    it.bicycle ? `- đang gán xe ${it?.bicycle}` : ''
+                  }`}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
 
         <Form.Item
-          label="Trạng thái trạm xe"
+          label="Trạng thái xe"
           name="isActive"
           className={styles.formItem}
           valuePropName="checked"
         >
-          <Switch />
+          <Switch
+            checkedChildren={t('status_active')}
+            unCheckedChildren={t('status_inactive')}
+          />
         </Form.Item>
         <div className={styles.addGroupButton}>
           <Button danger className={styles.button} onClick={() => onCancel()}>

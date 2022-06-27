@@ -17,6 +17,7 @@ import { useDebounceFn, useRequest } from 'ahooks';
 import dayjs from 'dayjs';
 import { privateRequest, request } from '@/utils/apis';
 import TimePicker from '../../../components/CustomPicker/TimePicker';
+import { useTranslate } from '@/utils/hooks/useTranslate';
 
 const { Option } = Select;
 
@@ -24,6 +25,7 @@ interface PROPS {
   status: boolean;
   onCancel: () => void;
   id: any;
+  onReset: () => void;
 }
 
 type Station = {
@@ -38,7 +40,8 @@ type Station = {
 };
 
 const CustomerDialog = (props: PROPS): JSX.Element => {
-  const { status, onCancel, id } = props;
+  const { t } = useTranslate();
+  const { status, onCancel, id, onReset } = props;
   const [listBicycle, setListBicycle] = useState([]);
   const [dataStation, setDataStation] = useState<Station>();
 
@@ -74,8 +77,13 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
     {
       manual: true,
       onSuccess: (r) => {
-        message.success('Thêm mới trạm xe thành công');
+        message.success(
+          !!id
+            ? t('manager_bike_stattion_message_edit')
+            : t('manager_bike_stattion_message_add'),
+        );
         // form.resetFields();
+        onReset();
         onCancel();
       },
       onError: (err: any) => {
@@ -157,7 +165,11 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
 
   return (
     <Modal
-      title={!!id ? 'Sửa trạm xe' : 'Thêm mới trạm xe'}
+      title={
+        !!id
+          ? t('manager_bike_stattion_form_title_edit')
+          : t('manager_bike_stattion_form_title_add')
+      }
       centered
       visible={status}
       width={720}
@@ -174,43 +186,41 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
         id="form"
       >
         <Form.Item
-          label={<FormattedMessage id="in" defaultMessage="Tên trạm xe" />}
+          label={t('manager_bike_stattion_form_name')}
           name="name"
           rules={[
             {
               required: true,
               message: intl.formatMessage({
-                id: 'i',
+                id: 'error_require_message',
                 defaultMessage: 'Không được để trống trường này',
               }),
             },
           ]}
-          normalize={(value) => value.trim()}
+          // normalize={(value) => value.trim()}
           className={styles.formItem}
         >
           <Input allowClear />
         </Form.Item>
         <Form.Item
-          label={<FormattedMessage id="in" defaultMessage="Vị trí" />}
+          label={t('manager_bike_stattion_form_address')}
           name="address"
           rules={[
             {
               required: true,
               message: intl.formatMessage({
-                id: 'i',
+                id: 'error_require_message',
                 defaultMessage: 'Không được để trống trường này',
               }),
             },
           ]}
-          normalize={(value) => value.trim()}
+          // normalize={(value) => value.trim()}
           className={styles.formItem}
         >
           <Input allowClear />
         </Form.Item>
         <Form.Item
-          label={
-            <FormattedMessage id="in" defaultMessage="Số xe có trong trạm" />
-          }
+          label={t('manager_bike_stattion_form_bicycle')}
           name="bike_number"
           className={styles.formItem}
         >
@@ -229,15 +239,13 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
         </Form.Item>
 
         <Form.Item
-          label={
-            <FormattedMessage id="in" defaultMessage="Số lượng chỗ đỗ xe" />
-          }
+          label={t('manager_bike_stattion_form_parking')}
           name="parking"
           className={styles.formItem}
         >
           <InputNumber style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item label="Giờ mở cửa - Giờ đóng cửa">
+        <Form.Item label={t('manager_bike_stattion_form_time')}>
           <div style={{ display: 'flex' }}>
             <Form.Item name="openTime" className={styles.button}>
               <TimePicker format={'HH:mm'} />
@@ -249,19 +257,24 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
         </Form.Item>
 
         <Form.Item
-          label="Trạng thái trạm xe"
+          label={t('manager_bike_stattion_form_status')}
           name="isActive"
           className={styles.formItem}
           valuePropName="checked"
         >
-          <Switch />
+          <Switch
+            checkedChildren={t('status_active')}
+            unCheckedChildren={t('status_inactive')}
+          />
         </Form.Item>
         <div className={styles.addGroupButton}>
           <Button danger className={styles.button} onClick={() => onCancel()}>
             Hủy
           </Button>
           <Button type="primary" htmlType="submit">
-            {!!id ? 'Cập nhật trạng thái' : 'Thêm mới'}
+            {!!id
+              ? t('manager_bike_stattion_button_edit')
+              : t('manager_bike_stattion_button_add')}
           </Button>
         </div>
       </Form>
