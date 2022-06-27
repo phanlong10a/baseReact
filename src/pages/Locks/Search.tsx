@@ -33,40 +33,13 @@ const Search = (props: PROPS) => {
   return (
     <div className={styles.searchContainer}>
       <Form form={form} className={styles.searchForm}>
-        <Form.Item name="name" className={styles.searchItem}>
-          <Input.Search
-            placeholder={t('bicycle_search_form_name')}
-            style={{ width: 240 }}
-            allowClear
-            onSearch={handleChange}
-          />
-        </Form.Item>
-        <Form.Item name="licensePlate" className={styles.searchItem}>
-          <Input.Search
-            placeholder={t('bicycle_search_form_licensePlate')}
-            style={{ width: 240 }}
-            allowClear
-            onSearch={handleChange}
-          />
-        </Form.Item>
         <Form.Item name="code" className={styles.searchItem}>
           <Input.Search
-            placeholder={t('bicycle_search_form_code')}
+            placeholder={t('lock_search_form_name')}
             style={{ width: 240 }}
             allowClear
             onSearch={handleChange}
           />
-        </Form.Item>
-        <Form.Item name="status" className={styles.searchItem}>
-          <Select
-            placeholder={t('bicycle_search_form_status')}
-            onChange={submit}
-            allowClear
-          >
-            {STATUS_BICYCLE.map((item) => (
-              <Option value={item.value}>{item.name}</Option>
-            ))}
-          </Select>
         </Form.Item>
         <Form.Item name="isActive" className={styles.searchItem}>
           <Select

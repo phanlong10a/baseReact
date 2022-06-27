@@ -145,7 +145,7 @@ export default {
   manager_bike_stattion_form_title_add: 'Thêm mới trạm xe',
   manager_bike_stattion_form_title_edit: 'Sửa trạm xe',
   manager_bike_stattion_message_add: 'Thêm mới trạm xe thành công',
-  manager_bike_stattion_message_edit: 'Thêm mới trạm xe thành công',
+  manager_bike_stattion_message_edit: 'Cập nhật trạm xe thành công',
   manager_bike_stattion_button_add: 'Thêm mới',
   manager_bike_stattion_button_edit: 'Cập nhật trạng thái',
 
@@ -174,4 +174,18 @@ export default {
   biclycle_locked: 'Khóa',
   biclycle_rental: 'Đang thuê',
   biclycle_temporary: 'Khóa tạm thời',
+
+  manager_bikycle_message_add: 'Thêm mới xe thành công',
+  manager_bikycle_message_edit: 'Cập nhật xe thành công',
+
+  // quản lý khóa
+  manager_lock: 'Quản lí khóa xe',
+  lock_search_form_name: 'Nhập mã khóa xe',
+  manager_lock_form_title_add: 'Thêm mới khóa xe',
+  manager_lock_form_title_edit: 'Sửa khóa xe',
+  manager_lock_form_code: 'Mã khóa xe',
+  manager_lock_form_bicycle: 'Thiết bị gắn với xe',
+
+  manager_lock_message_add: 'Thêm mới khóa xe thành công',
+  manager_lock_message_edit: 'Cập nhật khóa xe thành công',
 };
