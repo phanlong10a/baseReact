@@ -7,6 +7,7 @@ import {
   Input,
   message,
   Select,
+  Skeleton,
   Switch,
   Table,
   Tooltip,
@@ -47,19 +48,29 @@ export default () => {
   );
   const [form] = Form.useForm();
 
-  const { tableProps, search, params, refresh } = useAntdTable(getTableData, {
-    defaultPageSize: 10,
-    form,
-  });
+  const { tableProps, search, params, refresh, loading, error } = useAntdTable(
+    getTableData,
+    {
+      defaultPageSize: 10,
+      form,
+      onError: (error: any) => {
+        message.error(
+          error.errors[0] ? error.errors[0] : formatMessage({ id: 'error' }),
+        );
+      },
+    },
+  );
+
+  console.log(error);
 
   const requestSwitchStatus = useRequest(switchStatusUser, {
     manual: true,
     onSuccess: (res: any) => {
-      message.success(formatMessage({ id: 'message_add_user_success' }));
+      message.success(formatMessage({ id: 'message_user_success' }));
       refresh();
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'message_add_user_failure' }));
+      message.error(formatMessage({ id: 'message_user_failure' }));
       refresh();
     },
   });
@@ -108,13 +119,14 @@ export default () => {
       key: 'active',
       width: 250,
       render: (value: any, record: any, index: number) => {
+        console.log(record);
         return (
           <React.Fragment key={index}>
             <Switch
               style={{ width: 150 }}
               checkedChildren={formatMessage({ id: 'status_active' })}
               unCheckedChildren={formatMessage({ id: 'status_inactive' })}
-              defaultChecked={record.status === StatusAccount.ACTIVE}
+              defaultChecked={record.status == StatusAccount.ACTIVE}
               onChange={(checked: boolean, event: MouseEvent) => {
                 switch (record.status) {
                   case StatusAccount.ACTIVE:
@@ -162,7 +174,11 @@ export default () => {
             onSearch={submit}
           />
         </Form.Item>
-        <Form.Item name="status" initialValue="" className={styles.searchItem}>
+        <Form.Item
+          name="statusAccount"
+          initialValue=""
+          className={styles.searchItem}
+        >
           <Select onChange={submit}>
             {STATUS_ACCOUNT.map((item) => (
               <Option value={item.value}>
@@ -193,12 +209,16 @@ export default () => {
       </Breadcrumb>
       {searchForm}
       <div className={styles.tableComponent}>
-        <Table
-          columns={columns}
-          locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
-          scroll={{ x: 1000 }}
-          {...tableProps}
-        />
+        {loading || error ? (
+          <Skeleton active />
+        ) : (
+          <Table
+            columns={columns}
+            locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
+            scroll={{ x: 1000 }}
+            {...tableProps}
+          />
+        )}
       </div>
       {openDialog && (
         <Dialog

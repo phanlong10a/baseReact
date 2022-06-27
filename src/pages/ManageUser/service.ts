@@ -32,14 +32,14 @@ export const getUserData = (id: any) => {
 };
 
 export const verifyUser = (id: any) => {
-  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
+  return privateRequest(request.put, API_PATH.KYC + '/' + id, {
     data: {
       status: StatusKyc.VERIFIED,
     },
   });
 };
 export const cancelUser = (id: any) => {
-  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
+  return privateRequest(request.put, API_PATH.KYC + '/' + id, {
     data: {
       status: StatusKyc.CANCELED,
     },

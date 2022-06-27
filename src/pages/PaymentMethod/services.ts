@@ -146,7 +146,7 @@ export { createPayment };
 
 export interface IUpdateMethod {
   description: string;
-  isActive: boolean;
+  status?: 'ACTIVE' | 'INACTIVE';
   display: 'ON' | 'OFF';
 }
 
@@ -163,7 +163,7 @@ const editPayment = (method: IUpdateMethod, id: number) => {
 export { editPayment };
 
 const deletePayment = (id: number) => {
-  const url = API_PAYMENT.UPDATE(String(id));
+  const url = API_PAYMENT.DELETE(String(id));
   return privateRequest(request.delete, url, {})
     .then((result) => {
       return result;

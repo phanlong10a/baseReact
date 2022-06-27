@@ -4,6 +4,7 @@ export default {
   'index.title': 'ZH Title',
   'about.title': 'ZH - About - Title',
   // error
+  error: 'Có lỗi xảy ra',
   'error.require': '{field} không được để trống.',
   'error.email': 'Email không đúng định dạng.',
   'error.patern': '{field} không đúng định dạng.',
@@ -16,6 +17,7 @@ export default {
   message_add_user_success: 'Thêm tài khoản thành công',
   message_failure: 'Thất bại',
   message_kyc_failure: 'Cập nhật trạng thái xác thực thất bại',
+  message_user_failure: 'Cập nhật tài khoản thành công',
   message_add_user_failure: 'Thêm tài khoản thất bại',
 
   // Form
@@ -25,6 +27,7 @@ export default {
   register: 'Đăng ký',
   fullname: 'Họ và tên',
   status: 'Trạng thái',
+  status_verify: 'Trạng thái xác thực',
   email: 'Email',
   identification_code: 'Mã định danh',
   date_of_birth: 'Ngày sinh',

@@ -1,6 +1,16 @@
 import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useToggle } from 'ahooks';
-import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
+import {
+  Breadcrumb,
+  Button,
+  Form,
+  Input,
+  Select,
+  Table,
+  Tooltip,
+  Skeleton,
+  message,
+} from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
@@ -43,10 +53,18 @@ export default () => {
   );
   const [form] = Form.useForm();
 
-  const { tableProps, search, params, refresh } = useAntdTable(getTableData, {
-    defaultPageSize: 10,
-    form,
-  });
+  const { tableProps, search, params, refresh, loading, error } = useAntdTable(
+    getTableData,
+    {
+      defaultPageSize: 10,
+      form,
+      onError: (error: any) => {
+        message.error(
+          error.errors[0] ? error.errors[0] : formatMessage({ id: 'error' }),
+        );
+      },
+    },
+  );
   const { formatMessage } = useIntl();
 
   const { type, changeType, submit, reset } = search;
@@ -167,12 +185,16 @@ export default () => {
       </Breadcrumb>
       {searchForm}
       <div className={styles.tableComponent}>
-        <Table
-          columns={columns}
-          locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
-          scroll={{ x: 1000 }}
-          {...tableProps}
-        />
+        {loading || error ? (
+          <Skeleton active />
+        ) : (
+          <Table
+            columns={columns}
+            locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
+            scroll={{ x: 1000 }}
+            {...tableProps}
+          />
+        )}
       </div>
       {openDialog && (
         <Dialog
