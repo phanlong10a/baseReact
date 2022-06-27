@@ -167,7 +167,7 @@ export default {
   manager_bicycle_table_actionr: 'Thao tác',
   // search table bicycle
   bicycle_search_form_name: 'Nhập tên xe',
-  bicycle_search_form_licensePlate: 'Nhập tên xe',
+  bicycle_search_form_licensePlate: 'Nhập biển số xe',
   bicycle_search_form_code: 'Nhập mã khóa xe',
   bicycle_search_form_status: 'Nhập trạng thái',
   bicycle_search_form_isActive: 'Nhập trạng thái kích hoạt',
@@ -189,4 +189,19 @@ export default {
 
   manager_lock_message_add: 'Thêm mới khóa xe thành công',
   manager_lock_message_edit: 'Cập nhật khóa xe thành công',
+
+  // ticket
+  manager_ticker: 'Quản lí vé xe',
+  manager_ticket_table_name: 'Tên vé',
+  manager_ticket_table_price: 'Giá gốc vé',
+  manager_ticket_table_type: 'Loại vé',
+  manager_ticket_title_edit: 'Câp nhật thông tin vé xe',
+
+  manager_ticket_form_name: 'Tên vé',
+  manager_ticket_form_price: 'Giá tiền vé',
+  manager_ticket_form_minutesForOriginalPrice: 'Thời gian sử dụng',
+  manager_ticket_form_overTimePrice: 'Giá tiền số phút ngoài giờ',
+  manager_ticket_form_minutesForOverTimePrice: 'Số phút ngoài giờ',
+
+  manager_ticket_message_edit: 'Cập nhật vé xe thành công',
 };
