@@ -127,6 +127,24 @@ export default {
   manager_bike_stattion_table_actionr: 'Thao tác',
   manager_bike_stattion_table_status: 'Trạng thái',
 
+  manager_bike_stattion_form_name: 'Tên trạm xe',
+  manager_bike_stattion_form_address: 'Vị trí',
+  manager_bike_stattion_form_bicycle: 'Xe có trong trạm',
+  manager_bike_stattion_form_parking: 'Số lượng chỗ đỗ xe',
+  manager_bike_stattion_form_time: 'Giờ mở cửa - Giờ đóng cửa',
+  manager_bike_stattion_form_status: 'Trạng thái trạm xe',
+  manager_bike_stattion_form_title_add: 'Thêm mới trạm xe',
+  manager_bike_stattion_form_title_edit: 'Sửa trạm xe',
+  manager_bike_stattion_message_add: 'Thêm mới trạm xe thành công',
+  manager_bike_stattion_message_edit: 'Thêm mới trạm xe thành công',
+  manager_bike_stattion_button_add: 'Thêm mới',
+  manager_bike_stattion_button_edit: 'Cập nhật trạng thái',
+
+  manager_bike_stattion_title_delete: 'Xác nhận xóa',
+  manager_bike_stattion_content_delete: 'Xác nhận xóa trạm xe?',
+  message_delete_item_success: 'Xóa thành công',
+  error_require_message: 'Không được để trống trường này!',
+
   // bicycle
   manager_title_bicycle: 'Quản lý xe',
   // column table bicycle

@@ -1,3 +1,4 @@
+import { useTranslate } from '@/utils/hooks/useTranslate';
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
 
@@ -10,6 +11,7 @@ interface PROPS {
 
 const ModalDelete = (props: PROPS) => {
   const { status, id, onCancel, onOk } = props;
+  const { t } = useTranslate();
 
   const handleOk = () => {
     onOk(id);
@@ -17,12 +19,12 @@ const ModalDelete = (props: PROPS) => {
   return (
     <>
       <Modal
-        title="Xác nhận xóa"
+        title={t('manager_bike_stattion_title_delete')}
         visible={status}
         onOk={() => handleOk()}
         onCancel={onCancel}
       >
-        <p>Xác nhận xóa trạm xe?</p>
+        <p>{t('manager_bike_stattion_content_delete')}</p>
       </Modal>
     </>
   );

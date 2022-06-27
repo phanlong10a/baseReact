@@ -136,7 +136,12 @@ export default () => {
     {
       manual: true,
       onSuccess: (r) => {
-        message.success('Xóa thành công');
+        message.success(
+          intl.formatMessage({
+            id: 'message_delete_item_success',
+          }),
+        );
+        reset();
         setModalDelete({ status: false, id: null });
       },
       onError: (err: any) => {
@@ -176,6 +181,7 @@ export default () => {
           status={dialog.status}
           onCancel={() => setDiolog({ status: false, id: null })}
           id={dialog.id}
+          onReset={() => reset()}
         />
       )}
       {modalDelete.status && (
