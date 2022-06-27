@@ -10,14 +10,14 @@ export const getTableData = (
   { current, pageSize }: { current: number; pageSize: number },
   formData: Object,
 ): Promise<Result> => {
-  let query = `page=${current}&pageSize=${pageSize}&status=PENDING`;
+  let query = `page=${current}&pageSize=${pageSize}`;
   Object.entries(formData).forEach(([key, value]) => {
     if (value) {
       query += `&${key}=${value}`;
     }
   });
 
-  return privateRequest(request.get, API_PATH.KYC + '?' + query).then(
+  return privateRequest(request.get, API_PATH.GUIDE + '?' + query).then(
     (res: any) => {
       return {
         total: res?.total,
@@ -27,21 +27,31 @@ export const getTableData = (
   );
 };
 
-export const getUserData = (id: any) => {
-  return privateRequest(request.get, API_PATH.KYC + '/' + id);
+export const deleteGuideData = (id: any) => {
+  return privateRequest(request.delete, API_PATH.GUIDE + '/' + id);
 };
 
-export const verifyUser = (id: any) => {
-  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
-    data: {
-      status: StatusKyc.VERIFIED,
-    },
+export const getGuideData = (id: any) => {
+  return privateRequest(request.get, API_PATH.GUIDE + '/' + id);
+};
+export const createGuideData = (data: any) => {
+  return privateRequest(request.post, API_PATH.GUIDE, {
+    data,
   });
 };
-export const cancelUser = (id: any) => {
-  return privateRequest(request.post, API_PATH.KYC + '/' + id, {
-    data: {
-      status: StatusKyc.CANCELED,
+
+export const editGuideData = (id: any, data: any) => {
+  return privateRequest(request.put, API_PATH.GUIDE + '/' + id, {
+    data,
+  });
+};
+
+export const uploadImage = (formData: FormData) => {
+  return privateRequest(request.post, API_PATH.FILE, {
+    headers: {
+      headers: { 'Content-Type': 'multipart/form-data' },
     },
+    data: formData,
+    requestType: 'form',
   });
 };

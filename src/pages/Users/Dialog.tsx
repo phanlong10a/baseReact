@@ -258,6 +258,29 @@ const Dialog: React.FC<Iprops> = ({
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
                   <Form.Item
+                    name="address"
+                    label={formatMessage({ id: 'address' })}
+                    initialValue={userInfo.phone}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'address' }),
+                          },
+                        ),
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'address' })}
+                      disabled={!editable}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
                     name="dateOfBirth"
                     label={formatMessage({ id: 'date_of_birth' })}
                     initialValue={
