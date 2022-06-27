@@ -29,7 +29,7 @@ export default () => {
     {
       title: 'STT',
       width: 100,
-      dataIndex: 'id',
+      dataIndex: 'stt',
       key: 'stt',
       align: 'center',
     },

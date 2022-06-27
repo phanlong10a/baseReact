@@ -33,7 +33,7 @@ export default () => {
     {
       title: 'STT',
       width: 100,
-      dataIndex: 'id',
+      dataIndex: 'stt',
       key: 'stt',
       align: 'center',
     },
@@ -78,13 +78,13 @@ export default () => {
                 <EyeOutlined />
               </span>
             </Tooltip>
-            <Tooltip title="Xóa tram xe">
+            {/* <Tooltip title="Xóa tram xe">
               <span
                 onClick={() => setModalDelete({ status: true, id: record.id })}
               >
                 <DeleteFilled />
               </span>
-            </Tooltip>
+            </Tooltip> */}
           </>
         );
       },
