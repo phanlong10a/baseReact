@@ -45,11 +45,14 @@ export default {
   register: 'Register',
   fullname: 'Full Name',
   status: 'Status',
+  status_verify: 'KYC status',
+  address: 'Address',
   email: 'Email',
   kyc_type: 'Kyc type',
   title: 'Title',
   content: 'Content',
-
+  thumbnail: 'Ảnh thumbnail',
+  image: 'Images',
   // error
   'error.require': '{field} must be required.',
   'error.email': 'Email invalid.',
@@ -73,6 +76,7 @@ export default {
 
   general_preview_image: 'Preview',
   general_tooltip_show_infomation: 'Show infomation',
+  general_tooltip_delete: 'Delete',
 
   general_add: 'Add',
   general_edit: 'Edit',
@@ -118,4 +122,5 @@ export default {
   const_column_action: 'Action',
   const_column_title: 'Title',
   const_column_content: 'Content',
+  const_column_content_image: 'Content and Image',
 };

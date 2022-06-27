@@ -28,12 +28,15 @@ export default {
   fullname: 'Họ và tên',
   status: 'Trạng thái',
   status_verify: 'Trạng thái xác thực',
+  address: 'Địa chỉ',
   email: 'Email',
   identification_code: 'Mã định danh',
   date_of_birth: 'Ngày sinh',
   kyc_type: 'Loại giấy tờ',
   content: 'Nội dung',
   title: 'Tiêu đề',
+  thumbnail: 'Ảnh thumbnail',
+  image: 'Hình ảnh',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
@@ -75,6 +78,7 @@ export default {
 
   general_preview_image: 'Phóng to',
   general_tooltip_show_infomation: 'Xem thông tin',
+  general_tooltip_delete: 'Xoá',
 
   general_add: 'Thêm mới',
   general_edit: 'Chỉnh sửa',
@@ -121,6 +125,7 @@ export default {
   const_column_action: 'Hành động',
   const_column_title: 'Tiêu đề',
   const_column_content: 'Nội dung',
+  const_column_content_image: 'Nội dung và hình ảnh (nếu có)',
 
   manager_bike_stattion: 'Quản lý trạm xe',
   manager_bike_stattion_table_name: 'Tên trạm xe',

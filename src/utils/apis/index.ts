@@ -120,6 +120,8 @@ const API_PATH = {
   KYC: '/kyc',
   ADMIN_USER: '/user/admin',
   NEWS: '/news',
+  FILE: '/file',
+  GUIDE: '/guide',
 };
 
 export { API_PATH, request, privateRequest };
