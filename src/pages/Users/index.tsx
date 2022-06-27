@@ -1,8 +1,9 @@
+import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
+import { StatusAccount } from '@/utils/enum';
 import { EyeOutlined } from '@ant-design/icons';
-import { useAntdTable, useToggle, useRequest } from 'ahooks';
+import { useAntdTable, useRequest, useToggle } from 'ahooks';
 import {
   Breadcrumb,
-  Button,
   Form,
   Input,
   message,
@@ -14,13 +15,10 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
-import { setLocale, useIntl } from 'umi';
+import { useIntl } from 'umi';
 import Dialog from './Dialog';
 import styles from './index.less';
 import { getTableData, switchStatusUser } from './service';
-import { getLocale } from 'umi';
-import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
-import { StatusAccount } from '@/utils/enum';
 
 const { Option } = Select;
 
@@ -134,6 +132,7 @@ export default () => {
                     break;
                   case StatusAccount.INACTIVE:
                     requestSwitchStatus.run(record, StatusAccount.ACTIVE);
+                    break;
                 }
               }}
             />

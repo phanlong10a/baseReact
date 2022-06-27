@@ -26,18 +26,18 @@ const Login: React.FC = () => {
       >
         <Form.Item
           className={styles.formItem}
-          label={t('phone_number')}
+          label={t('user_or_phone_number')}
           name="phone_number"
           rules={[
             {
               required: true,
               message: t('error.require', {
-                field: t('phone_number'),
+                field: t('user_or_phone_number'),
               }),
             },
           ]}
         >
-          <Input type="text" placeholder={t('phone_number')} />
+          <Input type="text" placeholder={t('user_or_phone_number')} />
         </Form.Item>
 
         <Form.Item
