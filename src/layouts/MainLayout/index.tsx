@@ -32,11 +32,8 @@ const App = ({ children }: any) => {
         <Sidebar collapsed={collapsed} onToggle={() => setCollapsed.toggle()} />
         <Layout className="site-layout">
           <MainHeader />
-          <Content style={{ margin: '0 16px' }}>
-            <div
-              className="site-layout-background"
-              style={{ padding: 24, minHeight: 360 }}
-            >
+          <Content>
+            <div className="site-layout-background" style={{ minHeight: 360 }}>
               {children}
             </div>
           </Content>
