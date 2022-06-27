@@ -164,7 +164,7 @@ export default () => {
   return (
     <>
       <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>{t('manager_bike_stattion')}</Breadcrumb.Item>
+        <Breadcrumb.Item>{t('manager_title_bicycle')}</Breadcrumb.Item>
       </Breadcrumb>
       <Search submit={submit} form={form} setAddpopup={setAddpopup} />
       <div style={{ padding: 24, minHeight: '240px' }}>

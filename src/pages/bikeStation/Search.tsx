@@ -1,7 +1,8 @@
 import React from 'react';
 import { useIntl } from 'umi';
-import { Button, Form, Input, Select, Table, Tooltip } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import styles from './index.less';
+import { useTranslate } from '@/utils/hooks/useTranslate';
 
 const { Option } = Select;
 
@@ -14,6 +15,7 @@ interface PROPS {
 const Search = (props: PROPS) => {
   const { submit, form, setAddpopup } = props;
   const intl = useIntl();
+  const { t } = useTranslate();
 
   const handleChange = (value: string) => {
     submit({ name: value });
@@ -36,16 +38,17 @@ const Search = (props: PROPS) => {
           />
         </Form.Item>
         <Form.Item
-          name="status"
-          initialValue={true}
+          name="isActive"
+          // initialValue={true}
           className={styles.searchItem}
         >
-          <Select onChange={submit}>
+          <Select
+            onChange={submit}
+            placeholder={t('bicycle_search_form_isActive')}
+            allowClear
+          >
             {STATUS_ACCOUNT.map((item) => (
-              <Option value={item.value}>
-                {/* {formatMessage({ id: item.name })} */}
-                {item.name}
-              </Option>
+              <Option value={item.value}>{item.name}</Option>
             ))}
           </Select>
         </Form.Item>
