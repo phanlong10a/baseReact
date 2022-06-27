@@ -1,7 +1,7 @@
 import { OPTION_STATUS_ACTIVE } from '@/utils/constant';
 import { StatusAccount } from '@/utils/enum';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
-import { useToggle } from 'ahooks';
+import { useRequest, useToggle } from 'ahooks';
 import {
   Button,
   Col,
@@ -19,7 +19,6 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
 import styles from './index.less';
-import { useRequest } from 'ahooks';
 import {
   createGuideData,
   editGuideData,
@@ -100,7 +99,9 @@ const Dialog: React.FC<Iprops> = ({
         ]);
       }
     },
-    onError: (rej: any) => {},
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'error' }));
+    },
     onFinally: () => {
       setLoading(false);
     },

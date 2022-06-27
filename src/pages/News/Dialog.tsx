@@ -1,5 +1,5 @@
 import { OPTION_STATUS_ACTIVE } from '@/utils/constant';
-import { KycType, StatusAccount } from '@/utils/enum';
+import { StatusAccount } from '@/utils/enum';
 import { useRequest, useSetState, useToggle } from 'ahooks';
 import {
   Button,
@@ -12,11 +12,16 @@ import {
   Select,
   Skeleton,
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import { useIntl } from 'umi';
-import { createNewsData, editNewsData, getNewsData } from './service';
 import styles from './index.less';
+import {
+  createNewsData,
+  editNewsData,
+  getNewsData,
+  uploadImage,
+} from './service';
 const { Option } = Select;
 
 interface Iprops {
@@ -43,6 +48,7 @@ const Dialog: React.FC<Iprops> = ({
   const [editable, setEditable] = useToggle(true);
   const [newsInfo, setNewsInfo] = useSetState<Inews>({});
 
+  let quillObj = useRef();
   const { formatMessage } = useIntl();
   const requestUser = useRequest(getNewsData, {
     manual: true,
@@ -84,18 +90,49 @@ const Dialog: React.FC<Iprops> = ({
   const requestEditUser = useRequest(editNewsData, {
     manual: true,
     onSuccess: (res: any) => {
-      message.error(formatMessage({ id: 'message_user_success' }));
+      message.error(formatMessage({ id: 'message_success' }));
       setNewsInfo(res);
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'message_user_failure' }));
+      message.error(formatMessage({ id: 'message_failure' }));
     },
     onFinally: () => {
       setLoading(false);
     },
   });
 
+  const imageHandler = () => {
+    const input = document.createElement('input');
+
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      let file: any = input.files[0];
+      let formData = new FormData();
+
+      formData.append('files', file);
+
+      let fileName = file.name;
+      debugger;
+
+      const res = await uploadFiles(formData, fileName, quillObj);
+    };
+  };
+  const uploadFiles = (formData: FormData, filename: any, quillObj: any) => {
+    uploadImage(formData)
+      .then((res: any) => {
+        console.log(res);
+        const range = quillObj.getEditorSelection();
+        quillObj.getEditor().insertEmbed(range.index, 'image', res[0].url);
+        return '';
+      })
+      .finally(() => {
+        return '';
+      });
+  };
   const onEdit = () => {
     setEditable.set(true);
   };
@@ -187,7 +224,28 @@ const Dialog: React.FC<Iprops> = ({
                     name="content"
                     label={formatMessage({ id: 'content' })}
                   >
-                    <ReactQuill theme="snow" />
+                    <ReactQuill
+                      ref={(el) => {
+                        quillObj = el;
+                      }}
+                      theme="snow"
+                      modules={{
+                        toolbar: {
+                          container: [
+                            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                            ['bold', 'italic', 'underline'],
+                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            [{ align: [] }],
+                            ['link', 'image'],
+                            ['clean'],
+                            [{ color: [] }],
+                          ],
+                          handlers: {
+                            image: () => imageHandler(),
+                          },
+                        },
+                      }}
+                    />
                   </Form.Item>
                 </Col>
               </Row>

@@ -40,3 +40,12 @@ export const editNewsData = (id: any, payload: any) => {
     data: payload,
   });
 };
+export const uploadImage = (formData: FormData) => {
+  return privateRequest(request.post, API_PATH.FILE, {
+    headers: {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+    data: formData,
+    requestType: 'form',
+  });
+};
