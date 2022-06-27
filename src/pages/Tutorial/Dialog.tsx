@@ -1,11 +1,31 @@
 import { OPTION_STATUS_ACTIVE } from '@/utils/constant';
-import { KycType, StatusAccount } from '@/utils/enum';
+import { StatusAccount } from '@/utils/enum';
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { useToggle } from 'ahooks';
-import { Button, Col, Form, Input, Modal, Row, Select, Skeleton } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Skeleton,
+  Upload,
+} from 'antd';
+import type { UploadChangeParam } from 'antd/es/upload';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
 import { useIntl } from 'umi';
 import styles from './index.less';
+import { useRequest } from 'ahooks';
+import {
+  createGuideData,
+  editGuideData,
+  getGuideData,
+  uploadImage,
+} from './service';
 const { Option } = Select;
 
 interface Iprops {
@@ -14,27 +34,17 @@ interface Iprops {
   itemEdit: any;
 }
 
-interface IUser {
-  address?: string;
-  avatar?: any;
-  createdAt?: string;
-  dateOfBirth?: string;
-  email?: string;
-  fullName?: string;
-  gender?: string;
-  id?: string;
-  identificationCode?: string;
-  isActive?: true;
-  phone?: string;
-  points?: number;
-  referralCode?: string;
-  roles?: Array<any>;
-  frontPhoto?: any;
-  backPhoto?: any;
-  status?: string;
-  kycType?: KycType;
-  updatedAt?: string;
-}
+const beforeUpload = (file: RcFile) => {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('You can only upload JPG/PNG file!');
+  }
+  const isLt5M = file.size / 1024 / 1024 < 5;
+  if (!isLt5M) {
+    message.error('Image must smaller than 2MB!');
+  }
+  return isJpgOrPng && isLt5M;
+};
 
 const Dialog: React.FC<Iprops> = ({
   open,
@@ -44,18 +54,95 @@ const Dialog: React.FC<Iprops> = ({
   ...rest
 }) => {
   const [loading, setLoading] = useState(true);
-  const [editable, setEditable] = useToggle(true);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [fileID, setFileID] = useState<number | null>(null);
+  const [editable, setEditable] = useToggle(false);
+  const [initialValue, setInitialValue] = useState({});
+  const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
 
   const { formatMessage } = useIntl();
 
-  React.useEffect(() => {}, [itemEdit]);
+  const requestCreateGuide = useRequest(createGuideData, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_success' }));
+      setOpen(false);
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'error' }));
+    },
+  });
+  const requestEditGuide = useRequest(editGuideData, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_success' }));
+      setOpen(false);
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'error' }));
+    },
+  });
 
-  const onEdit = () => {
-    setEditable.set(true);
-  };
+  const requestGetGuide = useRequest(getGuideData, {
+    manual: true,
+    onSuccess: (res: any) => {
+      setInitialValue(res);
+      if (res.thumbnail) {
+        setFileID(res.thumbnail?.id);
+        setDefaultFileList([
+          {
+            uid: '-1',
+            name: res.thumbnail.originalname,
+            status: 'done',
+            url: res.thumbnail.url,
+            thumbUrl: res.thumbnail.url,
+          },
+        ]);
+      }
+    },
+    onError: (rej: any) => {},
+    onFinally: () => {
+      setLoading(false);
+    },
+  });
+
+  React.useEffect(() => {
+    if (itemEdit) {
+      requestGetGuide.run(itemEdit);
+    } else {
+      setInitialValue({});
+      setLoading(false);
+      setEditable.set(true);
+    }
+  }, [itemEdit]);
 
   const onFinish = (value: any) => {
-    console.log(value);
+    const { content, status, title } = value;
+    let submitObj = {
+      content,
+      status,
+      title,
+      thumbnailId: fileID,
+    };
+    if (itemEdit) {
+      requestEditGuide.run(itemEdit, submitObj);
+      return;
+    }
+    requestCreateGuide.run(submitObj);
+    return;
+  };
+
+  const handleChange: UploadProps['onChange'] = (
+    info: UploadChangeParam<UploadFile>,
+  ) => {
+    if (info.fileList && info.fileList.length === 0) {
+      setFileID(null);
+    }
+  };
+
+  const onEdit = (e: any) => {
+    e.preventDefault();
+    setEditable.set(true);
   };
 
   return (
@@ -73,16 +160,8 @@ const Dialog: React.FC<Iprops> = ({
         onCancel={() => setOpen(false)}
         visible={open}
         footer={null}
-        // extra={
-        //     <Space>
-        //         <Button onClick={() => setOpen(false)}>Cancel</Button>
-        //         <Button onClick={() => setOpen(false)} type="primary">
-        //             Submit
-        //         </Button>
-        //     </Space>
-        // }
       >
-        {false ? (
+        {requestGetGuide.loading || loading ? (
           <Skeleton active />
         ) : (
           <>
@@ -90,59 +169,140 @@ const Dialog: React.FC<Iprops> = ({
               layout="vertical"
               hideRequiredMark
               onFinish={onFinish}
+              initialValues={initialValue}
               autoComplete="off"
             >
               <Row gutter={16}>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="title"
-                    label={formatMessage({ id: 'title' })}
-                    rules={[
-                      {
-                        required: true,
-                        message: formatMessage(
-                          { id: 'error.require' },
+                <Col span={12}>
+                  <Row gutter={16}>
+                    <Col span={24} className={styles.dialogFormItem}>
+                      <Form.Item
+                        name="thumbnail"
+                        label={formatMessage({ id: 'thumbnail' })}
+                      >
+                        <Upload
+                          name="avatar"
+                          listType="picture"
+                          maxCount={1}
+                          defaultFileList={defaultFileList}
+                          disabled={!editable}
+                          action={(file) => {
+                            setLoadingImage(true);
+                            let formData = new FormData();
+                            formData.append('files', file);
+                            return uploadImage(formData)
+                              .then((res: any) => {
+                                setFileID(res[0]?.id);
+                                return '';
+                              })
+                              .finally(() => {
+                                setLoadingImage(false);
+                                return '';
+                              });
+                          }}
+                          beforeUpload={beforeUpload}
+                          onChange={handleChange}
+                        >
+                          <Button
+                            icon={
+                              loadingImage ? (
+                                <LoadingOutlined />
+                              ) : (
+                                <UploadOutlined />
+                              )
+                            }
+                          >
+                            Upload
+                          </Button>
+                        </Upload>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={12}>
+                  <Row gutter={16}>
+                    <Col span={24} className={styles.dialogFormItem}>
+                      <Form.Item
+                        name="title"
+                        label={formatMessage({ id: 'title' })}
+                        rules={[
                           {
-                            field: formatMessage({ id: 'title' }),
+                            required: true,
+                            message: formatMessage(
+                              { id: 'error.require' },
+                              {
+                                field: formatMessage({ id: 'title' }),
+                              },
+                            ),
                           },
-                        ),
-                      },
-                    ]}
-                  >
-                    <Input
-                      placeholder={formatMessage({ id: 'title' })}
-                      disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="status"
-                    label={formatMessage({ id: 'status' })}
-                    initialValue={StatusAccount.ACTIVE}
-                  >
-                    <Select disabled={!editable}>
-                      {OPTION_STATUS_ACTIVE.map((status, index) => (
-                        <Option value={status.value} key={index}>
-                          {formatMessage({ id: status.name })}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={24} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="content"
-                    label={formatMessage({ id: 'content' })}
-                  >
-                    <ReactQuill theme="snow" />
-                  </Form.Item>
+                        ]}
+                      >
+                        <Input
+                          placeholder={formatMessage({ id: 'title' })}
+                          disabled={!editable}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col span={24} className={styles.dialogFormItem}>
+                      <Form.Item
+                        name="status"
+                        label={formatMessage({ id: 'status' })}
+                        initialValue={StatusAccount.ACTIVE}
+                      >
+                        <Select disabled={!editable}>
+                          {OPTION_STATUS_ACTIVE.map((status, index) => (
+                            <Option value={status.value} key={index}>
+                              {formatMessage({ id: status.name })}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col span={24} className={styles.dialogFormItem}>
+                      <Form.Item
+                        name="content"
+                        label={formatMessage({ id: 'content' })}
+                        rules={[
+                          {
+                            required: true,
+                            message: formatMessage(
+                              { id: 'error.require' },
+                              {
+                                field: formatMessage({ id: 'content' }),
+                              },
+                            ),
+                          },
+                        ]}
+                      >
+                        <Input.TextArea
+                          rows={4}
+                          placeholder={formatMessage({ id: 'content' })}
+                          disabled={!editable}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <div className={styles.addGroupButton}>
-                <Button htmlType="submit" className={styles.addButton}>
-                  Thêm mới
-                </Button>
+                {/* <Button className={styles.addButton}>Thêm mới</Button> */}
+                {editable ? (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className={styles.addButton}
+                  >
+                    {formatMessage({ id: 'general_save' })}
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={(e) => onEdit(e)}
+                    className={styles.addButton}
+                  >
+                    {formatMessage({ id: 'general_edit' })}
+                  </Button>
+                )}
                 <Button
                   danger
                   onClick={() => setOpen(false)}
