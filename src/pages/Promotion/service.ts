@@ -1,5 +1,6 @@
 import { privateRequest, request, API_PATH } from '@/utils/apis';
 import { ENVIRONMENTS } from '@/utils/constant';
+import { StatusAccount } from '@/utils/enum';
 
 interface Result {
   total: number;
@@ -16,15 +17,11 @@ export const getTableData = (
     }
   });
 
-  return privateRequest(request.get, API_PATH.ADMIN_USER + '?' + query).then(
+  return privateRequest(request.get, API_PATH.USER + '?' + query).then(
     (res: any) => {
-      const data = res?.data?.map((e: any, index: any) => ({
-        ...e,
-        stt: (res?.page - 1) * res?.pageSize + index + 1,
-      }));
       return {
         total: res?.total,
-        list: data,
+        list: res?.data,
       };
     },
   );
@@ -33,13 +30,12 @@ export const getTableData = (
 export const getUserData = (id: any) => {
   return privateRequest(request.get, API_PATH.USER + '/' + id);
 };
-export const createUser = (payload: any) => {
-  return privateRequest(request.post, API_PATH.USER, {
-    data: payload,
-  });
-};
-export const editUser = (id: any, payload: any) => {
-  return privateRequest(request.put, API_PATH.USER + '/' + id, {
-    data: payload,
+
+export const switchStatusUser = (user: any, payload: StatusAccount) => {
+  return privateRequest(request.put, API_PATH.USER + '/' + user.id, {
+    data: {
+      ...user,
+      status: payload,
+    },
   });
 };

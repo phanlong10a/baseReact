@@ -1,3 +1,5 @@
+import { OPTION_STATUS_ACTIVE } from '@/utils/constant';
+import { StatusAccount } from '@/utils/enum';
 import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useToggle } from 'ahooks';
 import {
@@ -5,21 +7,18 @@ import {
   Button,
   Form,
   Input,
+  message,
   Select,
+  Skeleton,
   Table,
   Tooltip,
-  message,
-  Skeleton,
 } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
-import { setLocale, useIntl } from 'umi';
+import { useIntl } from 'umi';
 import Dialog from './Components/Dialog';
-import { STATUS_ACTIVE } from '@/utils/constant';
 import styles from './index.less';
 import { getTableData } from './service';
-import { getLocale } from 'umi';
-import { StatusAccount } from '@/utils/enum';
 
 const { Option } = Select;
 
@@ -68,6 +67,13 @@ export default () => {
   };
 
   const columns: ColumnsType<DataType> = [
+    {
+      title: 'STT',
+      width: 100,
+      dataIndex: 'stt',
+      key: 'stt',
+      align: 'center',
+    },
     {
       title: 'const_column_full_name',
       dataIndex: 'fullName',
@@ -142,9 +148,13 @@ export default () => {
             onSearch={submit}
           />
         </Form.Item>
-        <Form.Item name="status" initialValue="" className={styles.searchItem}>
-          <Select onChange={submit}>
-            {STATUS_ACTIVE.map((item) => (
+        <Form.Item name="status" className={styles.searchItem}>
+          <Select
+            onChange={submit}
+            allowClear
+            placeholder={formatMessage({ id: 'general_status_active' })}
+          >
+            {OPTION_STATUS_ACTIVE.map((item) => (
               <Option value={item.value}>
                 {formatMessage({ id: item.name })}
               </Option>

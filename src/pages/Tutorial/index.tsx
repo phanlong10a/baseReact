@@ -62,6 +62,13 @@ export default () => {
 
   const columns: ColumnsType<DataType> = [
     {
+      title: 'STT',
+      width: 100,
+      dataIndex: 'stt',
+      key: 'stt',
+      align: 'center',
+    },
+    {
       title: 'const_column_title',
       dataIndex: 'title',
       key: 'title',

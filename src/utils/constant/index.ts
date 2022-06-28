@@ -16,6 +16,7 @@ export const OPTION_STATUS_ACTIVE: IObjectProperty[] = [
 export const OPTION_GENDER: IObjectProperty[] = [
   { name: 'general_gender_male', value: 'MALE' },
   { name: 'general_gender_female', value: 'FEMALE' },
+  { name: 'general_gender_other', value: 'OTHER' },
 ];
 
 export const STATUS_ACCOUNT: IObjectProperty[] = [

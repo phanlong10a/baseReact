@@ -1,4 +1,8 @@
-import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
+import {
+  OPTION_STATUS_ACTIVE,
+  STATUS_ACCOUNT,
+  STATUS_KYC,
+} from '@/utils/constant';
 import { StatusAccount } from '@/utils/enum';
 import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest, useToggle } from 'ahooks';
@@ -84,6 +88,13 @@ export default () => {
 
   const columns: ColumnsType<DataType> = [
     {
+      title: 'STT',
+      width: 100,
+      dataIndex: 'stt',
+      key: 'stt',
+      align: 'center',
+    },
+    {
       title: 'const_column_full_name',
       dataIndex: 'fullName',
       key: 'fullName',
@@ -109,6 +120,28 @@ export default () => {
       title: 'const_column_date_of_birth',
       dataIndex: 'dateOfBirth',
       key: 'email',
+    },
+    {
+      title: 'general_status_account',
+      dataIndex: 'status',
+      key: 'status',
+      render: (value: any, record: any, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            {record.kyc[0]
+              ? formatMessage(
+                  {
+                    id: STATUS_KYC.find((item) => {
+                      return item.value == record.kyc[0].status;
+                    })?.name,
+                  } || '',
+                )
+              : formatMessage({
+                  id: 'general_kyc_not_verified',
+                })}
+          </React.Fragment>
+        );
+      },
     },
     {
       title: 'const_column_status',
@@ -173,22 +206,26 @@ export default () => {
             onSearch={submit}
           />
         </Form.Item>
-        <Form.Item
-          name="statusAccount"
-          initialValue=""
-          className={styles.searchItem}
-        >
-          <Select onChange={submit}>
-            {STATUS_ACCOUNT.map((item) => (
+        <Form.Item name="statusKyc" className={styles.searchItem}>
+          <Select
+            onChange={submit}
+            allowClear
+            placeholder={formatMessage({ id: 'general_status_account' })}
+          >
+            {STATUS_KYC.map((item) => (
               <Option value={item.value}>
                 {formatMessage({ id: item.name })}
               </Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="status" initialValue="" className={styles.searchItem}>
-          <Select onChange={submit}>
-            {STATUS_ACTIVE.map((item) => (
+        <Form.Item name="status" className={styles.searchItem}>
+          <Select
+            onChange={submit}
+            allowClear
+            placeholder={formatMessage({ id: 'general_status_active' })}
+          >
+            {OPTION_STATUS_ACTIVE.map((item) => (
               <Option value={item.value}>
                 {formatMessage({ id: item.name })}
               </Option>
@@ -213,6 +250,7 @@ export default () => {
         ) : (
           <Table
             columns={columns}
+            rowKey={(record) => record.id}
             locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
             scroll={{ x: 1000 }}
             {...tableProps}
