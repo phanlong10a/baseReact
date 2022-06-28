@@ -102,7 +102,7 @@ export default () => {
           {formatMessage({ id: 'navigation_promotion' })}
         </Breadcrumb.Item>
       </Breadcrumb>
-      {searchForm}
+      {/* {searchForm}
       <div className={styles.tableComponent}>
         {loading || error ? (
           <Skeleton active />
@@ -124,7 +124,7 @@ export default () => {
           }}
           itemEdit={idSelected}
         />
-      )}
+      )} */}
     </>
   );
 };
