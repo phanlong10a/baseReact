@@ -90,12 +90,13 @@ export default {
   general_gender: 'Giới tính',
   general_gender_male: 'Nam',
   general_gender_female: 'Nữ',
+  general_gender_other: 'Khác',
 
   general_status_active: 'Trạng thái hoạt động',
   general_inactive: 'Không hoạt động',
   general_active: 'Hoạt động',
 
-  general_status_account: 'Trạng thái tài khoản',
+  general_status_account: 'Trạng thái xác thực',
   general_denied_verify: 'Từ chối xác thực',
   general_success_verify: 'Xác thực thành công',
   general_waiting_verify: 'Chờ xác thực',
