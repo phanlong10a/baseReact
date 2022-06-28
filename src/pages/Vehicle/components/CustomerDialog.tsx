@@ -115,7 +115,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
       },
       onError: (err: any) => {
         console.log('err', err, err.response, err.data);
-        message.error(err?.data?.message);
+        message.error(err?.errors?.[0]);
       },
     },
   );

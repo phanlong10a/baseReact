@@ -161,16 +161,17 @@ export default {
   manager_bicycle_table_name: 'Tên xe',
   manager_bicycle_table_licensePlate: 'Biển số xe',
   manager_bicycle_table_code: 'Mã khóa xe',
-  manager_bicycle_table_battery: 'Pin khóa xe',
+  manager_bicycle_table_battery: 'Phần trăm xe(%)',
   manager_bicycle_table_status: 'Trạng thái xe',
   manager_bicycle_table_isActive: 'Trạng thái kích hoạt',
-  manager_bicycle_table_actionr: 'Thao tác',
+  manager_bicycle_table_action: 'Thao tác',
+
   // search table bicycle
   bicycle_search_form_name: 'Nhập tên xe',
   bicycle_search_form_licensePlate: 'Nhập biển số xe',
   bicycle_search_form_code: 'Nhập mã khóa xe',
-  bicycle_search_form_status: 'Nhập trạng thái',
-  bicycle_search_form_isActive: 'Nhập trạng thái kích hoạt',
+  bicycle_search_form_status: 'Trạng thái',
+  bicycle_search_form_isActive: 'Trạng thái kích hoạt',
   // status bicycle
   biclycle_locked: 'Khóa',
   biclycle_rental: 'Đang thuê',
@@ -189,6 +190,11 @@ export default {
 
   manager_lock_message_add: 'Thêm mới khóa xe thành công',
   manager_lock_message_edit: 'Cập nhật khóa xe thành công',
+
+  manager_lock_table_bicycle: 'Xe được gắn khóa',
+  manager_lock_table_usage_status: 'Trạng thái sử dụng',
+  manager_lock_table_ready: 'Sẵn sàng sử dụng',
+  manager_lock_table_unavailabel: 'Không khả dụng',
 
   // ticket
   manager_ticker: 'Quản lí vé xe',
