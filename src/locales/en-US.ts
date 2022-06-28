@@ -94,6 +94,7 @@ export default {
   general_gender: 'Gender',
   general_gender_male: 'Male',
   general_gender_female: 'Female',
+  general_gender_other: 'Other',
 
   general_status_account: 'Account status',
   general_denied_verify: 'Denied',
