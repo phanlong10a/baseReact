@@ -88,6 +88,13 @@ export default () => {
 
   const columns: ColumnsType<DataType> = [
     {
+      title: 'STT',
+      width: 100,
+      dataIndex: 'stt',
+      key: 'stt',
+      align: 'center',
+    },
+    {
       title: 'const_column_full_name',
       dataIndex: 'fullName',
       key: 'fullName',
@@ -243,6 +250,7 @@ export default () => {
         ) : (
           <Table
             columns={columns}
+            rowKey={(record) => record.id}
             locale={{ emptyText: formatMessage({ id: 'const_column_empty' }) }}
             scroll={{ x: 1000 }}
             {...tableProps}
