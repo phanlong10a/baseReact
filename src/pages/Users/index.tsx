@@ -236,7 +236,7 @@ export default () => {
           {formatMessage({ id: 'user_management_list_user' })}
         </Breadcrumb.Item>
       </Breadcrumb>
-      {searchForm}
+      {/* {searchForm}
       <div className={styles.tableComponent}>
         {loading || error ? (
           <Skeleton active />
@@ -258,7 +258,7 @@ export default () => {
           }}
           itemEdit={idSelected}
         />
-      )}
+      )} */}
     </>
   );
 };
