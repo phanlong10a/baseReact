@@ -107,7 +107,7 @@ export default () => {
       },
     },
     {
-      title: t('manager_bicycle_table_actionr'),
+      title: t('manager_bicycle_table_action'),
       width: 100,
       align: 'center',
       render: (value: any, record: any, index: number) => {

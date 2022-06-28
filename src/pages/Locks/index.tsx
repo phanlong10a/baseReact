@@ -45,6 +45,16 @@ export default () => {
       align: 'center',
     },
     {
+      title: t('manager_lock_table_bicycle'),
+      width: 100,
+      dataIndex: 'bicycle',
+      key: 'bicycle',
+      align: 'center',
+      render: (_: any, record: any, index: number) => {
+        return record?.bicycle?.name;
+      },
+    },
+    {
       title: t('manager_bicycle_table_battery'),
       width: 100,
       dataIndex: 'battery',
@@ -67,7 +77,21 @@ export default () => {
       },
     },
     {
-      title: t('manager_bicycle_table_actionr'),
+      title: t('manager_lock_table_usage_status'),
+      width: 100,
+      dataIndex: 'ready',
+      key: 'ready',
+      align: 'center',
+      render: (_: any, record: any, index: number) => {
+        const text =
+          record?.battery >= 20
+            ? t('manager_lock_table_ready')
+            : t('manager_lock_table_unavailabel');
+        return text;
+      },
+    },
+    {
+      title: t('manager_bicycle_table_action'),
       width: 100,
       align: 'center',
       render: (value: any, record: any, index: number) => {

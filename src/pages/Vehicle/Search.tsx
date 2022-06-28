@@ -36,7 +36,7 @@ const Search = (props: PROPS) => {
         <Form.Item name="name" className={styles.searchItem}>
           <Input.Search
             placeholder={t('bicycle_search_form_name')}
-            style={{ width: 240 }}
+            // style={{ width: 240 }}
             allowClear
             onSearch={handleChange}
           />
@@ -44,7 +44,7 @@ const Search = (props: PROPS) => {
         <Form.Item name="licensePlate" className={styles.searchItem}>
           <Input.Search
             placeholder={t('bicycle_search_form_licensePlate')}
-            style={{ width: 240 }}
+            // style={{ width: 240 }}
             allowClear
             onSearch={handleChange}
           />
@@ -52,7 +52,7 @@ const Search = (props: PROPS) => {
         <Form.Item name="code" className={styles.searchItem}>
           <Input.Search
             placeholder={t('bicycle_search_form_code')}
-            style={{ width: 240 }}
+            // style={{ width: 240 }}
             allowClear
             onSearch={handleChange}
           />
