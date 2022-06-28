@@ -4,6 +4,7 @@ import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest, useToggle } from 'ahooks';
 import {
   Breadcrumb,
+  Button,
   Form,
   Input,
   message,
@@ -92,6 +93,14 @@ export default () => {
           />
         </Form.Item>
       </Form>
+      <Button
+        onClick={() => {
+          setIdSelected(null);
+          setOpenDialog.set(true);
+        }}
+      >
+        {formatMessage({ id: 'general_add' })}
+      </Button>
     </div>
   );
 

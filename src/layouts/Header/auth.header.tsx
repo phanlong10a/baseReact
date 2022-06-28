@@ -12,10 +12,10 @@ const AuthHeader = () => {
     <Row justify="space-between" align="middle" className={styles.authHeader}>
       <Col className={styles.logo}>LOGO</Col>
       <Col className={styles.links}>
-        {location.pathname !== '/login' && <Link to="/login">Login</Link>}
+        {/* {location.pathname !== '/login' && <Link to="/login">Login</Link>}
         {location.pathname !== '/register' && (
           <Link to="/register">{formatMessage({ id: 'register' })}</Link>
-        )}
+        )} */}
       </Col>
     </Row>
   );
