@@ -10,16 +10,23 @@ import {
   Select,
   Skeleton,
   Button,
+  DatePicker,
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
 import { getUserData } from './service';
 const { Option } = Select;
 import styles from './index.less';
-import { OPTION_GENDER, OPTION_STATUS_ACTIVE } from '@/utils/constant';
+import {
+  OPTION_GENDER,
+  OPTION_STATUS_ACTIVE,
+  STATUS_ACTIVE,
+} from '@/utils/constant';
 import { StatusKyc } from '@/utils/enum';
 import { STATUS_KYC } from '../../utils/constant/index';
+import dayjs from 'dayjs';
 
+const { RangePicker } = DatePicker;
 interface Iprops {
   open: boolean;
   setOpen: (b: boolean) => void;
@@ -70,7 +77,6 @@ const Dialog: React.FC<Iprops> = ({
       setLoading(false);
     },
   });
-  const getUser = () => {};
 
   React.useEffect(() => {
     if (itemEdit) {
@@ -88,6 +94,7 @@ const Dialog: React.FC<Iprops> = ({
 
   const onFinish = (value: any) => {
     console.log(value);
+    console.log(dayjs(value.promotionTime[0]).format('DD/MM/YYYY'));
   };
 
   return (
@@ -112,308 +119,113 @@ const Dialog: React.FC<Iprops> = ({
         //     </Space>
         // }
       >
-        {requestUser.loading || loading ? (
-          <Skeleton active />
-        ) : (
-          <>
-            {userInfo.avatar && (
-              <div
-                style={{
-                  marginBottom: 24,
-                }}
+        {
+          // requestUser.loading || loading
+          false ? (
+            <Skeleton active />
+          ) : (
+            <>
+              <Form
+                layout="vertical"
+                hideRequiredMark
+                onFinish={onFinish}
+                autoComplete="off"
+                // initialValues={userInfo}
               >
-                <Image
-                  src={userInfo.avatar?.url}
-                  style={{ borderRadius: '100%' }}
-                  placeholder={formatMessage({ id: 'general_preview_image' })}
-                  preview={{
-                    mask: <>{formatMessage({ id: 'general_preview_image' })}</>,
-                    maskClassName: 'round-circle',
-                  }}
-                  width={100}
-                />
-              </div>
-            )}
-            <Form
-              layout="vertical"
-              hideRequiredMark
-              onFinish={onFinish}
-              autoComplete="off"
-              // initialValues={userInfo}
-            >
-              <Row gutter={16}>
-                <Col span={12} className={styles.dialogFormItem}>
-                  {userInfo.kyc[0]?.frontPhoto?.url ? (
+                <Row gutter={16}>
+                  <Col span={12} className={styles.dialogFormItem}>
                     <Form.Item
-                      label={formatMessage({
-                        id: 'general_kyc_photo_type_front',
-                      })}
+                      name="promotionCode"
+                      label={formatMessage({ id: 'promotion_code' })}
                     >
-                      <Image
-                        src={userInfo.kyc[0]?.frontPhoto?.url}
-                        placeholder={formatMessage({
-                          id: 'general_preview_image',
-                        })}
-                        preview={{
-                          mask: (
-                            <>
-                              {formatMessage({ id: 'general_preview_image' })}
-                            </>
-                          ),
-                        }}
-                        width={'100%'}
-                        className={styles.kycImage}
+                      <Input
+                        placeholder={formatMessage({ id: 'promotion_code' })}
+                        disabled
                       />
                     </Form.Item>
-                  ) : (
+                  </Col>
+                  <Col span={12} className={styles.dialogFormItem}>
                     <Form.Item
-                      label={formatMessage({
-                        id: 'general_kyc_photo_type_front',
-                      })}
+                      name="promotionName"
+                      label={formatMessage({ id: 'promotion_name' })}
                     >
-                      <div className={styles.kycImagePlaceholder}></div>
-                    </Form.Item>
-                  )}
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  {userInfo.kyc[0]?.backPhoto?.url ? (
-                    <Form.Item
-                      label={formatMessage({
-                        id: 'general_kyc_photo_type_back',
-                      })}
-                    >
-                      <Image
-                        src={userInfo.kyc[0]?.backPhoto?.url}
-                        placeholder={formatMessage({
-                          id: 'general_preview_image',
-                        })}
-                        preview={{
-                          mask: (
-                            <>
-                              {formatMessage({ id: 'general_preview_image' })}
-                            </>
-                          ),
-                        }}
-                        width={'100%'}
-                        className={styles.kycImage}
+                      <Input
+                        placeholder={formatMessage({ id: 'promotion_name' })}
                       />
                     </Form.Item>
-                  ) : (
+                  </Col>
+                  <Col span={12} className={styles.dialogFormItem}>
                     <Form.Item
-                      label={formatMessage({
-                        id: 'general_kyc_photo_type_back',
-                      })}
+                      name="promotionTime"
+                      label={formatMessage({ id: 'promotion_time' })}
+                      rules={[
+                        {
+                          required: true,
+                          message: formatMessage(
+                            { id: 'error.require' },
+                            {
+                              field: formatMessage({ id: 'promotion_time' }),
+                            },
+                          ),
+                        },
+                      ]}
                     >
-                      <div className={styles.kycImagePlaceholder}></div>
+                      <RangePicker
+                        className={styles.RangePicker}
+                        format={'YYYY/MM/DD'}
+                      />
                     </Form.Item>
-                  )}
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="fullName"
-                    label={formatMessage({ id: 'fullname' })}
-                    initialValue={userInfo.fullName}
-                    rules={[
-                      {
-                        required: true,
-                        message: formatMessage(
-                          { id: 'error.require' },
-                          {
-                            field: formatMessage({ id: 'fullname' }),
-                          },
-                        ),
-                      },
-                    ]}
+                  </Col>
+                  <Col span={12} className={styles.dialogFormItem}>
+                    <Form.Item label={formatMessage({ id: 'promotion_type' })}>
+                      <Select disabled={!editable}>
+                        {STATUS_KYC.map((status, index) => (
+                          <Option value={status.value} key={index}>
+                            {formatMessage({ id: status.name })}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12} className={styles.dialogFormItem}>
+                    <Form.Item label={formatMessage({ id: 'promotion_range' })}>
+                      <Select disabled={!editable}>
+                        {STATUS_KYC.map((status, index) => (
+                          <Option value={status.value} key={index}>
+                            {formatMessage({ id: status.name })}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12} className={styles.dialogFormItem}>
+                    <Form.Item label={formatMessage({ id: 'status' })}>
+                      <Select disabled={!editable}>
+                        {OPTION_STATUS_ACTIVE.map((status, index) => (
+                          <Option value={status.value} key={index}>
+                            {formatMessage({ id: status.name })}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <div className={styles.addGroupButton}>
+                  <Button htmlType="submit" className={styles.addButton}>
+                    Thêm mới
+                  </Button>
+                  <Button
+                    danger
+                    onClick={() => setOpen(false)}
+                    className={styles.addButton}
                   >
-                    <Input
-                      placeholder={formatMessage({ id: 'fullname' })}
-                      disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="phone"
-                    label={formatMessage({ id: 'phone_number' })}
-                    initialValue={userInfo.phone}
-                    rules={[
-                      {
-                        required: true,
-                        message: formatMessage(
-                          { id: 'error.require' },
-                          {
-                            field: formatMessage({ id: 'phone_number' }),
-                          },
-                        ),
-                      },
-                    ]}
-                  >
-                    <Input
-                      placeholder={formatMessage({ id: 'phone_number' })}
-                      disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="address"
-                    label={formatMessage({ id: 'address' })}
-                    initialValue={userInfo.phone}
-                    rules={[
-                      {
-                        required: true,
-                        message: formatMessage(
-                          { id: 'error.require' },
-                          {
-                            field: formatMessage({ id: 'address' }),
-                          },
-                        ),
-                      },
-                    ]}
-                  >
-                    <Input
-                      placeholder={formatMessage({ id: 'address' })}
-                      disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="dateOfBirth"
-                    label={formatMessage({ id: 'date_of_birth' })}
-                    initialValue={
-                      userInfo.kyc[0]?.dateOfBirth
-                        ? userInfo.kyc[0]?.dateOfBirth
-                        : ''
-                    }
-                  >
-                    <Input
-                      placeholder={formatMessage({ id: 'date_of_birth' })}
-                      disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="identificationCode"
-                    label={formatMessage({ id: 'identification_code' })}
-                    initialValue={
-                      userInfo.kyc[0]?.identificationCode
-                        ? userInfo.kyc[0]?.identificationCode
-                        : ''
-                    }
-                  >
-                    <Input
-                      placeholder={formatMessage({ id: 'identification_code' })}
-                      disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="status"
-                    label={formatMessage({ id: 'status' })}
-                    initialValue={userInfo.status}
-                  >
-                    <Select disabled={!editable}>
-                      {OPTION_STATUS_ACTIVE.map((status, index) => (
-                        <Option value={status.value} key={index}>
-                          {formatMessage({ id: status.name })}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="kycStatus"
-                    label={formatMessage({ id: 'status_verify' })}
-                    initialValue={
-                      userInfo.kyc[0]?.status
-                        ? userInfo.kyc[0]?.status
-                        : StatusKyc.NOT_VERIFIED
-                    }
-                  >
-                    <Select disabled={!editable}>
-                      {STATUS_KYC.map((status, index) => (
-                        <Option value={status.value} key={index}>
-                          {formatMessage({ id: status.name })}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="gender"
-                    label={formatMessage({ id: 'general_gender' })}
-                    initialValue={
-                      userInfo.gender ? userInfo.gender : OPTION_GENDER[0].value
-                    }
-                    rules={[
-                      {
-                        required: true,
-                        message: formatMessage(
-                          { id: 'error.require' },
-                          {
-                            field: formatMessage({ id: 'general_gender' }),
-                          },
-                        ),
-                      },
-                    ]}
-                  >
-                    <Select disabled={!editable}>
-                      {OPTION_GENDER.map((gender, index) => (
-                        <Option value={gender.value} key={index}>
-                          {formatMessage({ id: gender.name })}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12} className={styles.dialogFormItem}>
-                  <Form.Item
-                    name="email"
-                    label={formatMessage({ id: 'email' })}
-                    initialValue={userInfo.email}
-                    rules={[
-                      {
-                        required: true,
-                        message: formatMessage(
-                          { id: 'error.require' },
-                          {
-                            field: formatMessage({ id: 'email' }),
-                          },
-                        ),
-                      },
-                      {
-                        type: 'email',
-                        message: formatMessage({ id: 'error.email' }),
-                      },
-                    ]}
-                  >
-                    <Input
-                      placeholder={formatMessage({ id: 'email' })}
-                      disabled={!editable}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <div className={styles.addGroupButton}>
-                {/* <Button className={styles.addButton}>Thêm mới</Button> */}
-                <Button
-                  danger
-                  onClick={() => setOpen(false)}
-                  className={styles.addButton}
-                >
-                  {formatMessage({ id: 'general_cancel' })}
-                </Button>
-              </div>
-            </Form>
-          </>
-        )}
+                    {formatMessage({ id: 'general_cancel' })}
+                  </Button>
+                </div>
+              </Form>
+            </>
+          )
+        }
       </Modal>
     </>
   );

@@ -17,6 +17,11 @@ export default {
   logout: 'Logout',
   status_active: 'Active',
   status_inactive: 'Inactive',
+  promotion_code: 'Promotion Code',
+  promotion_name: 'Promotion Name',
+  promotion_time: 'Promotion Time',
+  promotion_range: 'Promotion Range',
+  promotion_type: 'Promotion Type',
 
   //navigation
   navitation_home: 'Home',
