@@ -343,6 +343,13 @@ const Dialog: React.FC<Iprops> = ({
               </Row>
               <div className={styles.addGroupButton}>
                 {/* <Button className={styles.addButton}>Thêm mới</Button> */}
+                <Button
+                  danger
+                  onClick={() => setOpen(false)}
+                  className={styles.addButton}
+                >
+                  {formatMessage({ id: 'general_cancel' })}
+                </Button>
                 {editable ? (
                   <Button
                     type="primary"
@@ -360,13 +367,6 @@ const Dialog: React.FC<Iprops> = ({
                     {formatMessage({ id: 'general_edit' })}
                   </Button>
                 )}
-                <Button
-                  danger
-                  onClick={() => setOpen(false)}
-                  className={styles.addButton}
-                >
-                  {formatMessage({ id: 'general_cancel' })}
-                </Button>
               </div>
             </Form>
           </>

@@ -38,6 +38,11 @@ export default {
   title: 'Tiêu đề',
   thumbnail: 'Ảnh thumbnail',
   image: 'Hình ảnh',
+  promotion_code: 'Mã khuyến mãi',
+  promotion_name: 'Tên chương trình',
+  promotion_time: 'Thời gian chương trình',
+  promotion_range: 'Phạm vi áp dụng',
+  promotion_type: 'Hình thức khuyến mãi',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',

@@ -143,14 +143,14 @@ const Dialog: React.FC<Iprops> = ({
             >
               <Row gutter={16}>
                 <Col span={12} className={styles.dialogFormItem}>
-                  {userInfo.kyc[0]?.frontPhoto?.url ? (
+                  {userInfo?.kyc[0]?.frontPhoto?.url ? (
                     <Form.Item
                       label={formatMessage({
                         id: 'general_kyc_photo_type_front',
                       })}
                     >
                       <Image
-                        src={userInfo.kyc[0]?.frontPhoto?.url}
+                        src={userInfo?.kyc[0]?.frontPhoto?.url}
                         placeholder={formatMessage({
                           id: 'general_preview_image',
                         })}
@@ -176,14 +176,14 @@ const Dialog: React.FC<Iprops> = ({
                   )}
                 </Col>
                 <Col span={12} className={styles.dialogFormItem}>
-                  {userInfo.kyc[0]?.backPhoto?.url ? (
+                  {userInfo?.kyc[0]?.backPhoto?.url ? (
                     <Form.Item
                       label={formatMessage({
                         id: 'general_kyc_photo_type_back',
                       })}
                     >
                       <Image
-                        src={userInfo.kyc[0]?.backPhoto?.url}
+                        src={userInfo?.kyc[0]?.backPhoto?.url}
                         placeholder={formatMessage({
                           id: 'general_preview_image',
                         })}
@@ -284,9 +284,7 @@ const Dialog: React.FC<Iprops> = ({
                     name="dateOfBirth"
                     label={formatMessage({ id: 'date_of_birth' })}
                     initialValue={
-                      userInfo.kyc[0]?.dateOfBirth
-                        ? userInfo.kyc[0]?.dateOfBirth
-                        : ''
+                      userInfo?.kyc ? userInfo?.kyc[0]?.dateOfBirth : ''
                     }
                   >
                     <Input
@@ -300,9 +298,7 @@ const Dialog: React.FC<Iprops> = ({
                     name="identificationCode"
                     label={formatMessage({ id: 'identification_code' })}
                     initialValue={
-                      userInfo.kyc[0]?.identificationCode
-                        ? userInfo.kyc[0]?.identificationCode
-                        : ''
+                      userInfo?.kyc ? userInfo?.kyc[0]?.identificationCode : ''
                     }
                   >
                     <Input
@@ -331,8 +327,8 @@ const Dialog: React.FC<Iprops> = ({
                     name="kycStatus"
                     label={formatMessage({ id: 'status_verify' })}
                     initialValue={
-                      userInfo.kyc[0]?.status
-                        ? userInfo.kyc[0]?.status
+                      userInfo?.kyc
+                        ? userInfo?.kyc[0]?.status
                         : StatusKyc.NOT_VERIFIED
                     }
                   >
