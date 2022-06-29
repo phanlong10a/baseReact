@@ -17,7 +17,7 @@ export const getTableData = (
     }
   });
 
-  return privateRequest(request.get, API_PATH.USER + '?' + query).then(
+  return privateRequest(request.get, API_PATH.COUPON + '?' + query).then(
     (res: any) => {
       const data = res?.data?.map((e: any, index: any) => ({
         ...e,
@@ -31,15 +31,17 @@ export const getTableData = (
   );
 };
 
-export const getUserData = (id: any) => {
-  return privateRequest(request.get, API_PATH.USER + '/' + id);
+export const getCouponData = (id: any) => {
+  return privateRequest(request.get, API_PATH.COUPON + '/' + id);
 };
 
-export const switchStatusUser = (user: any, payload: StatusAccount) => {
-  return privateRequest(request.put, API_PATH.USER + '/' + user.id, {
-    data: {
-      ...user,
-      status: payload,
-    },
+export const createCoupon = (payload: any) => {
+  return privateRequest(request.post, API_PATH.COUPON, {
+    data: payload,
+  });
+};
+export const editCoupon = (id: any, payload: any) => {
+  return privateRequest(request.put, API_PATH.COUPON + '/' + id, {
+    data: payload,
   });
 };

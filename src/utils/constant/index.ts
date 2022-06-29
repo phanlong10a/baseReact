@@ -1,3 +1,5 @@
+import { Applicable } from '../enum';
+
 interface IObjectProperty {
   name: string;
   value: string | boolean | number | null;
@@ -42,6 +44,11 @@ export const KYC_TYPE: IObjectProperty[] = [
 export const KYC_PHOTO_TYPES: IObjectProperty[] = [
   { name: 'general_kyc_photo_type_front', value: 'FRONT_PHOTO' },
   { name: 'general_kyc_photo_type_back', value: 'BACK_PHOTO' },
+];
+
+export const APPLICABLE: IObjectProperty[] = [
+  { name: 'general_all', value: Applicable.ALL },
+  { name: 'general_user', value: Applicable.USER },
 ];
 
 export const ENVIRONMENTS = {

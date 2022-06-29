@@ -55,14 +55,17 @@ export default {
   register: 'Register',
   fullname: 'Full Name',
   status: 'Status',
+  discount: 'Discount',
   status_verify: 'KYC status',
   address: 'Address',
   email: 'Email',
   kyc_type: 'Kyc type',
   title: 'Title',
   content: 'Content',
-  thumbnail: 'Ảnh thumbnail',
+  thumbnail: 'Thumbnail',
   image: 'Images',
+  from_date: 'From date',
+  to_date: 'To date',
   // error
   'error.require': '{field} must be required.',
   'error.email': 'Email invalid.',
@@ -74,10 +77,14 @@ export default {
   message_kyc_success: 'Update status kyc user success',
   message_user_success: 'Update user success',
   message_add_user_success: 'Add user success',
+  message_coupon_success: 'Update coupon success',
+  message_add_coupon_success: 'Add coupon success',
   message_failure: 'Failed',
   message_kyc_failure: 'Update status kyc user failed',
   message_user_failure: 'Update user failed',
   message_add_user_failure: 'Add user failed',
+  message_coupon_failure: 'Update coupon failed',
+  message_add_coupon_failure: 'Add coupon failed',
 
   //general
 
@@ -100,6 +107,7 @@ export default {
   general_gender_male: 'Male',
   general_gender_female: 'Female',
   general_gender_other: 'Other',
+  general_all: 'Tất cả',
 
   general_status_account: 'Account status',
   general_denied_verify: 'Denied',

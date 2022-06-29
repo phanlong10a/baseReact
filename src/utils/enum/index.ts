@@ -9,6 +9,10 @@ export enum StatusAccount {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
+export enum Applicable {
+  ALL = 'ALL',
+  USER = 'USER',
+}
 
 export enum KycType {
   IDENTIFY_CARD = 'IDENTIFY_CARD',
