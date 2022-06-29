@@ -193,7 +193,10 @@ export default {
   manager_lock_form_title_edit: 'Sửa khóa xe',
   manager_lock_form_code: 'Mã khóa xe',
   manager_lock_form_bicycle: 'Thiết bị gắn với xe',
-  manager_lock_form_pass: 'Thiết bị gắn với xe',
+  manager_lock_form_pass: 'Mật khẩu',
+  manager_lock_form_phone: 'Số điện thoại',
+  manager_lock_form_IMEI: 'Mã IMEI',
+  manager_lock_form_bluetoothMAC: 'Mã bluetoothMAC',
 
   manager_lock_message_add: 'Thêm mới khóa xe thành công',
   manager_lock_message_edit: 'Cập nhật khóa xe thành công',
@@ -217,4 +220,22 @@ export default {
   manager_ticket_form_minutesForOverTimePrice: 'Số phút ngoài giờ',
 
   manager_ticket_message_edit: 'Cập nhật vé xe thành công',
+
+  // travel
+  travel: 'Quản lí chuyến đi',
+  travel_table_start_time: 'Thời gian bắt đầu',
+  travel_table_end_time: 'Thời gian kết thúc',
+  travel_table_status_payment: 'Trạng thái ví điện tử',
+  travel_table_points: 'Số điểm',
+  travel_table_status: 'Trạng thái',
+
+  travel_status_active: 'Đang thực hiện',
+  travel_status_completed: 'Đã hoàn thành',
+
+  travel_status_payment_paid: 'Đã thanh toán',
+  travel_status_payment_unpaid: 'Chưa thanh toán',
+  travel_status_payment_failed: 'Thanh toán chưa thành công',
+
+  travel_search_status: 'Trạng thái chuyến đi',
+  travel_search_status_payment: 'Trạng thái chuyến đi',
 };
