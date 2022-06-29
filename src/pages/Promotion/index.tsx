@@ -119,6 +119,7 @@ export default () => {
     {
       title: 'promotion_time',
       key: 'applicable',
+      align: 'center',
       render: (value: any, record: ICoupon, index: number) => {
         return (
           <React.Fragment key={index}>
