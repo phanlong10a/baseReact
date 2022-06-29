@@ -15,12 +15,17 @@ export default {
   message_kyc_success: 'Cập nhật trạng thái xác thực thành công',
   message_user_success: 'Cập nhật tài khoản thành công',
   message_add_user_success: 'Thêm tài khoản thành công',
+  message_coupon_success: 'Cập nhật mã khuyến mãi thành công',
+  message_add_coupon_success: 'Thêm mã khuyến mãi thành công',
   message_failure: 'Thất bại',
   message_kyc_failure: 'Cập nhật trạng thái xác thực thất bại',
-  message_user_failure: 'Cập nhật tài khoản thành công',
-  message_add_user_failure: 'Thêm tài khoản thất bại',
+  message_user_failure: 'Cập nhật tài khoản thất bại',
+  message_add_user_failure: 'Cập nhật tài khoản thất bại',
+  message_coupon_failure: 'Cập nhật mã khuyến mãi thất bại',
+  message_add_coupon_failure: 'Thêm mã khuyến mãi thất bại',
 
   // Form
+
   password: 'Mật khẩu',
   user_or_phone_number: 'Tài khoản hoặc số điện thoại',
   phone_number: 'Số điện thoại',
@@ -43,6 +48,9 @@ export default {
   promotion_time: 'Thời gian chương trình',
   promotion_range: 'Phạm vi áp dụng',
   promotion_type: 'Hình thức khuyến mãi',
+  discount: 'Giảm giá',
+  from_date: 'Từ ngày',
+  to_date: 'Đến ngày',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
@@ -96,6 +104,8 @@ export default {
   general_gender_male: 'Nam',
   general_gender_female: 'Nữ',
   general_gender_other: 'Khác',
+  general_all: 'Tất cả',
+  general_user: 'Người dùng',
 
   general_status_active: 'Trạng thái hoạt động',
   general_inactive: 'Không hoạt động',

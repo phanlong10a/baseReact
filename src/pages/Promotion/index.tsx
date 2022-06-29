@@ -1,5 +1,5 @@
-import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
-import { StatusAccount } from '@/utils/enum';
+import { APPLICABLE, STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
+import { Applicable, StatusAccount } from '@/utils/enum';
 import { EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest, useToggle } from 'ahooks';
 import {
@@ -15,13 +15,28 @@ import {
   Tooltip,
 } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
+import dayjs from 'dayjs';
 import React from 'react';
 import { useIntl } from 'umi';
 import Dialog from './Dialog';
 import styles from './index.less';
-import { getTableData, switchStatusUser } from './service';
+import { getTableData } from './service';
 
 const { Option } = Select;
+
+interface ICoupon {
+  id?: any;
+  title?: string;
+  description?: string;
+  code?: string;
+  discount?: number;
+  startTime?: any;
+  endTime?: any;
+  applicable?: Applicable;
+  userIds?: number[];
+  status?: string;
+  promotionTime?: Array<any>;
+}
 
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
@@ -53,17 +68,81 @@ export default () => {
     setOpenDialog.set(true);
   };
 
-  const columns: ColumnsType<any> = [
+  const columns: ColumnsType<ICoupon> = [
     {
-      title: 'const_column_full_name',
-      dataIndex: 'fullName',
-      key: 'fullName',
+      title: 'STT',
+      dataIndex: 'stt',
+      key: 'STT',
+    },
+    {
+      title: 'const_column_title',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: 'discount',
+      dataIndex: 'discount',
+      key: 'discount',
+    },
+    {
+      title: 'const_column_status',
+      dataIndex: 'isActive',
+      key: 'isActive',
+      render: (value: any, record: ICoupon, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            {record.status === StatusAccount.ACTIVE
+              ? formatMessage({ id: 'status_active' })
+              : formatMessage({ id: 'status_inactive' })}
+          </React.Fragment>
+        );
+      },
+    },
+    {
+      title: 'promotion_type',
+      dataIndex: 'applicable',
+      key: 'applicable',
+      render: (value: any, record: ICoupon, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            {formatMessage(
+              {
+                id: APPLICABLE.find((item) => {
+                  return item.value == record.applicable;
+                })?.name,
+              } || '',
+            )}
+          </React.Fragment>
+        );
+      },
+    },
+    {
+      title: 'promotion_time',
+      key: 'applicable',
+      align: 'center',
+      render: (value: any, record: ICoupon, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            {formatMessage({
+              id: 'from_date',
+            }) +
+              ' ' +
+              dayjs(record.startTime).format('DD/MM/YYYY') +
+              ' ' +
+              formatMessage({
+                id: 'to_date',
+              }) +
+              ' ' +
+              dayjs(record.endTime).format('DD/MM/YYYY')}
+          </React.Fragment>
+        );
+      },
     },
     {
       title: 'const_column_action',
       dataIndex: 'custom',
       align: 'center',
-      render: (value: any, record: any, index: number) => {
+      render: (value: any, record: ICoupon, index: number) => {
         return (
           <Tooltip
             title={formatMessage({ id: 'general_tooltip_show_infomation' })}
@@ -78,14 +157,14 @@ export default () => {
         );
       },
     },
-  ].map((item: any) => {
+  ].map((item: any): ColumnsType<ICoupon> => {
     return { ...item, title: formatMessage({ id: item.title }) };
   });
 
   const searchForm = (
     <div className={styles.searchContainer}>
       <Form form={form} className={styles.searchForm}>
-        <Form.Item name="fullName" className={styles.searchItem}>
+        <Form.Item name="title" className={styles.searchItem}>
           <Input.Search
             placeholder={formatMessage({ id: 'form_search_text' })}
             allowClear
@@ -111,7 +190,7 @@ export default () => {
           {formatMessage({ id: 'navigation_promotion' })}
         </Breadcrumb.Item>
       </Breadcrumb>
-      {/* {searchForm}
+      {searchForm}
       <div className={styles.tableComponent}>
         {loading || error ? (
           <Skeleton active />
@@ -133,7 +212,7 @@ export default () => {
           }}
           itemEdit={idSelected}
         />
-      )} */}
+      )}
     </>
   );
 };
