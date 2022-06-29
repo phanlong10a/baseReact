@@ -19,9 +19,13 @@ export const getTableData = (
 
   return privateRequest(request.get, API_PATH.GUIDE + '?' + query).then(
     (res: any) => {
+      const data = res?.data?.map((e: any, index: any) => ({
+        ...e,
+        stt: (res?.page - 1) * res?.pageSize + index + 1,
+      }));
       return {
         total: res?.total,
-        list: res?.data,
+        list: data,
       };
     },
   );
