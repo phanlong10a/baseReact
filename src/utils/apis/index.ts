@@ -2,6 +2,8 @@ import { extend } from 'umi-request';
 import { ENVIRONMENTS } from '../constant';
 import TokenManagement from './TokenManagement';
 
+const localeInfo = localStorage.getItem('umi_locale') || 'vi-VN';
+
 const request = extend({
   prefix: ENVIRONMENTS.API_URL,
   errorHandler: (error) => {
@@ -13,10 +15,12 @@ const request = extend({
 });
 
 const injectBearer = (token: string, configs: any) => {
+  console.log(localeInfo);
   if (!configs) {
     return {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Accept-Language': localeInfo,
       },
     };
   }
@@ -27,6 +31,7 @@ const injectBearer = (token: string, configs: any) => {
       headers: {
         ...configs.headers,
         Authorization: `Bearer ${token}`,
+        'Accept-Language': localeInfo,
       },
     };
   }
@@ -35,6 +40,7 @@ const injectBearer = (token: string, configs: any) => {
     ...configs,
     headers: {
       Authorization: `Bearer ${token}`,
+      'Accept-Language': localeInfo,
     },
   };
 };
@@ -122,6 +128,7 @@ const API_PATH = {
   NEWS: '/news',
   FILE: '/file',
   GUIDE: '/guide',
+  COUPON: '/coupon',
 };
 
 export { API_PATH, request, privateRequest };

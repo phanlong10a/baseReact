@@ -1,4 +1,5 @@
 import { useRequest, useSetState, useToggle } from 'ahooks';
+import moment from 'moment';
 import {
   Col,
   Modal,
@@ -11,18 +12,20 @@ import {
   Skeleton,
   Button,
   DatePicker,
+  InputNumber,
 } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
-import { getUserData } from './service';
+import { createCoupon, editCoupon, getCouponData } from './service';
 const { Option } = Select;
 import styles from './index.less';
 import {
+  APPLICABLE,
   OPTION_GENDER,
   OPTION_STATUS_ACTIVE,
   STATUS_ACTIVE,
 } from '@/utils/constant';
-import { StatusKyc } from '@/utils/enum';
+import { Applicable, StatusAccount, StatusKyc } from '@/utils/enum';
 import { STATUS_KYC } from '../../utils/constant/index';
 import dayjs from 'dayjs';
 
@@ -33,24 +36,18 @@ interface Iprops {
   itemEdit: any;
 }
 
-interface IUser {
-  address?: string;
-  avatar?: any;
-  createdAt?: string;
-  dateOfBirth?: string;
-  email?: string;
-  fullName?: string;
-  gender?: string;
-  id?: string;
-  identificationCode?: string;
-  isActive?: true;
-  phone?: string;
-  points?: number;
-  referralCode?: string;
-  roles?: Array<any>;
+interface ICoupon {
+  id?: any;
+  title?: string;
+  description?: string;
+  code?: string;
+  discount?: number;
+  startTime?: any;
+  endTime?: any;
+  applicable?: Applicable;
+  userIds?: number[];
   status?: string;
-  updatedAt?: string;
-  kyc?: any;
+  promotionTime?: Array<any>;
 }
 
 const Dialog: React.FC<Iprops> = ({
@@ -62,16 +59,56 @@ const Dialog: React.FC<Iprops> = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const [editable, setEditable] = useToggle(false);
-  const [userInfo, setUserInfo] = useSetState<IUser>({});
+  const [couponInfo, setCouponInfo] = useSetState<ICoupon>({});
 
   const { formatMessage } = useIntl();
-  const requestUser = useRequest(getUserData, {
+  const requestCoupon = useRequest(getCouponData, {
     manual: true,
     onSuccess: (res: any) => {
-      setUserInfo(res);
+      setCouponInfo({
+        ...res,
+        status: res.status ? res.status : StatusAccount.ACTIVE,
+        applicable: res.applicable ? res.applicable : Applicable.ALL,
+        startTime: moment(res.startTime),
+        endTime: moment(res.endTime),
+        promotionTime: [moment(res.startTime), moment(res.endTime)],
+      });
     },
-    onError: (rej) => {
-      message.error(rej.message);
+    onError: (rej: any) => {
+      message.error(
+        rej.errors ? rej.errors[0] : formatMessage({ id: 'error' }),
+      );
+    },
+    onFinally: () => {
+      setLoading(false);
+    },
+  });
+
+  const requestCreateCoupon = useRequest(createCoupon, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_add_coupon_success' }));
+      setOpen(false);
+    },
+    onError: (rej: any) => {
+      message.error(
+        rej.errors[0] ? rej.errors[0] : formatMessage({ id: 'error' }),
+      );
+    },
+    onFinally: () => {
+      setLoading(false);
+    },
+  });
+  const requestEditCoupon = useRequest(editCoupon, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_coupon_success' }));
+      setOpen(false);
+    },
+    onError: (rej: any) => {
+      message.error(
+        rej.errors[0] ? rej.errors[0] : formatMessage({ id: 'error' }),
+      );
     },
     onFinally: () => {
       setLoading(false);
@@ -80,21 +117,31 @@ const Dialog: React.FC<Iprops> = ({
 
   React.useEffect(() => {
     if (itemEdit) {
-      requestUser.run(itemEdit);
+      requestCoupon.run(itemEdit);
     } else {
       setLoading(false);
-      setUserInfo({});
+      setCouponInfo({});
       setEditable.set(true);
     }
   }, [itemEdit]);
 
-  const onEdit = () => {
+  const onEdit = (e: React.MouseEvent<HTMLElement, MouseEvent>): any => {
+    e.preventDefault();
     setEditable.set(true);
   };
 
   const onFinish = (value: any) => {
-    console.log(value);
-    console.log(dayjs(value.promotionTime[0]).format('DD/MM/YYYY'));
+    const sendObj: ICoupon = {
+      ...value,
+      startTime: dayjs(value.promotionTime[0]).format(),
+      endTime: dayjs(value.promotionTime[1]).format(),
+    };
+    if (itemEdit) {
+      requestEditCoupon.run(couponInfo.id, sendObj);
+      return;
+    }
+    requestCreateCoupon.run(sendObj);
+    return;
   };
 
   return (
@@ -119,113 +166,187 @@ const Dialog: React.FC<Iprops> = ({
         //     </Space>
         // }
       >
-        {
-          // requestUser.loading || loading
-          false ? (
-            <Skeleton active />
-          ) : (
-            <>
-              <Form
-                layout="vertical"
-                hideRequiredMark
-                onFinish={onFinish}
-                autoComplete="off"
-                // initialValues={userInfo}
-              >
-                <Row gutter={16}>
-                  <Col span={12} className={styles.dialogFormItem}>
-                    <Form.Item
-                      name="promotionCode"
-                      label={formatMessage({ id: 'promotion_code' })}
-                    >
-                      <Input
-                        placeholder={formatMessage({ id: 'promotion_code' })}
-                        disabled
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12} className={styles.dialogFormItem}>
-                    <Form.Item
-                      name="promotionName"
-                      label={formatMessage({ id: 'promotion_name' })}
-                    >
-                      <Input
-                        placeholder={formatMessage({ id: 'promotion_name' })}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12} className={styles.dialogFormItem}>
-                    <Form.Item
-                      name="promotionTime"
-                      label={formatMessage({ id: 'promotion_time' })}
-                      rules={[
-                        {
-                          required: true,
-                          message: formatMessage(
-                            { id: 'error.require' },
-                            {
-                              field: formatMessage({ id: 'promotion_time' }),
-                            },
-                          ),
-                        },
-                      ]}
-                    >
-                      <RangePicker
-                        className={styles.RangePicker}
-                        format={'YYYY/MM/DD'}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12} className={styles.dialogFormItem}>
-                    <Form.Item label={formatMessage({ id: 'promotion_type' })}>
-                      <Select disabled={!editable}>
-                        {STATUS_KYC.map((status, index) => (
-                          <Option value={status.value} key={index}>
-                            {formatMessage({ id: status.name })}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={12} className={styles.dialogFormItem}>
-                    <Form.Item label={formatMessage({ id: 'promotion_range' })}>
-                      <Select disabled={!editable}>
-                        {STATUS_KYC.map((status, index) => (
-                          <Option value={status.value} key={index}>
-                            {formatMessage({ id: status.name })}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={12} className={styles.dialogFormItem}>
-                    <Form.Item label={formatMessage({ id: 'status' })}>
-                      <Select disabled={!editable}>
-                        {OPTION_STATUS_ACTIVE.map((status, index) => (
-                          <Option value={status.value} key={index}>
-                            {formatMessage({ id: status.name })}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <div className={styles.addGroupButton}>
-                  <Button htmlType="submit" className={styles.addButton}>
-                    Thêm mới
-                  </Button>
+        {requestCoupon.loading || loading ? (
+          <Skeleton active />
+        ) : (
+          <>
+            <Form
+              layout="vertical"
+              hideRequiredMark
+              onFinish={onFinish}
+              autoComplete="off"
+              initialValues={couponInfo}
+            >
+              <Row gutter={16}>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="code"
+                    label={formatMessage({ id: 'promotion_code' })}
+                    initialValue={couponInfo.code}
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'promotion_code' })}
+                      disabled
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="promotionTime"
+                    label={formatMessage({ id: 'promotion_time' })}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'promotion_time' }),
+                          },
+                        ),
+                      },
+                    ]}
+                    initialValue={[couponInfo.startTime, couponInfo.endTime]}
+                  >
+                    <RangePicker
+                      disabled={!editable}
+                      className={styles.RangePicker}
+                      format="YYYY/MM/DD HH:mm:ss"
+                      showTime
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={24} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="title"
+                    label={formatMessage({ id: 'title' })}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'title' }),
+                          },
+                        ),
+                      },
+                    ]}
+                  >
+                    <Input
+                      disabled={!editable}
+                      placeholder={formatMessage({ id: 'title' })}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={24} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="description"
+                    label={formatMessage({ id: 'content' })}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'content' }),
+                          },
+                        ),
+                      },
+                    ]}
+                  >
+                    <Input.TextArea
+                      disabled={!editable}
+                      placeholder={formatMessage({ id: 'content' })}
+                      autoSize={{ minRows: 2, maxRows: 6 }}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={24} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="discount"
+                    label={formatMessage({ id: 'discount' })}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'discount' }),
+                          },
+                        ),
+                      },
+                    ]}
+                  >
+                    <InputNumber
+                      min={0}
+                      max={100}
+                      addonAfter={'%'}
+                      disabled={!editable}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="applicable"
+                    label={formatMessage({ id: 'promotion_type' })}
+                    initialValue={Applicable.ALL}
+                  >
+                    <Select disabled={!editable}>
+                      {APPLICABLE.map((status, index) => (
+                        <Option value={status.value} key={index}>
+                          {formatMessage({ id: status.name })}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="status"
+                    label={formatMessage({ id: 'status' })}
+                    initialValue={StatusAccount.ACTIVE}
+                  >
+                    <Select disabled={!editable}>
+                      {OPTION_STATUS_ACTIVE.map((status, index) => (
+                        <Option value={status.value} key={index}>
+                          {formatMessage({ id: status.name })}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <div className={styles.addGroupButton}>
+                <Button
+                  danger
+                  onClick={() => setOpen(false)}
+                  className={styles.addButton}
+                >
+                  {formatMessage({ id: 'general_cancel' })}
+                </Button>
+                {editable ? (
                   <Button
-                    danger
-                    onClick={() => setOpen(false)}
+                    type="primary"
+                    htmlType="submit"
                     className={styles.addButton}
                   >
-                    {formatMessage({ id: 'general_cancel' })}
+                    {formatMessage({ id: 'general_save' })}
                   </Button>
-                </div>
-              </Form>
-            </>
-          )
-        }
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={(e): React.MouseEventHandler<HTMLElement> =>
+                      onEdit(e)
+                    }
+                    className={styles.addButton}
+                  >
+                    {formatMessage({ id: 'general_edit' })}
+                  </Button>
+                )}
+              </div>
+            </Form>
+          </>
+        )}
       </Modal>
     </>
   );
