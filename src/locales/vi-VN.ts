@@ -193,7 +193,7 @@ export default {
   manager_lock_form_title_edit: 'Sửa khóa xe',
   manager_lock_form_code: 'Mã khóa xe',
   manager_lock_form_bicycle: 'Thiết bị gắn với xe',
-  manager_lock_form_bicycle: 'Thiết bị gắn với xe',
+  manager_lock_form_pass: 'Thiết bị gắn với xe',
 
   manager_lock_message_add: 'Thêm mới khóa xe thành công',
   manager_lock_message_edit: 'Cập nhật khóa xe thành công',
