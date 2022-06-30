@@ -80,7 +80,10 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'message_add_user_failure' }));
+      // message.error(formatMessage({ id: 'message_add_user_failure' }));
+      message.error(
+        rej.errors[0] ? rej.errors[0] : formatMessage({ id: 'error' }),
+      );
     },
     onFinally: () => {
       setLoading(false);
@@ -94,7 +97,10 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'message_user_failure' }));
+      // message.error(formatMessage({ id: 'message_user_failure' }));
+      message.error(
+        rej.errors[0] ? rej.errors[0] : formatMessage({ id: 'error' }),
+      );
     },
     onFinally: () => {
       setLoading(false);

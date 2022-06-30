@@ -92,7 +92,7 @@ const Dialog: React.FC<Iprops> = ({
     },
     onError: (rej: any) => {
       message.error(
-        rej.errors[0] ? rej.errors[0] : formatMessage({ id: 'error' }),
+        rej.errors ? rej.errors[0] : formatMessage({ id: 'error' }),
       );
     },
     onFinally: () => {
@@ -107,7 +107,7 @@ const Dialog: React.FC<Iprops> = ({
     },
     onError: (rej: any) => {
       message.error(
-        rej.errors[0] ? rej.errors[0] : formatMessage({ id: 'error' }),
+        rej.errors ? rej.errors[0] : formatMessage({ id: 'error' }),
       );
     },
     onFinally: () => {

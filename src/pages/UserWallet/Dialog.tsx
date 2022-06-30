@@ -61,8 +61,10 @@ const Dialog: React.FC<Iprops> = ({
       console.log(res);
       setUserInfo(res);
     },
-    onError: (rej) => {
-      message.error(rej.message);
+    onError: (rej: any) => {
+      message.error(
+        rej.errors ? rej.errors[0] : formatMessage({ id: 'error' }),
+      );
     },
     onFinally: () => {
       setLoading(false);
