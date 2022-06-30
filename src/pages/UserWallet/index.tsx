@@ -1,25 +1,13 @@
-import { EyeOutlined } from '@ant-design/icons';
-import { useAntdTable, useToggle, useRequest } from 'ahooks';
-import {
-  Breadcrumb,
-  Button,
-  Form,
-  Input,
-  Select,
-  Switch,
-  Table,
-  Tooltip,
-} from 'antd';
+import { StatusAccount } from '@/utils/enum';
+import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useAntdTable, useRequest, useToggle } from 'ahooks';
+import { Breadcrumb, Button, Form, Input, message, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
-import { setLocale, useIntl } from 'umi';
+import { useIntl } from 'umi';
 import Dialog from './Dialog';
 import styles from './index.less';
-import { getTableData, switchStatusUser } from './service';
-import { getLocale } from 'umi';
-import { STATUS_ACCOUNT, STATUS_ACTIVE } from '@/utils/constant';
-
-const { Option } = Select;
+import { deleteGuideData, getTableData } from './service';
 
 interface Item {
   name: {
@@ -30,16 +18,14 @@ interface Item {
   gender: 'male' | 'female';
 }
 interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  id: number;
+  title: string;
+  isActive: boolean;
+  content: string;
 }
 
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
-
   const [idSelected, setIdSelected] = React.useState<number | string | null>(
     null,
   );
@@ -49,11 +35,6 @@ export default () => {
     defaultPageSize: 10,
     form,
   });
-
-  const requestSwitchStatus = useRequest(switchStatusUser, {
-    manual: true,
-  });
-
   const { formatMessage } = useIntl();
 
   const { type, changeType, submit, reset } = search;
@@ -62,54 +43,80 @@ export default () => {
     setIdSelected(idUser);
     setOpenDialog.set(true);
   };
+  const handleDeleteUser = (idUser: number | string) => {
+    requestDeleteGuide.run(idUser);
+  };
+
+  const requestDeleteGuide = useRequest(deleteGuideData, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_success' }));
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'error' }));
+    },
+    onFinally: () => {
+      refresh();
+    },
+  });
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'const_column_full_name',
-      dataIndex: 'fullName',
-      key: 'fullName',
+      title: 'STT',
+      width: 100,
+      dataIndex: 'stt',
+      key: 'stt',
+      align: 'center',
     },
     {
-      title: 'const_column_phone_number',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: 'const_column_title',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: 'const_column_status',
+      dataIndex: 'isActive',
+      key: 'isActive',
       render: (value: any, record: any, index: number) => {
         return (
           <React.Fragment key={index}>
-            {record.phone ? '+' + record.phone : ''}
+            {record.status === StatusAccount.ACTIVE
+              ? formatMessage({ id: 'status_active' })
+              : formatMessage({ id: 'status_inactive' })}
           </React.Fragment>
         );
       },
     },
     {
-      title: 'const_column_email',
-      dataIndex: 'email',
-      key: 'email',
-    },
-    {
-      title: 'const_column_date_of_birth',
-      dataIndex: 'dateOfBirth',
-      key: 'email',
-    },
-    {
-      title: 'const_column_status',
-      dataIndex: 'active',
-      align: 'center',
-      key: 'active',
-      width: 250,
+      title: 'const_column_content_image',
+      dataIndex: 'content',
+      key: 'content',
       render: (value: any, record: any, index: number) => {
         return (
-          <React.Fragment key={index}>
-            <Switch
-              style={{ width: 150 }}
-              checkedChildren={formatMessage({ id: 'status_active' })}
-              unCheckedChildren={formatMessage({ id: 'status_inactive' })}
-              defaultChecked={record.isActive}
-              onChange={(checked: boolean, event: MouseEvent) => {
-                requestSwitchStatus.run(record, checked);
-              }}
-            />
-          </React.Fragment>
+          <div
+            style={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              width: 600,
+            }}
+          >
+            <span>
+              {record.thumbnail ? (
+                <a
+                  href={record.thumbnail.url}
+                  title="content"
+                  target="_blank"
+                  className={styles.tableImageContent}
+                >
+                  {formatMessage({ id: 'image' })}
+                </a>
+              ) : (
+                ''
+              )}
+              {record.content}
+            </span>
+          </div>
         );
       },
     },
@@ -119,16 +126,29 @@ export default () => {
       align: 'center',
       render: (value: any, record: any, index: number) => {
         return (
-          <Tooltip
-            title={formatMessage({ id: 'general_tooltip_show_infomation' })}
-          >
-            <div
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleViewUser(record.id)}
+          <>
+            <Tooltip
+              title={formatMessage({ id: 'general_tooltip_show_infomation' })}
             >
-              <EyeOutlined />
-            </div>
-          </Tooltip>
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleViewUser(record.id)}
+              >
+                <EyeOutlined />
+              </span>
+            </Tooltip>
+            <Tooltip
+              title={formatMessage({ id: 'general_tooltip_delete' })}
+              className="ml-16"
+            >
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleDeleteUser(record.id)}
+              >
+                <DeleteOutlined />
+              </span>
+            </Tooltip>
+          </>
         );
       },
     },
@@ -139,36 +159,22 @@ export default () => {
   const searchForm = (
     <div className={styles.searchContainer}>
       <Form form={form} className={styles.searchForm}>
-        <Form.Item name="fullName" className={styles.searchItem}>
+        <Form.Item name="title" className={styles.searchItem}>
           <Input.Search
             placeholder={formatMessage({ id: 'form_search_text' })}
             allowClear
             onSearch={submit}
           />
         </Form.Item>
-        <Form.Item name="status" initialValue="" className={styles.searchItem}>
-          <Select onChange={submit}>
-            {STATUS_ACCOUNT.map((item) => (
-              <Option value={item.value}>
-                {formatMessage({ id: item.name })}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="isActive"
-          initialValue=""
-          className={styles.searchItem}
-        >
-          <Select onChange={submit}>
-            {STATUS_ACTIVE.map((item) => (
-              <Option value={item.value}>
-                {formatMessage({ id: item.name })}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
       </Form>
+      <Button
+        onClick={() => {
+          setIdSelected(null);
+          setOpenDialog.set(true);
+        }}
+      >
+        {formatMessage({ id: 'general_add' })}
+      </Button>
     </div>
   );
 
@@ -179,7 +185,7 @@ export default () => {
           {formatMessage({ id: 'navigation_user_wallet' })}
         </Breadcrumb.Item>
       </Breadcrumb>
-      {searchForm}
+      {/* {searchForm}
       <div className={styles.tableComponent}>
         <Table
           columns={columns}
@@ -191,10 +197,13 @@ export default () => {
       {openDialog && (
         <Dialog
           open={openDialog}
-          setOpen={(b) => setOpenDialog.set(b)}
+          setOpen={(b) => {
+            setOpenDialog.set(b);
+            refresh();
+          }}
           itemEdit={idSelected}
         />
-      )}
+      )} */}
     </>
   );
 };

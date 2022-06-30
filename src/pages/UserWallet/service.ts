@@ -1,4 +1,5 @@
-import { privateRequest, request, API_PATH } from '@/utils/apis';
+import { API_PATH, privateRequest, request } from '@/utils/apis';
+import { StatusKyc } from '@/utils/enum';
 import { ENVIRONMENTS } from '@/utils/constant';
 
 interface Result {
@@ -16,25 +17,45 @@ export const getTableData = (
     }
   });
 
-  return privateRequest(request.get, API_PATH.USER + '?' + query).then(
+  return privateRequest(request.get, API_PATH.GUIDE + '?' + query).then(
     (res: any) => {
+      const data = res?.data?.map((e: any, index: any) => ({
+        ...e,
+        stt: (res?.page - 1) * res?.pageSize + index + 1,
+      }));
       return {
         total: res?.total,
-        list: res?.data,
+        list: data,
       };
     },
   );
 };
 
-export const getUserData = (id: any) => {
-  return privateRequest(request.get, API_PATH.USER + '/' + id);
+export const deleteGuideData = (id: any) => {
+  return privateRequest(request.delete, API_PATH.GUIDE + '/' + id);
 };
 
-export const switchStatusUser = (user: any, payload: boolean) => {
-  return privateRequest(request.put, API_PATH.USER + '/' + user.id, {
-    data: {
-      ...user,
-      isActive: payload,
+export const getGuideData = (id: any) => {
+  return privateRequest(request.get, API_PATH.GUIDE + '/' + id);
+};
+export const createGuideData = (data: any) => {
+  return privateRequest(request.post, API_PATH.GUIDE, {
+    data,
+  });
+};
+
+export const editGuideData = (id: any, data: any) => {
+  return privateRequest(request.put, API_PATH.GUIDE + '/' + id, {
+    data,
+  });
+};
+
+export const uploadImage = (formData: FormData) => {
+  return privateRequest(request.post, API_PATH.FILE, {
+    headers: {
+      headers: { 'Content-Type': 'multipart/form-data' },
     },
+    data: formData,
+    requestType: 'form',
   });
 };

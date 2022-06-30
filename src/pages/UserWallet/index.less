@@ -29,9 +29,6 @@
     margin-bottom: 16px !important;
   }
 }
-.w-100 {
-  width: 100%;
-}
 
 .tableComponent {
   padding: 24px;
@@ -49,6 +46,26 @@
 .addButton {
   margin-right: 16px !important;
 }
+
 .dialogFormItem {
   margin: 8px 0;
+}
+
+.kycImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.upload-list-inline .ant-upload-list-item {
+  float: left;
+  width: 200px;
+  margin-right: 8px;
+}
+
+.upload-list-inline [class*='-upload-list-rtl'] .ant-upload-list-item {
+  float: right;
+}
+.tableImageContent[target='_blank']::after {
+  content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==');
+  margin: 0 3px 0 5px;
 }
