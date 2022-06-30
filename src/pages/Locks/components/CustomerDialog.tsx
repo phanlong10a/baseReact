@@ -105,7 +105,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
       },
       onError: (err: any) => {
         console.log('err', err, err.response, err.data);
-        message.error(err?.data?.message);
+        message.error(err?.errors?.[0]);
       },
     },
   );
@@ -197,7 +197,62 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
               message: t('error_require_message'),
             },
           ]}
-          // normalize={(value) => value.trim()}
+          className={styles.formItem}
+        >
+          <Input allowClear />
+        </Form.Item>
+
+        <Form.Item
+          label={t('manager_lock_form_pass')}
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: t('error_require_message'),
+            },
+          ]}
+          className={styles.formItem}
+        >
+          <Input allowClear type="password" />
+        </Form.Item>
+
+        <Form.Item
+          label={t('manager_lock_form_bluetoothMAC')}
+          name="bluetoothMAC"
+          rules={[
+            {
+              required: true,
+              message: t('error_require_message'),
+            },
+          ]}
+          className={styles.formItem}
+        >
+          <Input allowClear />
+        </Form.Item>
+
+        <Form.Item
+          label={t('manager_lock_form_IMEI')}
+          name="IMEI"
+          rules={[
+            {
+              required: true,
+              message: t('error_require_message'),
+            },
+          ]}
+          className={styles.formItem}
+        >
+          <Input allowClear />
+        </Form.Item>
+
+        <Form.Item
+          label={t('manager_lock_form_phone')}
+          name="phone"
+          rules={[
+            {
+              required: true,
+              message: t('error_require_message'),
+            },
+          ]}
           className={styles.formItem}
         >
           <Input allowClear />
