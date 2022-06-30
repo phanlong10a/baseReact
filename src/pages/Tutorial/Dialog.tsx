@@ -68,7 +68,7 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'error' }));
+      rej.errors ? rej.errors[0] : formatMessage({ id: 'error' });
     },
   });
   const requestEditGuide = useRequest(editGuideData, {
@@ -198,7 +198,11 @@ const Dialog: React.FC<Iprops> = ({
                             return uploadImage(formData)
                               .then((res: any) => {
                                 setFileID(res[0]?.id);
+                                message.error(formatMessage({ id: 'success' }));
                                 return '';
+                              })
+                              .catch(() => {
+                                message.error(formatMessage({ id: 'error' }));
                               })
                               .finally(() => {
                                 setLoadingImage(false);

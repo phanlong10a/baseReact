@@ -57,7 +57,7 @@ export default () => {
       form,
       onError: (error: any) => {
         message.error(
-          error.errors[0] ? error.errors[0] : formatMessage({ id: 'error' }),
+          error.errors ? error.errors[0] : formatMessage({ id: 'error' }),
         );
       },
     },

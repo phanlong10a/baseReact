@@ -95,7 +95,9 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'message_failure' }));
+      message.error(
+        rej.errors ? rej.errors[0] : formatMessage({ id: 'error' }),
+      );
     },
     onFinally: () => {
       setLoading(false);
