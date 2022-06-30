@@ -81,11 +81,11 @@ const Sidebar = ({
       '/travel',
       <UserOutlined />,
     ),
-    // getItem(
-    //   renderLink('/user_wallet', 'navigation_user_wallet'),
-    //   '/user_wallet',
-    //   <UserOutlined />,
-    // ),
+    getItem(
+      renderLink('/user_wallet', 'navigation_user_wallet'),
+      '/user_wallet',
+      <UserOutlined />,
+    ),
     getItem(
       renderLink('/ticket', 'navigation_ticket'),
       '/ticket',

@@ -198,11 +198,16 @@ const Dialog: React.FC<Iprops> = ({
                             return uploadImage(formData)
                               .then((res: any) => {
                                 setFileID(res[0]?.id);
-                                message.error(formatMessage({ id: 'success' }));
+                                message.success(
+                                  formatMessage({ id: 'message_success' }),
+                                );
                                 return '';
                               })
                               .catch(() => {
-                                message.error(formatMessage({ id: 'error' }));
+                                message.error(
+                                  formatMessage({ id: 'message_failure' }),
+                                );
+                                return '';
                               })
                               .finally(() => {
                                 setLoadingImage(false);

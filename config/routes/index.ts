@@ -70,12 +70,12 @@ export const authRoutes = [
     component: '@/pages/Travel/index',
     title: 'navigation_travel',
   },
-  // {
-  //   exact: true,
-  //   path: '/user_wallet',
-  //   component: '@/pages/UserWallet/index',
-  //   title: 'navbar.Profile',
-  // },
+  {
+    exact: true,
+    path: '/user_wallet',
+    component: '@/pages/UserWallet/index',
+    title: 'navigation_user_wallet',
+  },
   {
     exact: true,
     path: '/ticket',
