@@ -93,7 +93,7 @@ const Sidebar = ({
     ),
     getItem(
       renderLink('/payment_method', 'navigation_method'),
-      '/method',
+      '/payment_method',
       <UserOutlined />,
     ),
     getItem(

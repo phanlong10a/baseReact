@@ -1,4 +1,4 @@
-import { Applicable } from '../enum';
+import { Applicable, DisplayType } from '../enum';
 
 interface IObjectProperty {
   name: string;
@@ -41,6 +41,12 @@ export const KYC_TYPE: IObjectProperty[] = [
   { name: 'general_kyc_type_driving_license', value: 'DRIVING_LICENSE' },
 ];
 
+export const PAYMENT_TYPE: IObjectProperty[] = [
+  { name: 'general_payment_vtc', value: 'VTC_PAY' },
+  { name: 'general_payment_domestic_bank', value: 'DOMESTIC_BANK' },
+  { name: 'general_payment_international_card', value: 'INTERNATIONAL_CARD' },
+];
+
 export const KYC_PHOTO_TYPES: IObjectProperty[] = [
   { name: 'general_kyc_photo_type_front', value: 'FRONT_PHOTO' },
   { name: 'general_kyc_photo_type_back', value: 'BACK_PHOTO' },
@@ -49,6 +55,11 @@ export const KYC_PHOTO_TYPES: IObjectProperty[] = [
 export const APPLICABLE: IObjectProperty[] = [
   { name: 'general_all', value: Applicable.ALL },
   { name: 'general_user', value: Applicable.USER },
+];
+
+export const DISPLAY_TYPE: IObjectProperty[] = [
+  { name: 'general_on', value: DisplayType.ON },
+  { name: 'general_off', value: DisplayType.OFF },
 ];
 
 export const ENVIRONMENTS = {

@@ -13,6 +13,16 @@ export enum Applicable {
   ALL = 'ALL',
   USER = 'USER',
 }
+export enum DisplayType {
+  ON = 'ON',
+  OFF = 'OFF',
+}
+
+export enum PaymentType {
+  VTC_PAY = 'VTC_PAY',
+  DOMESTIC_BANK = 'DOMESTIC_BANK',
+  INTERNATIONAL_CARD = 'INTERNATIONAL_CARD',
+}
 
 export enum KycType {
   IDENTIFY_CARD = 'IDENTIFY_CARD',
