@@ -64,6 +64,25 @@ export default () => {
       key: 'title',
     },
     {
+      title: 'description',
+      dataIndex: 'description',
+      key: 'description',
+      render: (value: any, record: any, index: number) => {
+        return (
+          <div
+            style={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              width: 300,
+            }}
+          >
+            <span> {record.description}</span>
+          </div>
+        );
+      },
+    },
+    {
       title: 'const_column_status',
       dataIndex: 'isActive',
       key: 'isActive',
