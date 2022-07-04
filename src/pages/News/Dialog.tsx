@@ -118,7 +118,6 @@ const Dialog: React.FC<Iprops> = ({
       formData.append('files', file);
 
       let fileName = file.name;
-      debugger;
 
       const res = await uploadFiles(formData, fileName, quillObj);
     };
@@ -219,6 +218,28 @@ const Dialog: React.FC<Iprops> = ({
                         </Option>
                       ))}
                     </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={24} className={styles.dialogFormItem}>
+                  <Form.Item
+                    name="description"
+                    label={formatMessage({ id: 'description' })}
+                    rules={[
+                      {
+                        required: true,
+                        message: formatMessage(
+                          { id: 'error.require' },
+                          {
+                            field: formatMessage({ id: 'description' }),
+                          },
+                        ),
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder={formatMessage({ id: 'description' })}
+                      disabled={!editable}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={24} className={styles.dialogFormItem}>

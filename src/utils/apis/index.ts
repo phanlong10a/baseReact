@@ -129,6 +129,7 @@ const API_PATH = {
   FILE: '/file',
   GUIDE: '/guide',
   COUPON: '/coupon',
+  PAYMENT: '/payment/method',
 };
 
 export { API_PATH, request, privateRequest };

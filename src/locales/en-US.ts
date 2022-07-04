@@ -66,6 +66,13 @@ export default {
   image: 'Images',
   from_date: 'From date',
   to_date: 'To date',
+  method_name: 'Method name',
+  payment_type: 'Payment type',
+  description: 'Description',
+  display: 'Display',
+  receiverAccount: 'Receiver Account',
+  referenceNumber: 'Reference Number',
+
   // error
   'error.require': '{field} must be required.',
   'error.email': 'Email invalid.',
@@ -108,6 +115,12 @@ export default {
   general_gender_female: 'Female',
   general_gender_other: 'Other',
   general_all: 'Tất cả',
+  general_on: 'On',
+  general_off: 'Off',
+
+  general_payment_vtc: 'VTC_PAY',
+  general_payment_domestic_bank: 'Domestic Bank',
+  general_payment_international_card: 'International Card',
 
   general_status_account: 'Account status',
   general_denied_verify: 'Denied',
@@ -142,4 +155,5 @@ export default {
   const_column_title: 'Title',
   const_column_content: 'Content',
   const_column_content_image: 'Content and Image',
+  const_column_description_image: 'Description and Image',
 };

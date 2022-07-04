@@ -1,7 +1,19 @@
 import {
+  AimOutlined,
+  CheckOutlined,
+  CreditCardOutlined,
   DesktopOutlined,
+  PercentageOutlined,
   PieChartOutlined,
+  QuestionCircleOutlined,
+  ReadOutlined,
+  ShareAltOutlined,
+  SolutionOutlined,
+  TagOutlined,
+  TagsOutlined,
+  UnlockOutlined,
   UserOutlined,
+  WalletOutlined,
 } from '@ant-design/icons';
 import { useLocation } from 'umi';
 import type { MenuProps } from 'antd';
@@ -57,13 +69,13 @@ const Sidebar = ({
     getItem(
       renderLink('/bike-station', 'navigation_bike_station'),
       '/bike-station',
-      <DesktopOutlined />,
+      <AimOutlined />,
     ),
     getItem(renderLink('/user', 'navigation_user'), '/user', <UserOutlined />),
     getItem(
       renderLink('/kyc', 'navigation_user_kyc'),
       '/kyc',
-      <UserOutlined />,
+      <CheckOutlined />,
     ),
     getItem(
       renderLink('/admin', 'navigation_admin_manage'),
@@ -73,41 +85,49 @@ const Sidebar = ({
     getItem(
       renderLink('/vehicles', 'navigation_vihicle'),
       '/vehicles',
-      <UserOutlined />,
+      <TagOutlined />,
     ),
-    getItem(renderLink('/lock', 'navigation_lock'), '/lock', <UserOutlined />),
+    getItem(
+      renderLink('/lock', 'navigation_lock'),
+      '/lock',
+      <UnlockOutlined />,
+    ),
     getItem(
       renderLink('/travel', 'navigation_travel'),
       '/travel',
-      <UserOutlined />,
+      <ShareAltOutlined />,
     ),
     getItem(
       renderLink('/user_wallet', 'navigation_user_wallet'),
       '/user_wallet',
-      <UserOutlined />,
+      <WalletOutlined />,
     ),
     getItem(
       renderLink('/ticket', 'navigation_ticket'),
       '/ticket',
-      <UserOutlined />,
+      <TagsOutlined />,
     ),
     getItem(
       renderLink('/payment_method', 'navigation_method'),
-      '/method',
-      <UserOutlined />,
+      '/payment_method',
+      <CreditCardOutlined />,
     ),
     getItem(
       renderLink('/promotion', 'navigation_promotion'),
       '/promotion',
-      <UserOutlined />,
+      <PercentageOutlined />,
     ),
     getItem(
       renderLink('/tutorial', 'navigation_tutorial'),
       '/tutorial',
-      <UserOutlined />,
+      <QuestionCircleOutlined />,
     ),
-    getItem(renderLink('/news', 'navigation_news'), '/news', <UserOutlined />),
-    getItem(renderLink('/rate', 'navigation_rate'), '/rate', <UserOutlined />),
+    getItem(renderLink('/news', 'navigation_news'), '/news', <ReadOutlined />),
+    getItem(
+      renderLink('/rate', 'navigation_rate'),
+      '/rate',
+      <SolutionOutlined />,
+    ),
   ];
 
   return (
@@ -119,12 +139,14 @@ const Sidebar = ({
       breakpoint="md"
       width={250}
     >
-      <div className="logo" />
+      <div className={styles.logoWrapper}>
+        <img src="/assets/images/logo_white.svg" className={styles.logo} />
+      </div>
       <Menu
-        theme="dark"
         defaultSelectedKeys={[location.pathname]}
         mode="inline"
         items={items}
+        className={styles.backgroundPrimary}
       />
     </Sider>
   );

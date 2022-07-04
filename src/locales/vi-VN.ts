@@ -51,6 +51,12 @@ export default {
   discount: 'Giảm giá',
   from_date: 'Từ ngày',
   to_date: 'Đến ngày',
+  method_name: 'Tên phương thức',
+  payment_type: 'Loại phương thức',
+  description: 'Mô tả',
+  display: 'Hiển thị',
+  receiverAccount: 'Tài khoản nhận tiền của đối tác',
+  referenceNumber: 'Mã tham chiếu của đối tác',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
@@ -74,7 +80,7 @@ export default {
   navigation_travel: 'Chuyến đi',
   navigation_user_wallet: 'Ví người dùng',
   navigation_ticket: 'Vé thuê xe',
-  navigation_method: 'Phương thức',
+  navigation_method: 'Phương thức thanh toán',
   navigation_promotion: 'Mã khuyến mại',
   navigation_tutorial: 'Thông tin hưỡng dẫn sử dụng',
   navigation_news: 'Tin tức',
@@ -106,6 +112,12 @@ export default {
   general_gender_other: 'Khác',
   general_all: 'Tất cả',
   general_user: 'Người dùng',
+  general_on: 'Bật',
+  general_off: 'Tắt',
+
+  general_payment_vtc: 'VTC_PAY',
+  general_payment_domestic_bank: 'Ngân hàng nội địa',
+  general_payment_international_card: 'Thẻ thanh toán quốc tế',
 
   general_status_active: 'Trạng thái hoạt động',
   general_inactive: 'Không hoạt động',
@@ -144,6 +156,7 @@ export default {
   const_column_title: 'Tiêu đề',
   const_column_content: 'Nội dung',
   const_column_content_image: 'Nội dung và hình ảnh (nếu có)',
+  const_column_description_image: 'Mô tả và hình ảnh (nếu có)',
 
   manager_bike_stattion: 'Quản lý trạm xe',
   manager_bike_stattion_table_name: 'Tên trạm xe',
