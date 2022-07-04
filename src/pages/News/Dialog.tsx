@@ -118,7 +118,6 @@ const Dialog: React.FC<Iprops> = ({
       formData.append('files', file);
 
       let fileName = file.name;
-      debugger;
 
       const res = await uploadFiles(formData, fileName, quillObj);
     };
