@@ -158,7 +158,7 @@ export default () => {
   const searchForm = (
     <div className={styles.searchContainer}>
       <Form form={form} className={styles.searchForm}>
-        <Form.Item name="title" className={styles.searchItem}>
+        <Form.Item name="method" className={styles.searchItem}>
           <Input.Search
             placeholder={formatMessage({ id: 'form_search_text' })}
             allowClear

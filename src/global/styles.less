@@ -26,7 +26,7 @@ html {
   height: 100%;
 }
 .ant-layout-content {
-  min-height: 100vh;
+  min-height: calc(100vh - 65px);
 }
 .ant-layout-content {
   margin: 0 !important;
@@ -119,4 +119,19 @@ html {
 }
 .round-circle {
   border-radius: 50%;
+}
+.ant-layout-sider-trigger {
+  background: @color-primary1;
+}
+.ant-menu-inline,
+.ant-menu-vertical {
+  border-right: none;
+}
+.ant-menu-item a,
+.ant-menu-item span {
+  color: #fff;
+}
+.ant-menu-item.ant-menu-item-selected a,
+.ant-menu-item.ant-menu-item-selected span {
+  color: #000;
 }

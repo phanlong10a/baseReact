@@ -122,7 +122,6 @@ const Dialog: React.FC<Iprops> = ({
   }, [itemEdit]);
 
   const onFinish = (value: any) => {
-    debugger;
     if (fileID) {
       const {
         description,

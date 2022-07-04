@@ -99,7 +99,6 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej) => {
-      debugger;
       message.error(formatMessage({ id: 'message_kyc_failure' }));
     },
     onFinally: () => {},
