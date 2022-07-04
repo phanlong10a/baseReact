@@ -1,20 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  Modal,
-  Form,
-  Input,
-  InputNumber,
-  Button,
-  Select,
-  Spin,
-  Switch,
-  message,
-} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, Select, Rate } from 'antd';
 import styles from '../index.less';
 import { getListBicycle, getListLock } from '../service';
-import { useDebounceFn, useRequest } from 'ahooks';
+import { useRequest } from 'ahooks';
 import { privateRequest, request } from '@/utils/apis';
 import { useTranslate } from '@/utils/hooks/useTranslate';
+import { formatNumber } from '@/utils/common';
 
 const { Option } = Select;
 
@@ -46,10 +37,6 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
 
   const [form] = Form.useForm();
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
   useEffect(() => {
     if (!!id) {
       getDetailStation.run(id);
@@ -58,14 +45,56 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
 
   const getDetailStation = useRequest(
     async (id) => {
-      return privateRequest(request.get, `/lock/${id}`, {});
+      return privateRequest(request.get, `/rent/${id}`, {});
     },
     {
       manual: true,
       onSuccess: (r) => {
+        let status = '';
+        switch (r?.status) {
+          case 'COMPLETED':
+            status = t('travel_status_completed');
+            break;
+          case 'ACTIVE':
+            status = t('travel_status_active');
+            break;
+          case 'TEMPORARY':
+            status = t('travel_status_temporary');
+            break;
+          default:
+            break;
+        }
+        let payment = '';
+        switch (r.paymentStatus) {
+          case 'PAID':
+            payment = t('travel_status_payment_paid');
+            break;
+          case 'FAILED':
+            payment = t('travel_status_payment_failed');
+            break;
+          case 'UNPAID':
+            payment = t('travel_status_payment_unpaid');
+            break;
+          default:
+            break;
+        }
         form.setFieldsValue({
           ...r,
-          bicycleId: r?.bicycle?.id,
+          user_name: r?.user?.username,
+          user_phone: r?.user?.phone ? '+' + r?.user?.phone : '',
+          bicycle_name: r?.bicycle?.name,
+          bicycle_licensePlate: r?.bicycle?.licensePlate,
+          station_start: r?.stationStart?.name,
+          station_end: r?.stationEnd?.name,
+          time_start: r?.stationStart?.name,
+          time_end: r?.stationEnd?.name,
+
+          status,
+          paymentStatus: payment,
+          rate: r?.rating?.rating,
+          message: r?.rating?.message,
+          points: formatNumber(r?.points),
+          countPoint: formatNumber(r?.user?.points),
         });
       },
       onError: (err: any) => {},
@@ -74,11 +103,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
 
   return (
     <Modal
-      title={
-        !!id
-          ? t('manager_lock_form_title_edit')
-          : t('manager_lock_form_title_add')
-      }
+      title={t('travel_detail')}
       centered
       visible={status}
       width={720}
@@ -89,12 +114,149 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
         layout="vertical"
         name="basic"
         initialValues={dataStation}
-        // onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         form={form}
         id="form"
       >
-        <Form.Item className={styles.formItem}></Form.Item>
+        <Form.Item>
+          <div className={styles.formItem}>
+            <Form.Item
+              name="user_name"
+              className={styles.formLeft}
+              label={t('travel_detail_user')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+            <Form.Item
+              name="user_phone"
+              className={styles.formRight}
+              label={t('travel_detail_phone')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+          </div>
+        </Form.Item>
+
+        <Form.Item>
+          <div className={styles.formItem}>
+            <Form.Item
+              name="bicycle_name"
+              className={styles.formLeft}
+              label={t('travel_detail_name_bicycle')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+            <Form.Item
+              name="bicycle_licensePlate"
+              className={styles.formRight}
+              label={t('travel_detail_licensePlate')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+          </div>
+        </Form.Item>
+
+        <Form.Item>
+          <div className={styles.formItem}>
+            <Form.Item
+              name="station_start"
+              className={styles.formLeft}
+              label={t('travel_detail_station_start')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+            <Form.Item
+              name="station_end"
+              className={styles.formRight}
+              label={t('travel_detail_station_end')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+          </div>
+        </Form.Item>
+
+        <Form.Item>
+          <div className={styles.formItem}>
+            <Form.Item
+              name="openTime"
+              className={styles.formLeft}
+              label={t('travel_detail_time_start')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+            <Form.Item
+              name="closeTime"
+              className={styles.formRight}
+              label={t('travel_detail_time_end')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+          </div>
+        </Form.Item>
+
+        <Form.Item>
+          <div className={styles.formItem}>
+            <Form.Item
+              name="status"
+              className={styles.formLeft}
+              label={t('travel_detail_rent_status')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+            <Form.Item
+              name="paymentStatus"
+              className={styles.formRight}
+              label={t('travel_detail_pay_status')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+          </div>
+        </Form.Item>
+
+        <Form.Item>
+          <div className={styles.formItem}>
+            <Form.Item
+              name="openTime"
+              className={styles.formLeft}
+              label={t('travel_detail_code')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+            <Form.Item
+              name="countPoint"
+              className={styles.formRight}
+              label={t('travel_detail_country_point')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+          </div>
+        </Form.Item>
+
+        <Form.Item>
+          <div className={styles.formItem}>
+            <Form.Item
+              name="points"
+              className={styles.formLeft}
+              label={t('travel_detail_point')}
+            >
+              <Input disabled className={styles.input} />
+            </Form.Item>
+            <Form.Item
+              name="closeTime"
+              className={styles.formRight}
+              // label={t('travel_detail_point_owe')}
+            >
+              {/* <Input disabled className={styles.input} /> */}
+            </Form.Item>
+          </div>
+        </Form.Item>
+
+        <Form.Item label={t('travel_detail_rating')} name="rate">
+          <Rate disabled defaultValue={0} />
+        </Form.Item>
+
+        <Form.Item label={t('travel_detail_message')} name="message">
+          <Input.TextArea rows={6} disabled className={styles.input} />
+        </Form.Item>
       </Form>
     </Modal>
   );

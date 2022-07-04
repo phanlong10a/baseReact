@@ -9,6 +9,7 @@ import { getTableData } from './service';
 import { useAntdTable, useToggle, useSetState, useRequest } from 'ahooks';
 import { privateRequest, request } from '@/utils/apis';
 import dayjs from 'dayjs';
+import { formatNumber } from '@/utils/common';
 
 export default () => {
   const [dialog, setDiolog] = useState({
@@ -91,6 +92,9 @@ export default () => {
       dataIndex: 'points',
       key: 'points',
       align: 'center',
+      render: (_: any, record: any, __: number) => {
+        return formatNumber(record?.points);
+      },
     },
     {
       title: t('travel_table_status'),
@@ -106,6 +110,9 @@ export default () => {
             break;
           case 'ACTIVE':
             text = t('travel_status_active');
+            break;
+          case 'TEMPORARY':
+            text = t('travel_status_temporary');
             break;
           default:
             break;

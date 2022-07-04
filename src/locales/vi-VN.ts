@@ -241,6 +241,7 @@ export default {
 
   travel_status_active: 'Đang thực hiện',
   travel_status_completed: 'Đã hoàn thành',
+  travel_status_temporary: 'Tạm thời',
 
   travel_status_payment_paid: 'Đã thanh toán',
   travel_status_payment_unpaid: 'Chưa thanh toán',
@@ -248,4 +249,23 @@ export default {
 
   travel_search_status: 'Trạng thái chuyến đi',
   travel_search_status_payment: 'Trạng thái chuyến đi',
+
+  travel_detail: 'Chi tiết chuyến đi',
+
+  travel_detail_user: 'Tên người dùng',
+  travel_detail_phone: 'Số điện thoại',
+  travel_detail_name_bicycle: 'Tên xe',
+  travel_detail_licensePlate: 'Biển số xe',
+  travel_detail_station_start: 'Trạm xe bắt đầu',
+  travel_detail_station_end: 'Trạm xe kết thúc',
+  travel_detail_time_start: 'Thời gian bắt đầu',
+  travel_detail_time_end: 'Thời gian kết thúc',
+  travel_detail_rent_status: 'Trạng thái chuyến đi',
+  travel_detail_pay_status: 'Trạng thái thanh toán',
+  travel_detail_code: 'Mã khuyến mại',
+  travel_detail_country_point: 'Tổng cước',
+  travel_detail_point: 'Điểm thưởng',
+  travel_detail_point_owe: 'Nợ cước(điểm)',
+  travel_detail_rating: 'Mức độ hài lòng',
+  travel_detail_message: 'Phản hôi',
 };
