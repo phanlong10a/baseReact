@@ -69,6 +69,9 @@ export default {
   method_name: 'Method name',
   payment_type: 'Payment type',
   description: 'Description',
+  display: 'Display',
+  receiverAccount: 'Receiver Account',
+  referenceNumber: 'Reference Number',
 
   // error
   'error.require': '{field} must be required.',

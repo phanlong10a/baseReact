@@ -32,7 +32,7 @@ export const getTableData = (
 };
 
 export const deletePaymentData = (id: any) => {
-  return privateRequest(request.delete, API_PATH.PAYMENT + '/' + id);
+  return privateRequest(request.delete, '/payment' + '/' + id);
 };
 
 export const getPaymentData = (id: any) => {

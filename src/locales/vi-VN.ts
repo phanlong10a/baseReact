@@ -54,6 +54,9 @@ export default {
   method_name: 'Tên phương thức',
   payment_type: 'Loại phương thức',
   description: 'Mô tả',
+  display: 'Hiển thị',
+  receiverAccount: 'Tài khoản nhận tiền của đối tác',
+  referenceNumber: 'Mã tham chiếu của đối tác',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',

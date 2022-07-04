@@ -82,7 +82,7 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'error' }));
+      rej.errors ? rej.errors[0] : formatMessage({ id: 'error' });
     },
   });
 
@@ -199,8 +199,8 @@ const Dialog: React.FC<Iprops> = ({
                   <Row gutter={16}>
                     <Col span={24} className={styles.dialogFormItem}>
                       <Form.Item
-                        name="thumbnail"
-                        label={formatMessage({ id: 'thumbnail' })}
+                        name="image"
+                        label={formatMessage({ id: 'image' })}
                       >
                         <Upload
                           name="avatar"
@@ -291,7 +291,6 @@ const Dialog: React.FC<Iprops> = ({
                         ]}
                       >
                         <Input
-                          type={'number'}
                           placeholder={formatMessage({ id: 'referenceNumber' })}
                           disabled={!editable}
                         />
