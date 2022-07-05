@@ -252,6 +252,7 @@ const Dialog: React.FC<Iprops> = ({
                   <Form.Item
                     name="content"
                     label={formatMessage({ id: 'content' })}
+                    initialValue=""
                   >
                     <ReactQuill
                       ref={(el) => {
