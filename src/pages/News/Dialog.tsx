@@ -145,7 +145,7 @@ const Dialog: React.FC<Iprops> = ({
   };
 
   const onFinish = (value: any) => {
-    if (!value.content) {
+    if (!value.content || value.content === '') {
       message.error(
         formatMessage(
           { id: 'error.require' },
