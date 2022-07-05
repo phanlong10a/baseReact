@@ -136,6 +136,19 @@ const Dialog: React.FC<Iprops> = ({
         referenceNumber,
         status,
       } = value;
+      if (itemEdit) {
+        let submitObj = {
+          description,
+          display,
+          paymentType,
+          receiverAccount,
+          referenceNumber,
+          status,
+          imageId: fileID,
+        };
+        requestEditGuide.run(itemEdit, submitObj);
+        return;
+      }
       let submitObj = {
         description,
         display,
@@ -146,10 +159,6 @@ const Dialog: React.FC<Iprops> = ({
         status,
         imageId: fileID,
       };
-      if (itemEdit) {
-        requestEditGuide.run(itemEdit, submitObj);
-        return;
-      }
       requestCreateGuide.run(submitObj);
       return;
     } else {
@@ -317,7 +326,7 @@ const Dialog: React.FC<Iprops> = ({
                       >
                         <Input
                           placeholder={formatMessage({ id: 'method_name' })}
-                          disabled={!editable}
+                          disabled={!!itemEdit}
                         />
                       </Form.Item>
                     </Col>
