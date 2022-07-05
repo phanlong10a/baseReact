@@ -1,4 +1,4 @@
-import { Applicable, DisplayType } from '../enum';
+import { Applicable, DisplayType, PaymentType } from '../enum';
 
 interface IObjectProperty {
   name: string;
@@ -42,9 +42,12 @@ export const KYC_TYPE: IObjectProperty[] = [
 ];
 
 export const PAYMENT_TYPE: IObjectProperty[] = [
-  { name: 'general_payment_vtc', value: 'VTC_PAY' },
-  { name: 'general_payment_domestic_bank', value: 'DOMESTIC_BANK' },
-  { name: 'general_payment_international_card', value: 'INTERNATIONAL_CARD' },
+  { name: 'general_payment_vtc', value: PaymentType.VTC_PAY },
+  { name: 'general_payment_domestic_bank', value: PaymentType.DOMESTIC_BANK },
+  {
+    name: 'general_payment_international_card',
+    value: PaymentType.INTERNATIONAL_CARD,
+  },
 ];
 
 export const KYC_PHOTO_TYPES: IObjectProperty[] = [
