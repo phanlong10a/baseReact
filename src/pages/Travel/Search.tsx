@@ -28,6 +28,7 @@ const Search = (props: PROPS) => {
   const STATUS_ACTIVE: any[] = [
     { name: t('travel_status_completed'), value: 'COMPLETED' },
     { name: t('travel_status_active'), value: 'ACTIVE' },
+    { name: t('travel_status_temporary'), value: 'TEMPORARY ' },
   ];
 
   return (
