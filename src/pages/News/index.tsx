@@ -1,6 +1,15 @@
-import { EyeOutlined } from '@ant-design/icons';
-import { useAntdTable, useToggle } from 'ahooks';
-import { Breadcrumb, Button, Form, Input, Select, Table, Tooltip } from 'antd';
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { useAntdTable, useRequest, useToggle } from 'ahooks';
+import {
+  Breadcrumb,
+  Button,
+  Form,
+  Input,
+  message,
+  Select,
+  Table,
+  Tooltip,
+} from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { setLocale, useIntl } from 'umi';
@@ -14,7 +23,7 @@ import {
   OPTION_GENDER,
 } from '@/utils/constant';
 import styles from './index.less';
-import { getTableData } from './service';
+import { deleteNewsData, getTableData } from './service';
 import { getLocale } from 'umi';
 import { mockupData } from './constant';
 import dayjs from 'dayjs';
@@ -56,6 +65,21 @@ export default () => {
     setIdSelected(idUser);
     setOpenDialog.set(true);
   };
+  const handleDeleteUser = (idUser: number | string) => {
+    requestDeleteGuide.run(idUser);
+  };
+  const requestDeleteGuide = useRequest(deleteNewsData, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_success' }));
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'error' }));
+    },
+    onFinally: () => {
+      refresh();
+    },
+  });
 
   const columns: ColumnsType<DataType> = [
     {
@@ -121,16 +145,29 @@ export default () => {
       align: 'center',
       render: (value: any, record: any, index: number) => {
         return (
-          <Tooltip
-            title={formatMessage({ id: 'general_tooltip_show_infomation' })}
-          >
-            <div
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleViewNews(record.id)}
+          <>
+            <Tooltip
+              title={formatMessage({ id: 'general_tooltip_show_infomation' })}
             >
-              <EyeOutlined />
-            </div>
-          </Tooltip>
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleViewNews(record.id)}
+              >
+                <EyeOutlined />
+              </span>
+            </Tooltip>
+            <Tooltip
+              title={formatMessage({ id: 'general_tooltip_delete' })}
+              className="ml-16"
+            >
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleDeleteUser(record.id)}
+              >
+                <DeleteOutlined />
+              </span>
+            </Tooltip>
+          </>
         );
       },
     },

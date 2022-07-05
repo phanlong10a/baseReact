@@ -40,6 +40,11 @@ export const editNewsData = (id: any, payload: any) => {
     data: payload,
   });
 };
+
+export const deleteNewsData = (id: any) => {
+  return privateRequest(request.delete, API_PATH.NEWS + '/' + id);
+};
+
 export const uploadImage = (formData: FormData) => {
   return privateRequest(request.post, API_PATH.FILE, {
     headers: {
