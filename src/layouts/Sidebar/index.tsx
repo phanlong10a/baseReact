@@ -2,9 +2,7 @@ import {
   AimOutlined,
   CheckOutlined,
   CreditCardOutlined,
-  DesktopOutlined,
   PercentageOutlined,
-  PieChartOutlined,
   QuestionCircleOutlined,
   ReadOutlined,
   ShareAltOutlined,
@@ -15,11 +13,10 @@ import {
   UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
-import { useLocation } from 'umi';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import React from 'react';
-import { useIntl } from 'umi';
+import { useIntl, useLocation } from 'umi';
 
 import { Link } from 'umi';
 import styles from './index.less';
