@@ -197,7 +197,7 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
             precision={2}
             step={0.1}
             formatter={(value) =>
-              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
             }
             // type="number"
             // min={0}
