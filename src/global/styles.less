@@ -35,6 +35,24 @@ html {
 .ant-breadcrumb {
   padding: 0 24px !important;
 }
+.icon-color-gray {
+  color: gray;
+}
+.ant-btn.ant-btn-default {
+  background: linear-gradient(183.13deg, #e56c76 2.59%, #d8528e 97.41%);
+  color: #fff;
+  span {
+    color: #fff;
+  }
+}
+.ant-btn.ant-btn-default.ant-btn-dangerous {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+  background: #fff;
+  span {
+    color: #ff4d4f;
+  }
+}
 .ant-input.ant-input,
 .ant-input-affix-wrapper.ant-input-password.ant-input-password {
   background: @color-white;
@@ -134,4 +152,11 @@ html {
 .ant-menu-item.ant-menu-item-selected a,
 .ant-menu-item.ant-menu-item-selected span {
   color: #000;
+}
+.ant-menu-item.ant-menu-item-active {
+  background-color: #fff;
+  a,
+  span {
+    color: #000;
+  }
 }

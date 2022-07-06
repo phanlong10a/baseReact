@@ -76,12 +76,16 @@ const Dialog: React.FC<Iprops> = ({
   const requestCreateUser = useRequest(createNewsData, {
     manual: true,
     onSuccess: (res: any) => {
-      message.success(formatMessage({ id: 'message_add_user_success' }));
+      message.success(formatMessage({ id: 'message_success' }));
       setNewsInfo(res);
       setOpen(false);
     },
     onError: (rej: any) => {
-      message.error(formatMessage({ id: 'message_add_user_failure' }));
+      message.error(
+        rej.errors
+          ? message.error(rej.errors[0])
+          : message.error(formatMessage({ id: 'error' })),
+      );
     },
     onFinally: () => {
       setLoading(false);
@@ -96,7 +100,9 @@ const Dialog: React.FC<Iprops> = ({
     },
     onError: (rej: any) => {
       message.error(
-        rej.errors ? rej.errors[0] : formatMessage({ id: 'error' }),
+        rej.errors
+          ? message.error(rej.errors[0])
+          : message.error(formatMessage({ id: 'error' })),
       );
     },
     onFinally: () => {
@@ -139,6 +145,22 @@ const Dialog: React.FC<Iprops> = ({
   };
 
   const onFinish = (value: any) => {
+    if (
+      !value.content ||
+      value.content === '' ||
+      value.content === '<p><br></p>'
+    ) {
+      message.error(
+        formatMessage(
+          { id: 'error.require' },
+          {
+            field: formatMessage({ id: 'content' }),
+          },
+        ),
+      );
+
+      return;
+    }
     if (itemEdit) {
       requestEditUser.run(newsInfo.id, value);
       return;
@@ -162,14 +184,6 @@ const Dialog: React.FC<Iprops> = ({
         onCancel={() => setOpen(false)}
         visible={open}
         footer={null}
-        // extra={
-        //     <Space>
-        //         <Button onClick={() => setOpen(false)}>Cancel</Button>
-        //         <Button onClick={() => setOpen(false)} type="primary">
-        //             Submit
-        //         </Button>
-        //     </Space>
-        // }
       >
         {requestUser.loading || loading ? (
           <Skeleton active />
@@ -246,6 +260,7 @@ const Dialog: React.FC<Iprops> = ({
                   <Form.Item
                     name="content"
                     label={formatMessage({ id: 'content' })}
+                    initialValue=""
                   >
                     <ReactQuill
                       ref={(el) => {

@@ -72,7 +72,9 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej: any) => {
-      rej.errors ? rej.errors[0] : formatMessage({ id: 'error' });
+      rej.errors
+        ? message.error(rej.errors[0])
+        : message.error(formatMessage({ id: 'error' }));
     },
   });
   const requestEditGuide = useRequest(editPaymentData, {
@@ -82,7 +84,9 @@ const Dialog: React.FC<Iprops> = ({
       setOpen(false);
     },
     onError: (rej: any) => {
-      rej.errors ? rej.errors[0] : formatMessage({ id: 'error' });
+      rej.errors
+        ? message.error(rej.errors[0])
+        : message.error(formatMessage({ id: 'error' }));
     },
   });
 
@@ -132,6 +136,19 @@ const Dialog: React.FC<Iprops> = ({
         referenceNumber,
         status,
       } = value;
+      if (itemEdit) {
+        let submitObj = {
+          description,
+          display,
+          paymentType,
+          receiverAccount,
+          referenceNumber,
+          status,
+          imageId: fileID,
+        };
+        requestEditGuide.run(itemEdit, submitObj);
+        return;
+      }
       let submitObj = {
         description,
         display,
@@ -142,10 +159,6 @@ const Dialog: React.FC<Iprops> = ({
         status,
         imageId: fileID,
       };
-      if (itemEdit) {
-        requestEditGuide.run(itemEdit, submitObj);
-        return;
-      }
       requestCreateGuide.run(submitObj);
       return;
     } else {
@@ -313,7 +326,7 @@ const Dialog: React.FC<Iprops> = ({
                       >
                         <Input
                           placeholder={formatMessage({ id: 'method_name' })}
-                          disabled={!editable}
+                          disabled={!!itemEdit}
                         />
                       </Form.Item>
                     </Col>
