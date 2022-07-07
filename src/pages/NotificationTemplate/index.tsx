@@ -1,7 +1,13 @@
-import { EyeOutlined, StarFilled, StarOutlined } from '@ant-design/icons';
-import { useAntdTable, useToggle } from 'ahooks';
+import {
+  DeleteOutlined,
+  EyeOutlined,
+  StarFilled,
+  StarOutlined,
+} from '@ant-design/icons';
+import { useAntdTable, useRequest, useToggle } from 'ahooks';
 import {
   Breadcrumb,
+  Button,
   Form,
   Input,
   message,
@@ -15,7 +21,7 @@ import React from 'react';
 import { useIntl } from 'umi';
 import Dialog from './Dialog';
 import styles from './index.less';
-import { getTableData } from './service';
+import { deleteTemplateData, getTableData } from './service';
 
 const { Option } = Select;
 
@@ -60,11 +66,26 @@ export default () => {
 
   const { type, changeType, submit, reset } = search;
 
-  const handleViewRate = (idRate: number | string) => {
+  const handleViewTemplate = (idRate: number | string) => {
     setIdSelected(idRate);
     setOpenDialog.set(true);
   };
+  const handleDeleteTemplate = (idUser: number | string) => {
+    requestDeleteTemplate.run(idUser);
+  };
 
+  const requestDeleteTemplate = useRequest(deleteTemplateData, {
+    manual: true,
+    onSuccess: (res: any) => {
+      message.success(formatMessage({ id: 'message_success' }));
+    },
+    onError: (rej: any) => {
+      message.error(formatMessage({ id: 'error' }));
+    },
+    onFinally: () => {
+      refresh();
+    },
+  });
   const columns: ColumnsType<DataType> = [
     {
       title: 'STT',
@@ -74,44 +95,49 @@ export default () => {
       align: 'center',
     },
     {
-      title: 'const_column_star',
-      dataIndex: 'rating',
-      key: 'rating',
-      width: 140,
+      title: 'name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'description',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: 'const_column_action',
+      dataIndex: 'custom',
+      align: 'center',
       render: (value: any, record: any, index: number) => {
         return (
-          <span>
-            {[...new Array(5)].map((arr, index) => {
-              return index > record.rating ? <StarOutlined /> : <StarFilled />;
-            })}
-          </span>
+          <>
+            <Tooltip
+              title={formatMessage({ id: 'general_tooltip_show_infomation' })}
+            >
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleViewTemplate(record.id)}
+              >
+                <EyeOutlined />
+              </span>
+            </Tooltip>
+            {record.deleteable && (
+              <Tooltip
+                title={formatMessage({ id: 'general_tooltip_delete' })}
+                className="ml-16"
+              >
+                <span
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleDeleteTemplate(record.id)}
+                >
+                  <DeleteOutlined />
+                </span>
+              </Tooltip>
+            )}
+          </>
         );
       },
     },
-    {
-      title: 'const_column_message',
-      dataIndex: 'message',
-      key: 'message',
-    },
-    // {
-    //   title: 'const_column_action',
-    //   dataIndex: 'custom',
-    //   align: 'center',
-    //   render: (value: any, record: any, index: number) => {
-    //     return (
-    //       <Tooltip
-    //         title={formatMessage({ id: 'general_tooltip_show_infomation' })}
-    //       >
-    //         <div
-    //           style={{ cursor: 'pointer' }}
-    //           onClick={() => handleViewRate(record.id)}
-    //         >
-    //           <EyeOutlined />
-    //         </div>
-    //       </Tooltip>
-    //     );
-    //   },
-    // },
   ].map((item: any) => {
     return { ...item, title: formatMessage({ id: item.title }) };
   });
@@ -119,7 +145,7 @@ export default () => {
   const searchForm = (
     <div className={styles.searchContainer}>
       <Form form={form} className={styles.searchForm}>
-        <Form.Item name="fullName" className={styles.searchItem}>
+        <Form.Item name="name" className={styles.searchItem}>
           <Input.Search
             placeholder={formatMessage({ id: 'form_search_text' })}
             allowClear
@@ -127,6 +153,14 @@ export default () => {
           />
         </Form.Item>
       </Form>
+      <Button
+        onClick={() => {
+          setIdSelected(null);
+          setOpenDialog.set(true);
+        }}
+      >
+        {formatMessage({ id: 'general_add' })}
+      </Button>
     </div>
   );
 
@@ -134,7 +168,7 @@ export default () => {
     <>
       <Breadcrumb className={styles.breadcrumb}>
         <Breadcrumb.Item>
-          {formatMessage({ id: 'navigation_rate' })}
+          {formatMessage({ id: 'navigation_notification_template' })}
         </Breadcrumb.Item>
       </Breadcrumb>
       {searchForm}

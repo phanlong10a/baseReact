@@ -11,6 +11,7 @@ import {
   Col,
   Form,
   Input,
+  InputNumber,
   message,
   Modal,
   Row,
@@ -133,7 +134,7 @@ const Dialog: React.FC<Iprops> = ({
         method,
         paymentType,
         receiverAccount,
-        referenceNumber,
+        intergratedID,
         status,
       } = value;
       if (itemEdit) {
@@ -142,7 +143,9 @@ const Dialog: React.FC<Iprops> = ({
           display,
           paymentType,
           receiverAccount,
-          referenceNumber,
+          merchantType: 'APP',
+          intergratedID,
+          method,
           status,
           imageId: fileID,
         };
@@ -155,7 +158,8 @@ const Dialog: React.FC<Iprops> = ({
         method,
         paymentType,
         receiverAccount,
-        referenceNumber,
+        merchantType: 'APP',
+        intergratedID,
         status,
         imageId: fileID,
       };
@@ -288,23 +292,24 @@ const Dialog: React.FC<Iprops> = ({
                     </Col>
                     <Col span={24} className={styles.dialogFormItem}>
                       <Form.Item
-                        name="referenceNumber"
-                        label={formatMessage({ id: 'referenceNumber' })}
+                        name="intergratedID"
+                        label={formatMessage({ id: 'intergratedID' })}
                         rules={[
                           {
                             required: true,
                             message: formatMessage(
                               { id: 'error.require' },
                               {
-                                field: formatMessage({ id: 'referenceNumber' }),
+                                field: formatMessage({ id: 'intergratedID' }),
                               },
                             ),
                           },
                         ]}
                       >
-                        <Input
-                          placeholder={formatMessage({ id: 'referenceNumber' })}
+                        <InputNumber
+                          placeholder={formatMessage({ id: 'intergratedID' })}
                           disabled={!editable}
+                          style={{ width: '100%' }}
                         />
                       </Form.Item>
                     </Col>

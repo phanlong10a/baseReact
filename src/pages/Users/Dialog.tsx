@@ -82,7 +82,8 @@ const Dialog: React.FC<Iprops> = ({
     }
   }, [itemEdit]);
 
-  const onEdit = () => {
+  const onEdit = (e: any) => {
+    e.preventDefault();
     setEditable.set(true);
   };
 
