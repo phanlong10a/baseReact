@@ -188,8 +188,20 @@ const CustomerDialog = (props: PROPS): JSX.Element => {
           label={t('manager_ticket_form_price')}
           name="price"
           className={styles.formItem}
+          // normalize={(value) => {
+          //   return value.replace(/[^\d.,-]/g, '');
+          // }}
         >
-          <InputNumber style={{ width: '100%' }} min={0} />
+          <InputNumber
+            style={{ width: '100%' }}
+            precision={2}
+            step={0.1}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+            }
+            // type="number"
+            // min={0}
+          />
         </Form.Item>
 
         <Form.Item
