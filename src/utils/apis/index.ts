@@ -123,6 +123,7 @@ const API_PATH = {
   RESET_PASSWORD: '/auth/resetPassword',
   LOGOUT: '/auth/logout',
   USER: '/user',
+  RATING: '/rating',
   KYC: '/kyc',
   ADMIN_USER: '/user/admin',
   NEWS: '/news',
@@ -130,6 +131,9 @@ const API_PATH = {
   GUIDE: '/guide',
   COUPON: '/coupon',
   PAYMENT: '/payment/method',
+  TOPICNOTI: '/notification/topic',
+  NOTI: '/notification/template',
+  SEND_NOTI: '/notification/send',
 };
 
 export { API_PATH, request, privateRequest };

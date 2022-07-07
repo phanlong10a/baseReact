@@ -19,9 +19,9 @@ export enum DisplayType {
 }
 
 export enum PaymentType {
-  VTC_PAY = 'VTC_PAY',
-  DOMESTIC_BANK = 'DOMESTIC_BANK',
-  INTERNATIONAL_CARD = 'INTERNATIONAL_CARD',
+  VTC_PAY = 'VTCPay',
+  DOMESTIC_BANK = 'DomesticBank',
+  INTERNATIONAL_CARD = 'InternationalCard',
 }
 
 export enum KycType {
@@ -33,4 +33,12 @@ export enum KycType {
 export enum KycPhotoType {
   FRONT_PHOTO = 'FRONT_PHOTO',
   BACK_PHOTO = 'BACK_PHOTO',
+}
+export enum MerchantType {
+  APP = 'APP',
+  WEBSITE = 'WEBSITE',
+}
+export enum TypeTemplateNoti {
+  USER = 'USER',
+  TOPIC = 'TOPIC',
 }

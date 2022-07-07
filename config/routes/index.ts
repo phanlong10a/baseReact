@@ -112,6 +112,18 @@ export const authRoutes = [
     component: '@/pages/Rate/index',
     title: 'navigation_rate',
   },
+  {
+    exact: true,
+    path: '/notifications',
+    component: '@/pages/Notification/index',
+    title: 'navigation_notification',
+  },
+  {
+    exact: true,
+    path: '/notification-template',
+    component: '@/pages/NotificationTemplate/index',
+    title: 'navigation_notification_template',
+  },
 ];
 
 export default [

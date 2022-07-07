@@ -11,7 +11,9 @@ export default {
   image_empty: 'Bắt buộc đính kèm ảnh',
   //mesages
 
+  STT: 'Stt',
   message_success: 'Thành công',
+  message_send_success: 'Gửi thành công',
   message_kyc_success: 'Cập nhật trạng thái xác thực thành công',
   message_user_success: 'Cập nhật tài khoản thành công',
   message_add_user_success: 'Thêm tài khoản thành công',
@@ -36,6 +38,7 @@ export default {
   status_verify: 'Trạng thái xác thực',
   address: 'Địa chỉ',
   email: 'Email',
+  name: 'Tên',
   identification_code: 'Mã định danh',
   date_of_birth: 'Ngày sinh',
   kyc_type: 'Loại giấy tờ',
@@ -57,6 +60,8 @@ export default {
   display: 'Hiển thị',
   receiverAccount: 'Tài khoản nhận tiền của đối tác',
   referenceNumber: 'Mã tham chiếu của đối tác',
+  user: 'Người dùng',
+  topic: 'Chủ đề',
 
   vietnamese: 'Tiếng Việt',
   english: 'Tiếng Anh',
@@ -85,6 +90,8 @@ export default {
   navigation_tutorial: 'Thông tin hưỡng dẫn sử dụng',
   navigation_news: 'Tin tức',
   navigation_rate: 'Đánh giá',
+  navigation_notification_template: 'Danh mục thông báo',
+  navigation_notification: 'Quản lý thông báo',
 
   //breadcrumb
   user_management: 'Quản lý người dùng',
@@ -100,6 +107,7 @@ export default {
   general_preview_image: 'Phóng to',
   general_tooltip_show_infomation: 'Xem thông tin',
   general_tooltip_delete: 'Xoá',
+  general_tooltip_send_noti: 'Gửi thông báo',
 
   general_add: 'Thêm mới',
   general_edit: 'Chỉnh sửa',
@@ -114,6 +122,8 @@ export default {
   general_user: 'Người dùng',
   general_on: 'Bật',
   general_off: 'Tắt',
+  general_noti_user: 'Theo người dùng',
+  general_noti_topic: 'Theo chủ đề',
 
   general_payment_vtc: 'VTC_PAY',
   general_payment_domestic_bank: 'Ngân hàng nội địa',
@@ -142,6 +152,8 @@ export default {
   general_kyc_photo_type_front: 'Ảnh giấy tờ mặt trước',
   general_kyc_photo_type_back: 'Ảnh giấy tờ mặt sau',
 
+  general_type_notification: 'Loại thông báo',
+
   //form
   form_search_text: 'Nhập từ khoá',
 
@@ -157,6 +169,8 @@ export default {
   const_column_content: 'Nội dung',
   const_column_content_image: 'Nội dung và hình ảnh (nếu có)',
   const_column_description_image: 'Mô tả và hình ảnh (nếu có)',
+  const_column_star: 'Sao',
+  const_column_message: 'Phản hồi',
 
   manager_bike_stattion: 'Quản lý trạm xe',
   manager_bike_stattion_table_name: 'Tên trạm xe',

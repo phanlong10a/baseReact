@@ -8,6 +8,7 @@ export default {
   image_empty: 'Must be upload image',
   error: 'Something went wrong',
 
+  STT: 'Index',
   auth_login: 'CMS V-Bike',
   auth_phone: 'Phone',
   auth_password: 'Password',
@@ -22,7 +23,10 @@ export default {
   promotion_time: 'Promotion Time',
   promotion_range: 'Promotion Range',
   promotion_type: 'Promotion Type',
-
+  name: 'Name',
+  user: 'User',
+  general_noti_user: 'For user',
+  general_noti_topic: 'For topic',
   //navigation
   navitation_home: 'Home',
   navigation_profile: 'Profile Management',
@@ -40,7 +44,10 @@ export default {
   navigation_tutorial: 'Tutorial Management',
   navigation_news: 'News Management',
   navigation_rate: 'Rate Management',
+  navigation_notification_template: 'Notification Template Management',
+  navigation_notification: 'Notification Management',
 
+  general_type_notification: 'Notification Type',
   //breadcrumb
   user_management: 'User management',
   user_management_list_user: 'List user',
@@ -72,7 +79,7 @@ export default {
   display: 'Display',
   receiverAccount: 'Receiver Account',
   referenceNumber: 'Reference Number',
-
+  topic: 'Topic',
   // error
   'error.require': '{field} must be required.',
   'error.email': 'Email invalid.',
@@ -81,6 +88,7 @@ export default {
   //mesages
 
   message_success: 'Success',
+  message_send_success: 'Send success',
   message_kyc_success: 'Update status kyc user success',
   message_user_success: 'Update user success',
   message_add_user_success: 'Add user success',
@@ -101,6 +109,7 @@ export default {
   general_preview_image: 'Preview',
   general_tooltip_show_infomation: 'Show infomation',
   general_tooltip_delete: 'Delete',
+  general_tooltip_send_noti: 'Send notification',
 
   general_add: 'Add',
   general_edit: 'Edit',
@@ -156,4 +165,6 @@ export default {
   const_column_content: 'Content',
   const_column_content_image: 'Content and Image',
   const_column_description_image: 'Description and Image',
+  const_column_star: 'Star',
+  const_column_message: 'Message',
 };

@@ -1,4 +1,9 @@
-import { Applicable, DisplayType, PaymentType } from '../enum';
+import {
+  Applicable,
+  DisplayType,
+  PaymentType,
+  TypeTemplateNoti,
+} from '../enum';
 
 interface IObjectProperty {
   name: string;
@@ -63,6 +68,10 @@ export const APPLICABLE: IObjectProperty[] = [
 export const DISPLAY_TYPE: IObjectProperty[] = [
   { name: 'general_on', value: DisplayType.ON },
   { name: 'general_off', value: DisplayType.OFF },
+];
+export const TYPE_TEMPLATE_NOTI: IObjectProperty[] = [
+  { name: 'general_noti_topic', value: TypeTemplateNoti.TOPIC },
+  { name: 'general_noti_user', value: TypeTemplateNoti.USER },
 ];
 
 export const ENVIRONMENTS = {

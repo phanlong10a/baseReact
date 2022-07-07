@@ -140,7 +140,8 @@ const Dialog: React.FC<Iprops> = ({
         return '';
       });
   };
-  const onEdit = () => {
+  const onEdit = (e: any) => {
+    e.preventDefault();
     setEditable.set(true);
   };
 
@@ -299,7 +300,7 @@ const Dialog: React.FC<Iprops> = ({
                 ) : (
                   <Button
                     type="primary"
-                    onClick={() => onEdit()}
+                    onClick={(e) => onEdit(e)}
                     className={styles.addButton}
                   >
                     {formatMessage({ id: 'general_edit' })}

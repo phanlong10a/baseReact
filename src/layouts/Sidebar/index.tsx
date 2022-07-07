@@ -2,6 +2,7 @@ import {
   AimOutlined,
   CheckOutlined,
   CreditCardOutlined,
+  NotificationOutlined,
   PercentageOutlined,
   QuestionCircleOutlined,
   ReadOutlined,
@@ -10,6 +11,7 @@ import {
   TagOutlined,
   TagsOutlined,
   UnlockOutlined,
+  UnorderedListOutlined,
   UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
@@ -124,6 +126,16 @@ const Sidebar = ({
       renderLink('/rate', 'navigation_rate'),
       '/rate',
       <SolutionOutlined />,
+    ),
+    getItem(
+      renderLink('/notifications', 'navigation_notification'),
+      '/notifications',
+      <NotificationOutlined />,
+    ),
+    getItem(
+      renderLink('/notification-template', 'navigation_notification_template'),
+      '/notification-template',
+      <UnorderedListOutlined />,
     ),
   ];
 
