@@ -5,6 +5,7 @@ import {
   Form,
   Input,
   message,
+  Rate,
   Select,
   Skeleton,
   Table,
@@ -77,13 +78,14 @@ export default () => {
       title: 'const_column_star',
       dataIndex: 'rating',
       key: 'rating',
-      width: 140,
+      width: 220,
       render: (value: any, record: any, index: number) => {
         return (
           <span>
-            {[...new Array(5)].map((arr, index) => {
+            {/* {[...new Array(5)].map((arr, index) => {
               return index > record.rating ? <StarOutlined /> : <StarFilled />;
-            })}
+            })} */}
+            <Rate value={record.rating} />
           </span>
         );
       },
