@@ -11,6 +11,7 @@ import {
   Form,
   Input,
   message,
+  Modal,
   Select,
   Skeleton,
   Table,
@@ -43,7 +44,7 @@ interface DataType {
 
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
-
+  const [modal, contextHolder] = Modal.useModal();
   const [idSelected, setIdSelected] = React.useState<number | string | null>(
     null,
   );
@@ -71,7 +72,14 @@ export default () => {
     setOpenDialog.set(true);
   };
   const handleDeleteTemplate = (idUser: number | string) => {
-    requestDeleteTemplate.run(idUser);
+    modal.confirm({
+      title: formatMessage({ id: 'should_delete' }),
+      okText: formatMessage({ id: 'ok_text' }),
+      cancelText: formatMessage({ id: 'cancel_text' }),
+      onOk: () => {
+        requestDeleteTemplate.run(idUser);
+      },
+    });
   };
 
   const requestDeleteTemplate = useRequest(deleteTemplateData, {
@@ -185,6 +193,7 @@ export default () => {
           />
         )}
       </div>
+      {contextHolder}
       {openDialog && (
         <Dialog
           open={openDialog}

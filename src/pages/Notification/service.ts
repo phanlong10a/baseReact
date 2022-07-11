@@ -60,7 +60,6 @@ export const deleteNotiData = (id: any) => {
   return privateRequest(request.delete, API_PATH.NOTI + '/' + id);
 };
 export const sendNotiData = (id: any) => {
-  debugger;
   return privateRequest(request.post, API_PATH.SEND_NOTI, {
     data: {
       id: id,

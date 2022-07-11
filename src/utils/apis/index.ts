@@ -6,8 +6,15 @@ const localeInfo = localStorage.getItem('umi_locale') || 'vi-VN';
 
 const request = extend({
   prefix: ENVIRONMENTS.API_URL,
-  errorHandler: (error) => {
+  errorHandler: async (error) => {
     if (error.response?.status === 401) {
+      await TokenManager.getNewToken().then((res) => {
+        window?.localStorage.setItem(
+          ENVIRONMENTS.LOCAL_STORAGE_KEY as string,
+          JSON.stringify(res),
+        );
+      });
+      window?.location.reload();
       // clean all token
     }
     throw error?.data || error?.response;
@@ -80,9 +87,9 @@ const TokenManager = new TokenManagement({
     }
 
     const refreshToken = localInfoObject?.refreshToken;
-    if (!refreshToken) {
-      return done(null);
-    }
+    // if (!refreshToken) {
+    //   return done(null);
+    // }
 
     request
       .post('/auth/refreshToken', {
@@ -91,8 +98,8 @@ const TokenManager = new TokenManagement({
         },
       })
       .then((result) => {
-        if (result.refreshToken && result.accessToken) {
-          done(result.accessToken);
+        if (result.refreshToken && result.token) {
+          done(result);
           return;
         }
 

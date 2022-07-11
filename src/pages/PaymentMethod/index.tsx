@@ -1,7 +1,16 @@
 import { StatusAccount } from '@/utils/enum';
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest, useToggle } from 'ahooks';
-import { Breadcrumb, Button, Form, Input, message, Table, Tooltip } from 'antd';
+import {
+  Breadcrumb,
+  Button,
+  Form,
+  Input,
+  message,
+  Modal,
+  Table,
+  Tooltip,
+} from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { useIntl } from 'umi';
@@ -26,6 +35,7 @@ interface DataType {
 
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
+  const [modal, contextHolder] = Modal.useModal();
   const [idSelected, setIdSelected] = React.useState<number | string | null>(
     null,
   );
@@ -44,7 +54,14 @@ export default () => {
     setOpenDialog.set(true);
   };
   const handleDeleteUser = (idUser: number | string) => {
-    requestDeleteGuide.run(idUser);
+    modal.confirm({
+      title: formatMessage({ id: 'should_delete' }),
+      okText: formatMessage({ id: 'ok_text' }),
+      cancelText: formatMessage({ id: 'cancel_text' }),
+      onOk: () => {
+        requestDeleteGuide.run(idUser);
+      },
+    });
   };
 
   const requestDeleteGuide = useRequest(deletePaymentData, {
@@ -193,6 +210,7 @@ export default () => {
           {...tableProps}
         />
       </div>
+      {contextHolder}
       {openDialog && (
         <Dialog
           open={openDialog}

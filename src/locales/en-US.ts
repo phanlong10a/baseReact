@@ -7,6 +7,9 @@ export default {
   'about.title': 'About-Title',
   image_empty: 'Must be upload image',
   error: 'Something went wrong',
+  ok_text: 'Yes',
+  cancel_text: 'Cancel',
+  should_delete: 'Should be deleted?',
 
   STT: 'Index',
   auth_login: 'CMS V-Bike',

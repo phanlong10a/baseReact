@@ -77,6 +77,23 @@ export default class TokenManagement {
     });
   }
 
+  getNewToken() {
+    return new Promise((res, rej) => {
+      let isCalled = false;
+
+      const refreshDoneHandler = (token: any) => {
+        res(token);
+        isCalled = true;
+      };
+
+      this.event.once('refreshDone', refreshDoneHandler);
+
+      if (!isCalled) {
+        this.event.emit('refreshing');
+      }
+    });
+  }
+
   inject(service: (token: string, params: any) => any) {
     return async (...args: any) => {
       const token = await this.getToken();

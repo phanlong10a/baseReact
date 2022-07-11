@@ -9,6 +9,9 @@ export default {
   'error.email': 'Email không đúng định dạng.',
   'error.patern': '{field} không đúng định dạng.',
   image_empty: 'Bắt buộc đính kèm ảnh',
+  ok_text: 'Có',
+  cancel_text: 'Không',
+  should_delete: 'Bạn có muốn xoá không ?',
   //mesages
 
   STT: 'Stt',

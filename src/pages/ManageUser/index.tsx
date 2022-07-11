@@ -114,7 +114,7 @@ export default () => {
           <React.Fragment key={index}>
             {formatMessage(
               {
-                id: STATUS_KYC.find(() => {
+                id: KYC_TYPE.find(() => {
                   return record.kycType == record.kycType;
                 })?.name,
               } || '',

@@ -1,3 +1,4 @@
+import { StatusAccount } from '@/utils/enum';
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest, useToggle } from 'ahooks';
 import {
@@ -6,28 +7,17 @@ import {
   Form,
   Input,
   message,
+  Modal,
   Select,
   Table,
   Tooltip,
 } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import React from 'react';
-import { setLocale, useIntl } from 'umi';
+import { useIntl } from 'umi';
 import Dialog from './Dialog';
-import {
-  STATUS_ACTIVE,
-  KYC_PHOTO_TYPES,
-  STATUS_KYC,
-  KYC_TYPE,
-  STATUS_ACCOUNT,
-  OPTION_GENDER,
-} from '@/utils/constant';
 import styles from './index.less';
 import { deleteNewsData, getTableData } from './service';
-import { getLocale } from 'umi';
-import { mockupData } from './constant';
-import dayjs from 'dayjs';
-import { StatusAccount } from '@/utils/enum';
 
 const { Option } = Select;
 
@@ -48,6 +38,7 @@ interface DataType {
 
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
+  const [modal, contextHolder] = Modal.useModal();
   const [idSelected, setIdSelected] = React.useState<number | string | null>(
     null,
   );
@@ -66,7 +57,14 @@ export default () => {
     setOpenDialog.set(true);
   };
   const handleDeleteUser = (idUser: number | string) => {
-    requestDeleteGuide.run(idUser);
+    modal.confirm({
+      title: formatMessage({ id: 'should_delete' }),
+      okText: formatMessage({ id: 'ok_text' }),
+      cancelText: formatMessage({ id: 'cancel_text' }),
+      onOk: () => {
+        requestDeleteGuide.run(idUser);
+      },
+    });
   };
   const requestDeleteGuide = useRequest(deleteNewsData, {
     manual: true,
@@ -214,6 +212,7 @@ export default () => {
           {...tableProps}
         />
       </div>
+      {contextHolder}
       {openDialog && (
         <Dialog
           open={openDialog}

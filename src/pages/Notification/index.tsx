@@ -13,6 +13,7 @@ import {
   Form,
   Input,
   message,
+  Modal,
   Select,
   Skeleton,
   Table,
@@ -45,7 +46,7 @@ interface DataType {
 
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
-
+  const [modal, contextHolder] = Modal.useModal();
   const [idSelected, setIdSelected] = React.useState<number | string | null>(
     null,
   );
@@ -73,7 +74,14 @@ export default () => {
     setOpenDialog.set(true);
   };
   const handleDeleteNoti = (idUser: number | string) => {
-    requestDeleteNoti.run(idUser);
+    modal.confirm({
+      title: formatMessage({ id: 'should_delete' }),
+      okText: formatMessage({ id: 'ok_text' }),
+      cancelText: formatMessage({ id: 'cancel_text' }),
+      onOk: () => {
+        requestDeleteNoti.run(idUser);
+      },
+    });
   };
 
   const handleSendNoti = (idUser: number | string) => {
@@ -229,6 +237,7 @@ export default () => {
           />
         )}
       </div>
+      {contextHolder}
       {openDialog && (
         <Dialog
           open={openDialog}
