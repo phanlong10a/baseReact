@@ -1,3 +1,4 @@
+import { PAYMENT_TYPE } from '@/utils/constant';
 import { StatusAccount } from '@/utils/enum';
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest, useToggle } from 'ahooks';
@@ -89,6 +90,24 @@ export default () => {
       title: 'method_name',
       dataIndex: 'method',
       key: 'method',
+    },
+    {
+      title: 'payment_type',
+      dataIndex: 'paymentType',
+      key: 'paymentType',
+      render: (value: any, record: any, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            {formatMessage(
+              {
+                id: PAYMENT_TYPE.find((item) => {
+                  return item.value == record.paymentType;
+                })?.name,
+              } || '',
+            )}
+          </React.Fragment>
+        );
+      },
     },
     {
       title: 'const_column_status',
