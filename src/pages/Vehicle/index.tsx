@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslate } from '@/utils/hooks/useTranslate';
 import { Breadcrumb, Table, Tooltip, Form, message } from 'antd';
-import { EyeOutlined, DeleteFilled } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 import Search from './Search';
 import CustomerDialog from './components/CustomerDialog';
 import ModalDialog from './components/ModalDelete';
 import { getTableData } from './service';
-import { useAntdTable, useToggle, useSetState, useRequest } from 'ahooks';
+import { useAntdTable, useSetState, useRequest } from 'ahooks';
 import { privateRequest, request } from '@/utils/apis';
 
 export default () => {
