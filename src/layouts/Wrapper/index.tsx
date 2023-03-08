@@ -21,9 +21,6 @@ const Wrapper = ({
       window.location.reload();
     }
   }, []);
-
-  if (auth?.loading) return <LoadingOutlined />;
-
   return <>{children}</>;
 };
 
