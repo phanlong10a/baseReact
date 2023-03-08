@@ -15,13 +15,6 @@ const Wrapper = ({
   const location = useLocation();
 
   useLayoutEffect(() => {
-    const token = getAccessToken();
-
-    if (!token) history.push('/login');
-    if (token && location.pathname === '/login') history.push('/user');
-  }, []);
-
-  useLayoutEffect(() => {
     const localeInfo = localStorage.getItem('umi_locale');
     if (!localeInfo) {
       localStorage.setItem('umi_locale', 'vi-VN');
